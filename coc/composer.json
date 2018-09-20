@@ -1,0 +1,16 @@
+{
+    "name": "coc/clock",
+    "description": "The Clock of Change",
+    "type": "project",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Sebastian Koch",
+            "email": "mimic@42geeks.gg"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {"coc\\": "./classes"}
+    }
+}
