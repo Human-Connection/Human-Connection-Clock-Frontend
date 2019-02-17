@@ -2,6 +2,12 @@
 
 This repository contains the Frontend part of the Clock of Change in form of a Wordpress plugin.
 
+The purpose of the Clock of Change Frontend is to display the visual part of the Clock of Change, 
+handle user interactions (especially registrations) and provide a basic administration surface for the Clock of Change through Wordpress.
+
+The Clock of Change Frontend depends on the [Clock of Change API](https://github.com/Human-Connection/Clock-of-Change-API),
+which acts as the Backend and takes care of storing and processing the data.
+
 To find out more about the Clock of Change and Human Connection - the network behind it - visit https://human-connection.org/en/.
 
 ## Tech Stack
@@ -35,42 +41,6 @@ When using the Docker installation, you we provide a fully Wordpress system with
 Otherwise you need to setup a Wordpress system manually. To setup Wordpress you need to have a webserver with PHP and a MySQL database. 
 Then just follow the famous [Wordpress 5-minute installation](https://codex.wordpress.org/Installing_WordPress#Famous_5-Minute_Installation).
 
-**DATABASE**
-
-We use MySQL for the COC API as our relational database. 
-Currently all of the database related code can be found in the `core/db.js` file.
-This includes the credentials for the database (host, user, password and db name) and can be changed in this file.
-
-More conveniently the MySQL credentials can be provided via environment variables. Use the following environment variables:
-* MYSQL_HOST: Host address for the database
-* MYSQL_DB: Database Name
-* MYSQL_USER: MySQL User
-* MYSQL_PASS: MySQL Password
-
-Currently we have two tables:
-* apikeys: Contains the apikeys required to perform authorized API request
-* entries: Stores the user entries for the Clock of Change
-
-For more information about the tables, see the SQL dump of the tables at `documentation/tables.sql` .
-
-**MAILER**
-
-The code related to the mail system can be found in the file `core/mailer.js`.
-For the mailer to work the smtp credentials need to be changed in this file as well.
-Then the mailer will work and use the mail templates from `mails/entry/`
-
-More conveniently the Mailer credentials can be provided via environment variables. Use the following environment variables:
-* MAIL_HOST: Host address for the mailer
-* MAIL_PORT: Port number for the mailer
-* MAIL_USER: Mailer User
-* MAIL_PASS: Mailer Password
-
-
-To debug and preview the emails, we use [MailHog](https://github.com/mailhog/MailHog). 
-When installing the Clock of Change without Docker, you have to install MailHog manually (see link for details).
-Then set the host address of MailHog in the Clock of Change API and use `1025` as the port number.
-
-Assuming MailHog is running on localhost or you have chosen the Docker installation, you can debug and preview the mails under [http://localhost:8025/](http://localhost:8025/).
 
 ## Installation
 
@@ -90,6 +60,8 @@ OS: Windows 10
 ```
 
 **DOCKER INSTALLATION**
+
+TODO: Add Docker installation
 
 The Clock of Change API server comes bundled as a Docker Container, which enables you to run then server out of the box.
 
@@ -125,44 +97,55 @@ Now you can use the Clock of Change Frontend in Wordpress.
 
 ## Usage
 
-**START THE SERVER**
+**USAGE IN WORDPRESS ADMIN BACKEND**
 
-This section only applies if you have chosen the local installation. 
-When installing the Clock of Change API server with Docker, the server is starting automatically.
+With the installation of the Clock of Change Frontend plugin in Wordpress, there will be two additional entries in the Wordpress Admin Backend:
 
-In the base Clock-of-Change-API directory run
+![Clock of Change Wordpress Backend](documentation/coc-wordpress-backend.png)
 
-`npm run start`
+* CoC Options: Settings for the connection to the Clock of Change API Server
+* CoC Entries: View & manage the entries in the Clock of Change. Enable/Disable entries here.
 
-in the console to start the Clock of Change API server.
-This will start Nodemon and the Node.js server, which will start listening for and processing requests at [http://localhost:1337](http://localhost:1337).
+**SET COC OPTIONS IN WORDPRESS**
 
-**RUN DATABASE MIGRATIONS**
+The Clock of Change Frontend needs to be connected to the Clock of Change API server in order to display the data, especially the entries.
 
-This section only applies if you have chosen the local installation. 
-When installing the Clock of Change API server with Docker, the database migrations are applied automatically.
+To establish a connection, it is necessary to set the base url and a valid API key for the Clock of Change API server. 
+This needs to be done under `CoC Options` in the Wordpress admin backend in the respective fields.
 
-To create the necessary tables by applying the database migrations, run `db-migrate up` in the console. 
-
-This should give you an output like this:
+For example when running the API server locally, this could be the settings:
 ```
-$ db-migrate up
-[INFO] Processed migration 20190206134449-entries
-[INFO] Processed migration 20190206140226-apikeys
-[INFO] Done
+Your API Key: secret
+API base url: http://localhost:1337
 ```
 
-**MAKE REQUESTS**
+Please mind that a trailing slash for the API base url is not allowed.
 
-Pro Tip: Get [Postman](https://www.getpostman.com/) to make requests. This amazing tool makes working with APIs way easier.
+**MANAGE COC ENTRIES IN WORDPRESS**
 
-When using the default port 1337 (which you do if you haven't changed it in server.js), you can send requests to the Clock of Change API to `http://127.0.0.1:1337`.
+After setting valid options for the Clock of Change API server, we can list and manage all the Clock of Change entries 
+in the Wordpress admin backend under `CoC Entries`.
 
-Refer to the list of routes below, to see all possible requests with description you can make.
+Here you will find a list of all the entries, that are stored in the Clock of Change API server.
+
+It is also possible to activate and/or disable an entry. When hovering over the status of an entry the links to activate or disable the entry show up.
+
+**DISPLAY CLOCK OF CHANGE**
+
+To display the visual parts of the Clock of Change in Wordpress, we ca use [shortcodes](https://codex.wordpress.org/Shortcode).
+These shortcodes can be integrated into any Wordpress post or page inside any text element with the following syntax:
+
+```
+[shortcode]
+```
+
+The shortcode needs to be placed inside of the square brackets and is then automatically replaced with the Clock of Change visual representation.
+
+To see which shortcodes are available for the Clock of Change Frontend, please refer to the following list.
 
 **WORDPRESS SHORTCUTS**
 
-List of routes / endpoints
+List of Clock of Change Frontend shortcodes for Wordpress:
 
 * coc\shortcodes\shworld
 * [coc\shortcodes\shsign]
@@ -170,16 +153,13 @@ List of routes / endpoints
 * [coc\shortcodes\shuserwall]
 
 
-| Method | URI | Description |
-|---|---|---|
-| GET | http://127.0.0.1/cube.php | - Temp Route until path can be changed<br/>- Returns the current number of confirmed entries<br/>- No authentication required<br/>- Returns a number/string (we change to json once we can adjust hardware clocks)  |
-| GET | http://127.0.0.1/entries/verify/:k | - Verify an entry with a email validation link/hash :k (for example http://127.0.0.1/entries/verify/sadSdjsarj3jf3j3wfmwfj3w)<br/>- Returns Json {success : true || false, invalidKeyError if hash is invalid/used} |
-| POST | http://127.0.0.1/entries | - Requires auth (see AUTHENTICATION)<br/>- Create a new entry from body parameters<br/>- Body parameters: firstname, lastname, email, country, message, anon (int 0 or 1), image<br/>- Returns Json {success : true}<br/>- May return errors mimeError, sizeError, missingFields, fieldErrors, missingImageError |
-| GET | http://127.0.0.1/entries  | - Requires auth<br/>- Get back all entries<br/>- Parameters: limit (default 10), offset (default 0) and active (default false)<br/>- If active is true,  only confirmed and active accounts will be returned<br/>- Returns Json {success : true, results : out, totalCount : results.length, page : offset} or<br/> - Return {success : false, message : "error"}|
+| Shortcode | Description |
+|---|---|
+| coc\shortcodes\shworld | - Temp Route until path can be changed<br/>- Returns the current number of confirmed entries<br/>- No authentication required<br/>- Returns a number/string (we change to json once we can adjust hardware clocks)  |
+| coc\shortcodes\shsign | - Verify an entry with a email validation link/hash :k (for example http://127.0.0.1/entries/verify/sadSdjsarj3jf3j3wfmwfj3w)<br/>- Returns Json {success : true || false, invalidKeyError if hash is invalid/used} |
+| coc\shortcodes\shsignup | - Requires auth (see AUTHENTICATION)<br/>- Create a new entry from body parameters<br/>- Body parameters: firstname, lastname, email, country, message, anon (int 0 or 1), image<br/>- Returns Json {success : true}<br/>- May return errors mimeError, sizeError, missingFields, fieldErrors, missingImageError |
+| coc\shortcodes\shuserwall | - Requires auth<br/>- Get back all entries<br/>- Parameters: limit (default 10), offset (default 0) and active (default false)<br/>- If active is true,  only confirmed and active accounts will be returned<br/>- Returns Json {success : true, results : out, totalCount : results.length, page : offset} or<br/> - Return {success : false, message : "error"}|
 
-**AUTHENTICATION**
-
-To authenticate simply send parameter "API-Key" and the API key as the value with each request in the header
 
 <br/>
 <br/>
