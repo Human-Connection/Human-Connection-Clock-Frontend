@@ -37,7 +37,7 @@ and core and shortcode classes in the respective subdirectories
 The Clock of Change Frontend is running as a Wordpress plugin. This is why we need a Wordpress system, 
 in which we can use the Clock of Change Frontend as a plugin.
 
-When using the Docker installation, you we provide a fully Wordpress system with the Docker container.
+When using the Docker installation, we provide a full Wordpress system with the Docker container.
 Otherwise you need to setup a Wordpress system manually. To setup Wordpress you need to have a webserver with PHP and a MySQL database. 
 Then just follow the famous [Wordpress 5-minute installation](https://codex.wordpress.org/Installing_WordPress#Famous_5-Minute_Installation).
 
@@ -63,7 +63,8 @@ OS: Windows 10
 
 TODO: Add Docker installation
 
-The Clock of Change API server comes bundled as a Docker Container, which enables you to run then server out of the box.
+The Clock of Change Frontend comes bundled as a Docker Container, which enables you to run a Wordpress system 
+with the Clock of Change Frontend plugin preinstalled and preconfigured out of the box.
 
 Of course you need to have a recent version of [Docker](https://www.docker.com/get-started) installed. If you don't have Docker, follow the instructions of the link.
 You can check the version like this:
@@ -72,13 +73,13 @@ $ docker -v
 Docker version 18.09.1, build 4c52b90
 ``` 
 
-To run the Docker version, follow these steps:
-1. First you need to clone the git repository of the Clock of Change API. Head to a directory where you want the git repository to reside
-and open the directory in the console. Then run `git clone https://github.com/Human-Connection/Clock-of-Change-API.git` to clone the repository to this directory.
-2. Go to the newly created Clock-of-Change-API directory (`cd Clock-of-Change-API` in the console)
-3. Run `docker-compose up`. This will build the Docker container on first startup and run it. This can take a while, but after some time you should see the Clock of Change ticking.
+To run the Docker installation, follow these steps:
+1. First you need to clone the git repository of the Clock of Change Frontend. Head to a directory where you want the git repository to reside
+and open the directory in the console. Then run `git clone https://github.com/Human-Connection/Clock-of-Change-Frontend.git` to clone the repository to this directory.
+2. Go to the newly created Clock-of-Change-Frontend directory (`cd Clock-of-Change-Frontend` in the console)
+3. Run `docker-compose up`. This will build the Docker container on first startup and run it. This can take a while, but after some time the system will be up and running.
 
-Now the Clock of Change API server is ready for usage at [http://127.0.0.1:1337](http://127.0.0.1:1337)
+TODO: Complete Docker setup
 
 **LOCAL INSTALLATION & USAGE**
 
@@ -126,7 +127,7 @@ Please mind that a trailing slash for the API base url is not allowed.
 After setting valid options for the Clock of Change API server, we can list and manage all the Clock of Change entries 
 in the Wordpress admin backend under `CoC Entries`.
 
-Here you will find a list of all the entries, that are stored in the Clock of Change API server.
+Here we will find a list of all the entries that are stored in the Clock of Change API server.
 
 It is also possible to activate and/or disable an entry. When hovering over the status of an entry the links to activate or disable the entry show up.
 
@@ -147,18 +148,12 @@ To see which shortcodes are available for the Clock of Change Frontend, please r
 
 List of Clock of Change Frontend shortcodes for Wordpress:
 
-* coc\shortcodes\shworld
-* [coc\shortcodes\shsign]
-* coc\shortcodes\shsignup
-* [coc\shortcodes\shuserwall]
-
-
 | Shortcode | Description |
 |---|---|
-| coc\shortcodes\shworld | - Temp Route until path can be changed<br/>- Returns the current number of confirmed entries<br/>- No authentication required<br/>- Returns a number/string (we change to json once we can adjust hardware clocks)  |
-| coc\shortcodes\shsign | - Verify an entry with a email validation link/hash :k (for example http://127.0.0.1/entries/verify/sadSdjsarj3jf3j3wfmwfj3w)<br/>- Returns Json {success : true || false, invalidKeyError if hash is invalid/used} |
-| coc\shortcodes\shsignup | - Requires auth (see AUTHENTICATION)<br/>- Create a new entry from body parameters<br/>- Body parameters: firstname, lastname, email, country, message, anon (int 0 or 1), image<br/>- Returns Json {success : true}<br/>- May return errors mimeError, sizeError, missingFields, fieldErrors, missingImageError |
-| coc\shortcodes\shuserwall | - Requires auth<br/>- Get back all entries<br/>- Parameters: limit (default 10), offset (default 0) and active (default false)<br/>- If active is true,  only confirmed and active accounts will be returned<br/>- Returns Json {success : true, results : out, totalCount : results.length, page : offset} or<br/> - Return {success : false, message : "error"}|
+| coc\shortcodes\shworld | - Display the animated Clock of Change with the turning world animation and the counter |
+| coc\shortcodes\shsignup | - Display the signup button<br/>-Requires the coc\shortcodes\shsign shortcode |
+| coc\shortcodes\shsign | - Display the signup modal with the form, which opens when clicking on the signup button<br/>-Requires the coc\shortcodes\shsignup shortcode |
+| coc\shortcodes\shuserwall | - Display the Clock of Change user wall with the entries |
 
 
 <br/>
