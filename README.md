@@ -76,10 +76,11 @@ To run the Docker installation, follow these steps:
 and open the directory in the console. Then run `git clone https://github.com/Human-Connection/Clock-of-Change-Frontend.git` to clone the repository to this directory.
 2. Go to the newly created Clock-of-Change-Frontend directory (`cd Clock-of-Change-Frontend` in the console)
 3. Run `docker-compose up`. This will build the Docker container on first startup and run it. This can take a while, but after some time the system will be up and running.
+4. Install Wordpress once at [http://localhost:8000](http://localhost:8000)
 4. To activate and configure the Clock of Change Wordpress plugin, enter `docker-compose run --rm cli wp-init.sh` in the console. 
 This also creates a sample page with all the available shortcodes.
 
-Now you can use the Clock of Change Frontend in Wordpress.
+Now you can use the Clock of Change Frontend in Wordpress at [http://localhost:8000](http://localhost:8000)
 
 **LOCAL INSTALLATION & USAGE**
 
