@@ -35,7 +35,7 @@ services:
       - "tmpdata:/tmp"
       - "./coc:/var/www/html/wp-content/plugins/coc"
       - "./wp-init.sh:/usr/local/bin/wp-init.sh"
-    links:
+    depends_on:
       - db
     environment:
       WORDPRESS_DB_HOST: db:3306
