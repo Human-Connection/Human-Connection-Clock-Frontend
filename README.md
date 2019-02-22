@@ -149,12 +149,12 @@ To see which shortcodes are available for the Clock of Change Frontend, please r
 
 List of Clock of Change Frontend shortcodes for Wordpress:
 
-| Shortcode | Description |
-|---|---|
-| `coc\shortcodes\shworld` | Display the animated Clock of Change with the turning world animation and the counter |
-| `coc\shortcodes\shsignup` | Display the signup button<br/>-Requires the coc\shortcodes\shsign shortcode |
-| `coc\shortcodes\shsign` | Display the signup modal with the form, which opens when clicking on the signup button<br/>-Requires the coc\shortcodes\shsignup shortcode |
-| `coc\shortcodes\shuserwall` | Display the Clock of Change user wall with the entries |
+| Shortcode                     | Description                                                                                                                                |
+| ---                           | ---                                                                                                                                        |
+| `[coc\shortcodes\shworld]`    | Display the animated Clock of Change with the turning world animation and the counter                                                      |
+| `[coc\shortcodes\shsignup]`   | Display the signup button<br/>-Requires the coc\shortcodes\shsign shortcode                                                                |
+| `[coc\shortcodes\shsign]`     | Display the signup modal with the form, which opens when clicking on the signup button<br/>-Requires the coc\shortcodes\shsignup shortcode |
+| `[coc\shortcodes\shuserwall]` | Display the Clock of Change user wall with the entries                                                                                     |
 
 
 <br/>
