@@ -23,14 +23,14 @@ To find out more about the Clock of Change and Human Connection - the network be
 
 **PROJECT STRUCTURE / DIRECTORIES**
 
-* coc/: Main directory for the Clock of Change Frontend Wordpress plugin
-* coc/assets/: Assets for the Frontend with subdirectories for css, images and js files
-* coc/classes/: Contains the PHP classes for the Frontend with the main class ClockOfChange.php 
+* `coc/`: Main directory for the Clock of Change Frontend Wordpress plugin
+* `coc/assets/`: Assets for the Frontend with subdirectories for css, images and js files
+* `coc/classes/`: Contains the PHP classes for the Frontend with the main class ClockOfChange.php 
 and core and shortcode classes in the respective subdirectories
-* coc/config: Contains the Wordpress options for the plugin
-* coc/helper: Contains helper classes
-* coc/vendor/: Contains the dependencies (packages) that are managed by composer
-* coc/coc.php: Main Wordpress plugin file
+* `coc/config`: Contains the Wordpress options for the plugin
+* `coc/helper`: Contains helper classes
+* `coc/vendor/`: Contains the dependencies (packages) that are managed by composer
+* `coc/coc.php`: Main Wordpress plugin file
 
 **WORDPRESS**
 
@@ -148,12 +148,12 @@ To see which shortcodes are available for the Clock of Change Frontend, please r
 
 List of Clock of Change Frontend shortcodes for Wordpress:
 
-| Shortcode | Description |
-|---|---|
-| coc\shortcodes\shworld | - Display the animated Clock of Change with the turning world animation and the counter |
-| coc\shortcodes\shsignup | - Display the signup button<br/>-Requires the coc\shortcodes\shsign shortcode |
-| coc\shortcodes\shsign | - Display the signup modal with the form, which opens when clicking on the signup button<br/>-Requires the coc\shortcodes\shsignup shortcode |
-| coc\shortcodes\shuserwall | - Display the Clock of Change user wall with the entries |
+| Shortcode                     | Description                                                                                                                                |
+| ---                           | ---                                                                                                                                        |
+| `[coc\shortcodes\shworld]`    | Display the animated Clock of Change with the turning world animation and the counter                                                      |
+| `[coc\shortcodes\shsignup]`   | Display the signup button<br/>-Requires the coc\shortcodes\shsign shortcode                                                                |
+| `[coc\shortcodes\shsign]`     | Display the signup modal with the form, which opens when clicking on the signup button<br/>-Requires the coc\shortcodes\shsignup shortcode |
+| `[coc\shortcodes\shuserwall]` | Display the Clock of Change user wall with the entries                                                                                     |
 
 
 <br/>
