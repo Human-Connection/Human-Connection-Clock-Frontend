@@ -44,21 +44,6 @@ Then just follow the famous [Wordpress 5-minute installation](https://codex.word
 
 ## Installation
 
-**PREREQUESITES**
-
-Before starting the installation you need to make sure you have a recent version of [Git](https://git-scm.com/), [Composer](https://getcomposer.org/) installed. 
-E.g. we have the following versions:
-```
-$ git --version
-git version 2.14.2.windows.1
-$ composer --version
-Composer version 1.8.4 2019-02-11 10:52:10
-
-Git: 2.14.2
-Composer: 1.8.4
-OS: Windows 10
-```
-
 **DOCKER INSTALLATION**
 
 The Clock of Change Frontend comes bundled as a Docker Container, which enables you to run a Wordpress system 
@@ -86,6 +71,20 @@ Now you can use the Clock of Change Frontend in Wordpress at [http://localhost:8
 
 If you do not want to use the docker version, you can also install the Clock of Change Frontend locally. 
 This requires a [Wordpress system](#project-structure-&-components) for the Clock of Change to run in as a plugin.
+
+**Prequesites**
+
+Before starting the installation you need to make sure you have a recent version of [Composer](https://getcomposer.org/) installed. 
+E.g. we have the following versions:
+```
+$ composer --version
+Composer version 1.8.4 2019-02-11 10:52:10
+
+Composer: 1.8.4
+OS: Windows 10
+```
+
+**Installation & Usage**
 
 1. First you need to clone the git repository of the Clock of Change Frontend. Head to a directory where you want the git repository to reside
 and open the directory in the console. Then run `git clone https://github.com/Human-Connection/Clock-of-Change-Frontend.git` to clone the repository to this directory.
