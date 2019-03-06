@@ -117,7 +117,7 @@ This needs to be done under `CoC Options` in the Wordpress admin backend in the 
 For example when running the API server locally, this could be the settings:
 ```
 Your API Key: secret
-API base url: http://localhost:1337
+API base url: http://host.docker.internal:1337
 ```
 
 Please mind that a trailing slash for the API base url is not allowed.
