@@ -1,8 +1,12 @@
-version: '3.3'
+version: '3.5'
 
 services:
-  db:
+  db_frontend:
     image: mysql:5.7
+    ports:
+      - 3307:3306
+    networks:
+      - coc_network
     volumes:
       - dbdata:/var/lib/mysql
     environment:
@@ -10,38 +14,47 @@ services:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: 123456
-      
+
   wordpress:
     depends_on:
-      - db
+      - db_frontend
     image: wordpress:latest
     ports:
-      - "8000:80"
+      - 8000:80
+    networks:
+      - coc_network
     environment:
-      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_HOST: db_frontend:3306
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: 123456
     volumes:
-      - "wpdata:/var/www/html"
-      - "./coc:/var/www/html/wp-content/plugins/coc"
-      - "./wordpress/plugins:/var/www/html/wp-content/plugins"
-      - "./wordpress/themes:/var/www/html/wp-content/themes"
-      - "./wordpress/uploads:/var/www/html/wp-content/uploads"
+      - wpdata:/var/www/html
+      - ./coc:/var/www/html/wp-content/plugins/coc
+      - ./wordpress/plugins:/var/www/html/wp-content/plugins
+      - ./wordpress/themes:/var/www/html/wp-content/themes
+      - ./wordpress/uploads:/var/www/html/wp-content/uploads
 
   cli:
     image: wordpress:cli
+    networks:
+      - coc_network
     volumes:
-      - "wpdata:/var/www/html"
-      - "tmpdata:/tmp"
-      - "./coc:/var/www/html/wp-content/plugins/coc"
-      - "./wp-init.sh:/usr/local/bin/wp-init.sh"
+      - wpdata:/var/www/html
+      - tmpdata:/tmp
+      - ./coc:/var/www/html/wp-content/plugins/coc
+      - ./wp-init.sh:/usr/local/bin/wp-init.sh
     depends_on:
-      - db
+      - db_frontend
     environment:
-      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_HOST: db_frontend:3306
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: 123456
+
 volumes:
   dbdata:
   wpdata:
   tmpdata:
+
+networks:
+  coc_network:
+    name: coc_network
