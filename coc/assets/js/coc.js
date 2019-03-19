@@ -344,7 +344,7 @@ window.coc = ((window, document, $) => {
           xhr.setRequestHeader('X-WP-Nonce', cocVars.nonce);
         },
         success: function(resp) {
-          if(resp !== null && resp.hasOwnProperty('success') && resp.success === true){
+          if(resp !== null && resp.success === true){
             // hide form
             new PNotify({
               title: 'Das hat geklappt!',
