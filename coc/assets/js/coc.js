@@ -23,7 +23,7 @@ window.coc = ((window, document, $) => {
     noseIndex       = 0,
     mouthIndex      = 0,
     facialHairIndex = 0,
-    clothingIndex   = 0,    
+    clothingIndex   = 0,
     offset          = 0;
 
   let indexMap = new Array();
@@ -116,13 +116,13 @@ window.coc = ((window, document, $) => {
         //  + '</li>'
           + '<li>'
           + '<a class="tab-link" id="mouth-tab" data-toggle="tab" href="#mouth" role="tab" aria-controls="mouth" aria-selected="true">Mund</a>'
-          + '</li>'                
+          + '</li>'
           + '<li>'
           + '<a class="tab-link" id="facialHair-tab" data-toggle="tab" href="#facialHair" role="tab" aria-controls="facialHair" aria-selected="false">Barthaar</a>'
           + '</li>'
           + '<li>'
           + '<a class="tab-link" id="clothing-tab" data-toggle="tab" href="#clothing" role="tab" aria-controls="clothing" aria-selected="true">Kleidung</a>'
-          + '</li>'                     
+          + '</li>'
           + '</ul>'
           + '</div>'
           + '</div>'
@@ -166,7 +166,7 @@ window.coc = ((window, document, $) => {
                 break;
               case 'eyebrow':
                 activeVar = eyebrow;
-                break; 
+                break;
               case 'eyes':
                 activeVar = eyes;
                 break;
@@ -178,7 +178,7 @@ window.coc = ((window, document, $) => {
                 break;
               case 'facialHair':
                 activeVar = facialHair;
-                break;                                                                       
+                break;
               case 'clothing':
                 activeVar = clothing;
                 break;
@@ -344,7 +344,7 @@ window.coc = ((window, document, $) => {
           xhr.setRequestHeader('X-WP-Nonce', cocVars.nonce);
         },
         success: function(resp) {
-          if(resp.success === true){
+          if(resp !== null && resp.success === true){
             // hide form
             new PNotify({
               title: 'Das hat geklappt!',
@@ -359,8 +359,10 @@ window.coc = ((window, document, $) => {
               window.location.reload();
             }, 3000);
           }else{
-            // show errors
-            emailInput.addClass('input-error');
+            if (resp !== null) {
+              // show errors
+              emailInput.addClass('input-error');
+            }
 
             new PNotify({
               title: 'Ups! Das geht schief!',
@@ -426,7 +428,7 @@ window.coc = ((window, document, $) => {
               // got merged with lastname on server - output as firstname for compat with old fs
               let uName = obj.firstname;
               let msg = obj.message;
-              let loadedImg = obj.image === '' ? 'https://human-connection.org/wp-content/plugins/coc/assets/images/coc-placeholder.jpg' : obj.image;
+              let loadedImg = obj.image === '' ? cocVars.homeUrl + '/wp-content/plugins/coc/assets/images/coc-placeholder.jpg' : obj.image;
               let img = '<img class="user-image" data-anon="'+obj.anon+'" data-uname="'+uName+'" data-message="'+msg+'" style="width:100%;margin-top:5px;" alt="signer-image" src="'+loadedImg+'" />';
               $('.user-container').append(
                 '<div class="user-item">' +

@@ -1,4 +1,5 @@
 #!/bin/bash
+wp rewrite structure '/%postname%/'
 wp plugin activate coc
 wp option add options_coc_api_key secret
 wp option add options_coc_api_url http://coc-api:1337
