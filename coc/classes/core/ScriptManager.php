@@ -57,6 +57,7 @@ class ScriptManager
 		);
 		wp_enqueue_script('coc-plugin');
 		wp_localize_script('coc-plugin', 'cocVars', [
+			'homeUrl' => esc_url_raw(home_url()),
 			'ajax_url' => esc_url_raw(rest_url()),
 			'nonce'    => wp_create_nonce('wp_rest'),
 			'avatars'  => $avatars
