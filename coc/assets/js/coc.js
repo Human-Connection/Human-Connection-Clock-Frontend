@@ -321,7 +321,7 @@ window.coc = ((window, document, $) => {
       data.append('message', messageInput.val());
       data.append('country', $('#coc-country').val());
       data.append('anon', $('#coc-anon')[0].checked);
-      data.append('beta', $('#coc-register-hc')[0].checked);
+      data.append('beta', '0');
       data.append('nl', $('#coc-register-nl')[0].checked);
       data.append('pr', privacyChecked);
 
