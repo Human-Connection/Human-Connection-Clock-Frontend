@@ -518,8 +518,9 @@ window.coc = ((window, document, $) => {
   };
 
   $(window).off('keyup').on('keyup', (e) => {
-    if(e.which == 27) {
-      app.toggleForm();
+    if(e.which === 27) {
+      app.closeForm();
+      app.closeUserOverlay();
     }
   });
 
@@ -533,6 +534,18 @@ window.coc = ((window, document, $) => {
 
   app.resetForm = () => {
 
+  };
+
+  app.closeForm = () => {
+    formOverlay.hide();
+  };
+
+  app.resetForm = () => {
+
+  };
+
+  app.closeUserOverlay = () => {
+    userMessage.hide();
   };
 
   $(document).ready(app.init);
