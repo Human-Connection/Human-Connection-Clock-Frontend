@@ -1,0 +1,21 @@
+{
+  "name": "humanconnection/humanconnection",
+  "description": "Human Connection WordPress Child Theme",
+  "keywords": ["WordPress", "Theme", "Human", "Connection"],
+  "homepage": "https://humanconnection.org",
+  "license": "GPL-3.0",
+  "version": "1.0.0",
+  "authors": [
+    {
+      "name": "Human Connection",
+      "email": "info@humanconnection.org",
+      "homepage": "https://humanconnection.org",
+      "role": "Gamechanger"
+    }
+  ],
+  "require": {
+  },
+  "autoload": {
+    "psr-4": {"humanconnection\\": "./classes"}
+  }
+}

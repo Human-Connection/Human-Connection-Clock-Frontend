@@ -1,0 +1,154 @@
+{
+	"gemeinnuetzig" : {
+		"headline" 	: "Gemeinnützig",
+		"text" 		: "Human Connection ist als gemeinnützige GmbH anerkannt und eingetragen."
+	},
+	"menschenrechte" : {
+		"headline" 	: "Menschenrechte",
+		"text" 		: "Die UN-Charta der Menschenrechte ist die Basis unseres Handelns."
+	},
+	"open-source" : {
+		"headline"	: "Open-Source",
+		"text"		: "Der Code ist veröffentlicht zum Mitprogrammieren: <a href='https://github.com/human-connection' target='_blank' title='fork on github'>https://github.com/human-connection</a>"
+	},
+	"kein-datenverkauf" : {
+		"headline"	: "Kein Datenverkauf",
+		"text" 		: "Das ist unsere Garantie an Euch."
+	},
+	"kommerz-werbefrei" : {
+		"headline" 	: "Kommerz- & Werbefrei",
+		"text" 		: "Es gibt keinerlei Beeinflussung durch geschaltete Anzeigen oder Firmenprofile."
+	},
+	"serverstandort-deutschland" : {
+		"headline" 	: "Serverstandort Deutschland",
+		"text" 		: "Die Plattform unterliegt dem deutschen Datenschutz."
+	},
+	"crowdmoderiert" : {
+		"headline" 	: "Crowdmoderiert",
+		"text" 		: "Die Weisheit von vielen ist besser als die Weisheit von ein paar einzelnen Moderatoren."
+	},
+	"loesungsorientiert" : {
+		"headline" 	: "Lösungsorientiert",
+		"text" 		: "Human Connection durch Human Connection!"
+	},
+	"transparent" : {
+		"headline" 	: "Transparent",
+		"text" 		: "Das sind und bleiben wir in jeder Hinsicht." 
+	},
+	"schnittstellen-fuer-apps" : {
+		"headline" 	: "Schnittstellen für Apps",
+		"text" 		: "Docke mit Deiner gemeinützigen App oder Datenbank an."
+	},
+	"blacklist" : {
+		"headline"	: "Blacklist",
+		"text" 		: "Blende Themen, Inhalte und Nutzer aus, die Dich nerven."
+	},
+	"beitraege" : {
+		"headline" 	: "Beiträge",
+		"text" 		: "Teile Dein Wissen mit Freunden oder gleich mit der ganzen Welt."
+	}, 
+	"kommentare-letstalk" : {
+		"headline" 	: "Kommentare & Let's Talk",
+		"text" 		: "Warum kommentieren, wenn man auch miteinander sprechen kann?"
+	}, 
+	"private-nachrichten" : {
+		"headline" 	: "Privatnachrichten",
+		"text" 		: "Privat bleibt privat. Aber bitte nicht vergessen: NSA bleibt auch NSA …"
+	},
+	"chatraeume" :  {
+		"headline" 	: "Chaträume",
+		"text" 		: "Hier trifft sich die Community."
+	},
+	"digitale-geschenke" : {
+		"headline" 	: "Digitale Geschenke",
+		"text" 		: "Danke sagen ist schön."	
+	},
+	"meet-me" : {
+		"headline" 	: "Meet me",
+		"text" 		: "Lerne Menschen aus aller Welt kennen – online und offline." 
+	},
+	"help-me" : {
+		"headline" 	: "Help me",
+		"text" 		: "Lass Dir von anderen Nutzern das Netzwerk erklären."
+	},
+	"zensurfrei" : {
+		"headline"  : "Zensurfrei",
+		"text" 		: "Verschwörungstheorien? Dürfen hier zerpflückt werden!"
+	}, 
+	"profisuche" : {
+		"headline" 	: "Profisuche",
+		"text" 		: "Sie ist für diejenigen, die es genau wissen wollen. Willkommen in der Matrix!"
+	},
+	"crowd-news" : {
+		"headline" 	: "Crowd News",
+		"text" 		: "Ein Megafon anstatt eines „Like“. Was ist wirklich wichtig?"
+	},
+	"pro-contra" : {
+		"headline" 	: "Pro & Contra",
+		"text" 		: "Diskutieren geht auch anders und jeder darf sich seine eigene Meinung bilden."
+	},
+	"bestlist" : {
+		"headline" 	: "Bestlist",
+		"text"     	:  "Hier werden Wissenskonzentrate erstellt."	
+	},
+	"versus" : {
+		"headline" 	: "Versus",
+		"text" 		: "Der Wissensboxring für sachliche Diskussionen."
+	},
+	"netzwerkstatistiken" : {
+		"headline" 	: "Netzwerkstatistiken",
+		"text" 		: "Schau in den Motor von Human Connection."
+	},
+	"abstimmung" : {
+		"headline" 	: "Abstimmung",
+		"text" 		: "Wollen wir mit Human Connection die Welt retten? JA!"
+	},
+	"filter-sortierung" : {
+		"headline" 	: "Filter & Sortierung",
+		"text" 		: "Filtere und sortiere alles – sogar nach Deiner Stimmung."
+	},
+	"uebersichtlichkeit" : {
+		"headline" 	: "Übersichtlichkeit",
+		"text" 		: "Entdecke die Welt mit 16 Themenkategorien."
+	},
+	"cockpit" : {
+		"headline" 	: "Cockpit",
+		"text" 		: "Newsfeed, Cockpit und Karte bringen unendliche Freiheit."
+	},
+	"professioneller-editor" : {
+		"headline" 	: "Professioneller Editor",
+		"text" 		:  "Darf's a bissle schöner sein?"
+	},
+	"uhr-des-wandels" : {
+		"headline" 	: "Uhr des Wandels",
+		"text" 		:  "Deine Stimme für eine bessere Welt."	
+	},
+	"fuer-organisationen" : {
+		"headline" 	: "Für Organisationen",
+		"text" 		:  "Das Beste, was einer gemeinnützigen Organisation passieren kann."	
+	},
+	"karte" : {
+		"headline" 	: "Karte",
+		"text" 		: "Schalte den Computer aus, um lokal mit Deiner Community draußen aktiv zu werden."
+	},
+	"projekte" : {
+		"headline" 	: "Projekte",
+		"text" 		:  "Social-Media-Projektmanagment mit an Bord."	
+	},
+	"action-button" : {
+		"headline" 	: "Action button",
+		"text" 		:  "Schluss mit dem Frust – mach was Positives!"	
+	},
+	"can-do" : {
+		"headline" 	: "Can do",
+		"text" 		: "Mit kleinen Schritten die Welt verändern – es kann alles so ein fach sein und ist es ab so fort."
+ 	},
+	"jobs" : {
+		"headline" 	: "Jobs",
+		"text" 		: "Finde das Team für Deine Vorhaben."
+	},
+	"veranstaltungs-kalender" : {
+		"headline" : "Veranstaltungs Kalender",
+		"text" : "Hier passiert der Wandel – sei mit dabei."
+	}
+}
