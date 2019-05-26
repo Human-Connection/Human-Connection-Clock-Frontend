@@ -431,7 +431,7 @@ window.coc = ((window, document, $) => {
                             let uName = obj.firstname;
                             let msg = obj.message;
                             let loadedImg = obj.image === '' ? cocVars.homeUrl + '/wp-content/plugins/coc/assets/images/coc-placeholder.jpg' : obj.image;
-                            let img = '<img class="user-image" data-anon="' + obj.anon + '" data-uname="' + uName + '" data-message="' + msg + '" style="width:100%;margin-top:5px;" alt="signer-image" src="' + loadedImg + '" />';
+                            let img = '<img class="user-image loaded" data-anon="' + obj.anon + '" data-uname="' + uName + '" data-message="' + msg + '" style="width:100%;margin-top:5px;" alt="signer-image" src="' + loadedImg + '" />';
                             $('.user-container').append(
                                 '<div class="user-item">' +
                                 img +
@@ -480,7 +480,7 @@ window.coc = ((window, document, $) => {
                             let uName = obj.firstname;
                             let msg = obj.message;
                             let loadedImg = obj.image === '' ? cocVars.homeUrl + '/wp-content/plugins/coc/assets/images/coc-placeholder.jpg' : obj.image;
-                            let img = '<img class="user-image" data-anon="' + obj.anon + '" data-uname="' + uName + '" data-message="' + msg + '" style="width:100%;margin-top:5px;" alt="signer-image" src="' + loadedImg + '" />';
+                            let img = '<img class="user-image loaded" data-anon="' + obj.anon + '" data-uname="' + uName + '" data-message="' + msg + '" style="width:100%;margin-top:5px;" alt="signer-image" src="' + loadedImg + '" />';
                             $('.user-container').append(
                                 '<div class="user-item">' +
                                 img +
