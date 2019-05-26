@@ -18,11 +18,11 @@ class ScriptHandler {
 
 	public function init(){
 		wp_enqueue_style('humanconnection', HCTheme::$childThemeUri.'/style.css', ['avada-stylesheet']);
-        wp_enqueue_style('fusion-styles', HCTheme::$childThemeUri.'/assets/css/fusion_styles.css');
 		wp_enqueue_script('humanconnection', HCTheme::$childThemeUri.'/assets/js/hcfrontend.js', ['jquery'], false, true);
 
 		wp_enqueue_style('hc-tree', HCTheme::$childThemeUri.'/assets/css/hctree.css', ['humanconnection']);
 		//wp_enqueue_script('hc-tree', HCTheme::$childThemeUri.'/assets/js/hctree.js', ['jquery'], false, true);
+		wp_enqueue_style('fusion-style', HCTheme::$childThemeUri.'/assets/css/fusion-style.min.css', ['humanconnection']);
 	}
 
 	public function enableMCEFonts($buttons){
