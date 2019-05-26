@@ -45,6 +45,28 @@ window.coc = ((window, document, $) => {
     return -1;
   }
 
+  let userImageClickHandler = function(e){
+    let message = $(this).data('message');
+    let uName   = $(this).data('uname');
+    let anon    = $(this).data('anon');
+    let src     = $(this).attr('src');
+    let srcc    = this.parentElement;
+
+    // update index
+    userWallIndex = findIndex(srcc, document.getElementsByClassName('user-item'));
+    userMessage.find('.user-message-image').attr('src', src);
+    if(anon !== undefined && anon === 1){
+      uName = defaultName;
+    }
+    userMessage.find('.message-name').text(uName);
+
+    if(message === ''){
+      message = defaultMsg;
+    }
+    userMessage.find('.message-text').text(message);
+    userMessage.show();
+  };
+
   app.ownImageChangeHandler = function(){
     $('#ownImageUpload').on('change', (event) => {
       if (event.target.files && event.target.files[0]){
@@ -380,31 +402,7 @@ window.coc = ((window, document, $) => {
       });
     });
 
-    $('.user-image').on("click", function(e){
-      let message = $(this).data('message');
-      let uName   = $(this).data('uname');
-      let anon    = $(this).data('anon');
-      let src     = $(this).attr('src');
-      let srcc    = this.parentElement;
-
-      // update index
-      userWallIndex = findIndex(srcc, document.getElementsByClassName('user-item'));
-      userMessage.find('.user-message-image').attr('src', src);
-      if(anon !== undefined && anon === 1){
-        uName = defaultName;
-      }
-      userMessage.find('.message-name').text(uName);
-
-      if(message === ''){
-        message = defaultMsg;
-      }
-      userMessage.find('.message-text').text(message);
-      userMessage.show();
-    });
-
-    $('.close-wrapper').find('.fa-times').on("click", () => {
-      userMessage.hide();
-    });
+    $('.user-image').on("click", userImageClickHandler);
 
     $('#loadMore').on("click", function(e){
       offset = offset +1;
@@ -439,26 +437,56 @@ window.coc = ((window, document, $) => {
               userImages.push(img);
             }
 
-            $('.user-image').on("click", function(){
-              let message = $(this).data('message');
-              let src   = $(this).attr('src');
-              let uName = $(this).data('uname');
-              let anon  = $(this).data('anon');
-              let srcc    = this.parentElement;
+            $('.user-image').on("click", userImageClickHandler)
+          }else{
+            // no more data - ensure load more is hidden
+            $('#loadMore').hide();
+          }
+        },
+        cache: false,
+      });
 
-              userWallIndex = findIndex(srcc, document.getElementsByClassName('user-item'));
-              userMessage.find('.user-message-image').attr('src', src);
-              if(message === ''){
-                message = defaultMsg;
-              }
+      e.preventDefault();
+    });
 
-              if(anon !== undefined && anon === 1){
-                uName = defaultName;
-              }
-              userMessage.find('.message-name').text(uName);
-              userMessage.find('.message-text').text(message);
-              userMessage.show();
-            })
+    $('#profileImage, #orderByDate').on('change', function(e){
+      let urlParams = {};
+      urlParams['profileImage'] = $('#profileImage').prop('checked') ? 1 : 0;
+      urlParams['orderByDate'] = $('#orderByDate').val() === 'asc' ? 'asc' : 'desc';
+
+      $.ajax({
+        url: cocVars.ajax_url+'coc/v2/getEntries/?' + $.param(urlParams),
+        method: 'GET',
+        beforeSend: function(xhr){
+          xhr.setRequestHeader('X-WP-Nonce', cocVars.nonce);
+        },
+        success: function(data){
+          // less than page size elements
+          // hide load more btn
+          // TODO: pass param instead of hard 81
+          if(data.length < 81){
+            $('#loadMore').hide();
+          }
+
+          if(data.length > 0){
+            $('.user-container').html('');
+            for(let i = 0;i < data.length;i++){
+              let obj = data[i];
+              // got merged with lastname on server - output as firstname for compat with old fs
+              let uName = obj.firstname;
+              let msg = obj.message;
+              let loadedImg = obj.image === '' ? cocVars.homeUrl + '/wp-content/plugins/coc/assets/images/coc-placeholder.jpg' : obj.image;
+              let img = '<img class="user-image" data-anon="'+obj.anon+'" data-uname="'+uName+'" data-message="'+msg+'" style="width:100%;margin-top:5px;" alt="signer-image" src="'+loadedImg+'" />';
+              $('.user-container').append(
+                  '<div class="user-item">' +
+                  img +
+                  '</div>'
+              );
+
+              userImages.push(img);
+            }
+
+            $('.user-image').on("click", userImageClickHandler)
           }else{
             // no more data - ensure load more is hidden
             $('#loadMore').hide();

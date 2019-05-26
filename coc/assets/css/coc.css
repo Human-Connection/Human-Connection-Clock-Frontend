@@ -335,6 +335,14 @@
     background: #fff !important;
 }
 
+#user-filter {
+    margin-bottom: 30px;
+}
+#user-filter .user-filter-element {
+    display: inline-block;
+    margin-left: 30px;
+}
+
 /* GRID */
 #user-list {
     display: flex;
