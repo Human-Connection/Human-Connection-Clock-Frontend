@@ -1,5 +1,9 @@
+/**
+ * @var {object} cocVars
+ */
+
 window.coc = ((window, document, $) => {
-    app           = {},
+    let app           = {},
         formOverlay   = $('.coc-form-overlay'),
         defaultMsg    = 'Ich bin für Veränderung.',
         defaultName   = 'Mensch',
@@ -26,7 +30,7 @@ window.coc = ((window, document, $) => {
         clothingIndex   = 0,
         offset          = 0;
 
-    let indexMap = new Array();
+    let indexMap = [];
     indexMap['hair']       = hairIndex;
     indexMap['eyebrow']    = eyebrowIndex;
     indexMap['eyes']       = eyesIndex;
@@ -35,7 +39,7 @@ window.coc = ((window, document, $) => {
     indexMap['facialHair'] = facialHairIndex;
     indexMap['clothing']   = clothingIndex;
 
-    findIndex = (elem, items) => {
+    let findIndex = (elem, items) => {
         let i, len = items.length;
         for(i=0; i<len; i++) {
             if (items[i]===elem) {
@@ -43,7 +47,7 @@ window.coc = ((window, document, $) => {
             }
         }
         return -1;
-    }
+    };
 
     app.ownImageChangeHandler = function(){
         $('#ownImageUpload').on('change', (event) => {
@@ -74,7 +78,7 @@ window.coc = ((window, document, $) => {
 
             e.preventDefault();
         });
-    }
+    };
 
     app.init = () => {
         $('#joinCoC').click((e) => {
@@ -153,9 +157,9 @@ window.coc = ((window, document, $) => {
                     $.each(val, (j, opt) => {
                         if(isFirst === true){
                             isFirst = false;
-                            $('.selection-'+i).append('<div class="opt-wrapper" style="text-align:center;"><img src="'+opt.url+'" /></div>');
+                            $('.selection-'+i).append('<div class="opt-wrapper" style="text-align:center;"><img src="'+opt.url+'" alt="avatar" /></div>');
                         } else {
-                            $('.selection-'+i).append('<div class="opt-wrapper" style="text-align:center;display:none;"><img src="'+opt.url+'" /></div>');
+                            $('.selection-'+i).append('<div class="opt-wrapper" style="text-align:center;display:none;"><img src="'+opt.url+'" alt="avatar" /></div>');
                         }
 
                         let activeVar;
@@ -333,7 +337,7 @@ window.coc = ((window, document, $) => {
                     return 0;
                 }
                 return results[1] || 0;
-            }
+            };
 
             data.append('pax', $.urlParam('pax'));
 
@@ -384,6 +388,7 @@ window.coc = ((window, document, $) => {
             let message = $(this).data('message');
             let uName   = $(this).data('uname');
             let anon    = $(this).data('anon');
+            let country = $(this).data('country');
             let src     = $(this).attr('src');
             let srcc    = this.parentElement;
 
@@ -399,6 +404,9 @@ window.coc = ((window, document, $) => {
                 message = defaultMsg;
             }
             userMessage.find('.message-text').text(message);
+
+            app.loadCountryFlagImage(country);
+
             userMessage.show();
         });
 
@@ -429,7 +437,8 @@ window.coc = ((window, document, $) => {
                             let uName = obj.firstname;
                             let msg = obj.message;
                             let loadedImg = obj.image === '' ? cocVars.homeUrl + '/wp-content/plugins/coc/assets/images/coc-placeholder.jpg' : obj.image;
-                            let img = '<img class="user-image" data-anon="'+obj.anon+'" data-uname="'+uName+'" data-message="'+msg+'" style="width:100%;margin-top:5px;" alt="signer-image" src="'+loadedImg+'" />';
+                            let country = obj.country;
+                            let img = '<img class="user-image" data-anon="'+obj.anon+'" data-uname="'+uName+'" data-message="'+msg+'" data-country="' + country +'" style="width:100%;margin-top:5px;" alt="signer-image" src="'+loadedImg+'" />';
                             $('.user-container').append(
                                 '<div class="user-item">' +
                                 img +
@@ -444,6 +453,7 @@ window.coc = ((window, document, $) => {
                             let src   = $(this).attr('src');
                             let uName = $(this).data('uname');
                             let anon  = $(this).data('anon');
+                            let country = $(this).data('country');
                             let srcc    = this.parentElement;
 
                             userWallIndex = findIndex(srcc, document.getElementsByClassName('user-item'));
@@ -457,6 +467,9 @@ window.coc = ((window, document, $) => {
                             }
                             userMessage.find('.message-name').text(uName);
                             userMessage.find('.message-text').text(message);
+
+                            app.loadCountryFlagImage(country);
+
                             userMessage.show();
                         })
                     }else{
@@ -490,6 +503,9 @@ window.coc = ((window, document, $) => {
                 uName = defaultName;
             }
             userMessage.find('.message-name').text(uName);
+
+            let country = nextData.data('country');
+            app.loadCountryFlagImage(country);
         });
 
         $('#nextMessage').on("click", () => {
@@ -512,6 +528,9 @@ window.coc = ((window, document, $) => {
                 uName = defaultName;
             }
             userMessage.find('.message-name').text(uName);
+
+            let country = nextData.data('country');
+            app.loadCountryFlagImage(country);
         });
 
         app.ownImageChangeHandler();
@@ -546,6 +565,17 @@ window.coc = ((window, document, $) => {
 
     app.closeUserOverlay = () => {
         userMessage.hide();
+    };
+
+    app.loadCountryFlagImage = (country) => {
+        if (country.length === 2) {
+            let flagUrl =  cocVars.homeUrl + '/wp-content/plugins/coc/assets/images/flags/' +  country.toLowerCase() + '.png';
+            let messageCountryElement = userMessage.find('.message-country');
+            messageCountryElement.addClass('loaded');
+            messageCountryElement.html(
+                '<img src="' + flagUrl + '" title="Land" alt="Land" height="50">'
+            );
+        }
     };
 
     $(document).ready(app.init);
