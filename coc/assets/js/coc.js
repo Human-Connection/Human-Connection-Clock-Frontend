@@ -571,9 +571,11 @@ window.coc = ((window, document, $) => {
     };
 
     app.loadCountryFlagImage = (country) => {
+        let messageCountryElement = userMessage.find('.message-country');
+        messageCountryElement.html('');
+
         if (country.length === 2) {
             let flagUrl =  cocVars.homeUrl + '/wp-content/plugins/coc/assets/images/flags/' +  country.toLowerCase() + '.png';
-            let messageCountryElement = userMessage.find('.message-country');
             let countryName = app.getCountryNameByCountryCode(country);
 
             messageCountryElement.addClass('loaded');
