@@ -13,6 +13,7 @@ window.coc = ((window, document, $) => {
         userWallIndex = 0,
         files         = null,
         useOwnImage   = false,
+        countries     = {},
         hair          = [],
         eyebrow       = [],
         eyes          = [],
@@ -81,6 +82,8 @@ window.coc = ((window, document, $) => {
     };
 
     app.init = () => {
+        app.loadCountries();
+
         $('#joinCoC').click((e) => {
             // show form
             app.toggleForm();
@@ -571,11 +574,28 @@ window.coc = ((window, document, $) => {
         if (country.length === 2) {
             let flagUrl =  cocVars.homeUrl + '/wp-content/plugins/coc/assets/images/flags/' +  country.toLowerCase() + '.png';
             let messageCountryElement = userMessage.find('.message-country');
+            let countryName = app.getCountryNameByCountryCode(country);
+
             messageCountryElement.addClass('loaded');
             messageCountryElement.html(
-                '<img src="' + flagUrl + '" title="Land" alt="Land" height="50">'
+                '<img src="' + flagUrl + '" title="Eintrag kommt aus ' + countryName + '" alt="Eintrag kommt aus ' + countryName + '" height="35">'
             );
         }
+    };
+
+    app.loadCountries = () => {
+        $.getJSON(cocVars.homeUrl + '/wp-content/plugins/coc/assets/js/countries.json', function(data) {
+            app.countries = data;
+        })
+    };
+
+    app.getCountryNameByCountryCode = (countryCode) => {
+        countryCode.toUpperCase();
+        if (countryCode in app.countries) {
+            return app.countries[countryCode];
+        }
+
+        return '';
     };
 
     $(document).ready(app.init);
