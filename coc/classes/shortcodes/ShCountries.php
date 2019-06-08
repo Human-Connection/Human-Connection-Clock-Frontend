@@ -17,7 +17,7 @@ class ShCountries
     /**
      * @var CoCAPI
      */
-    public $api;
+    private $api;
 
     /**
      * @param $api

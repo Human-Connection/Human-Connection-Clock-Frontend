@@ -53,10 +53,10 @@ class ClockOfChange
     public function initPlugin()
     {
         // init shortcodes
-        new ShWorld();
-        new ShSign();
-        new ShSignUp(); // need button separat for z
-        new ShUserwall();
+        new ShWorld($this->cocAPI());
+        new ShSign($this->cocAPI());
+        new ShSignUp($this->cocAPI()); // need button separat for z
+        new ShUserwall($this->cocAPI());
         new ShCountries($this->cocAPI());
     }
 

@@ -1,65 +1,76 @@
 <?php
+
 namespace coc\shortcodes;
 
 use coc\ClockOfChange;
+
 // coc\shortcodes\shsign
 class ShSign
 {
-	public function __construct(){
-		add_shortcode(strtolower(__CLASS__), [$this, 'renderShortcode']);
-	}
+    /**
+     * @var CoCAPI
+     */
+    private $api;
 
-	/**
-	 *
-	 */
-	public function renderShortcode($atts, $content){
-		$html = '';
+    public function __construct($api)
+    {
+        $this->api = $api;
 
-		// overlay and form - default invis
-		$html .= '<div class="coc-form-overlay">';
-			$html .= '<div class="coc-form">';
-					$html .= '<span class="coc-form-close">&times;</span>';
-					$html .= '<span class="avatar-label label">Avatar</span>';
-					$html .= '<p class="hint">min. 200*200px</p>';
-					$html .= '<div class="form-group" id="coc-add-avatar">';
-						$html .= '<div id="add-avatar-inner">';
-							$html .= '<div class="avatar-preview" id="avatar-preview">';
+        add_shortcode(strtolower(__CLASS__), [$this, 'renderShortcode']);
+    }
 
-							// preview image
-							$html .= '<div class="preview-wrapper">';
-							$html .= '<img src="'.ClockOfChange::$pluginAssetsUri.'/images/coc-placeholder.jpg" id="coc-image" name="image" />';
-							$html .= '</div>';
+    /**
+     *
+     */
+    public function renderShortcode($atts, $content)
+    {
+        $html = '';
 
-							$html .= '<input type="file" id="ownImageUpload" style="display:none" autocomplete="off">';
-							$html .= '<div class="upload-own-wrapper" id="customUploadWrap">';
-							$html .= '<i title="eigenes Bild hochladen" id="upload-icon" class="fas fa-upload large-icon"></i>';
-							$html .= '</div>';
-							$html .= '<div class="add-avatar-wrapper">';
-							$html .= '<i class="fas fa-plus" id="add-avatar-icon" title="Klicke hier um einen Avatar zu wählen."></i>';
-							$html .= '</div>';
+        // overlay and form - default invis
+        $html .= '<div class="coc-form-overlay">';
+        $html .= '<div class="coc-form">';
+        $html .= '<span class="coc-form-close">&times;</span>';
+        $html .= '<span class="avatar-label label">Avatar</span>';
+        $html .= '<p class="hint">min. 200*200px</p>';
+        $html .= '<div class="form-group" id="coc-add-avatar">';
+        $html .= '<div id="add-avatar-inner">';
+        $html .= '<div class="avatar-preview" id="avatar-preview">';
 
-							$html .= '</div>';
-						$html .= '</div>';
-					$html .= '</div>';
-					$html .= '<div id="avatar-wrapper">';
-					$html .= '</div>';
-					$html .= '<div class="input-group">';
-					$html .= '<div class="form-group">';
-						$html .= '<label class="label" for="coc-firstname">Vorname *</label>';
-						$html .= '<input type="text" id="coc-firstname" name="coc-firstname" autocomplete="off" />';
-					$html .= '</div>';
-					$html .= '<div class="form-group">';
-						$html .= '<label class="label" for="coc-lastname">Nachname</label>';
-						$html .= '<input type="text" id="coc-lastname" name="coc-lastname" autocomplete="off" />';
-					$html .= '</div>';
-					$html .= '<div class="form-group">';
-						$html .= '<label class="label" for="coc-email">E-Mail Adresse *</label>';
-						$html .= '<input type="text" id="coc-email" name="coc-email" autocomplete="off" />';
-					$html .= '</div>';
-					$html .= '<div class="form-group">';
-						$html .= '<label class="label" for="coc-country">Land</label><br />';
-					$html .= '</div>';
-$html .= <<<EOT
+        // preview image
+        $html .= '<div class="preview-wrapper">';
+        $html .= '<img src="' . ClockOfChange::$pluginAssetsUri . '/images/coc-placeholder.jpg" id="coc-image" name="image" />';
+        $html .= '</div>';
+
+        $html .= '<input type="file" id="ownImageUpload" style="display:none" autocomplete="off">';
+        $html .= '<div class="upload-own-wrapper" id="customUploadWrap">';
+        $html .= '<i title="eigenes Bild hochladen" id="upload-icon" class="fas fa-upload large-icon"></i>';
+        $html .= '</div>';
+        $html .= '<div class="add-avatar-wrapper">';
+        $html .= '<i class="fas fa-plus" id="add-avatar-icon" title="Klicke hier um einen Avatar zu wählen."></i>';
+        $html .= '</div>';
+
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '<div id="avatar-wrapper">';
+        $html .= '</div>';
+        $html .= '<div class="input-group">';
+        $html .= '<div class="form-group">';
+        $html .= '<label class="label" for="coc-firstname">Vorname *</label>';
+        $html .= '<input type="text" id="coc-firstname" name="coc-firstname" autocomplete="off" />';
+        $html .= '</div>';
+        $html .= '<div class="form-group">';
+        $html .= '<label class="label" for="coc-lastname">Nachname</label>';
+        $html .= '<input type="text" id="coc-lastname" name="coc-lastname" autocomplete="off" />';
+        $html .= '</div>';
+        $html .= '<div class="form-group">';
+        $html .= '<label class="label" for="coc-email">E-Mail Adresse *</label>';
+        $html .= '<input type="text" id="coc-email" name="coc-email" autocomplete="off" />';
+        $html .= '</div>';
+        $html .= '<div class="form-group">';
+        $html .= '<label class="label" for="coc-country">Land</label><br />';
+        $html .= '</div>';
+        $html .= <<<EOT
 <select id="coc-country" name="coc-country" autocomplete="off">
 	<option value="AF">Afghanistan</option>
 	<option value="AX">Åland Islands</option>
@@ -312,29 +323,29 @@ $html .= <<<EOT
 	<option value="ZW">Zimbabwe</option>
 </select>
 EOT;
-				$html .= '</div>';
-				$html .= '<div class="form-group">';
-					$html .= '<label class="label" for="coc-message">Deine Botschaft an die Welt *</label>';
-					$html .= '<textarea id="coc-message" name="coc-message" autocomplete="off"></textarea>';
-				$html .= '</div>';
-				$html .= '<div class="form-group">';
-					$html .= '<input type="checkbox" id="coc-anon" name="coc-anon" autocomplete="off" />';
-					$html .= '<label class="label" for="coc-anon">Meinen Namen nicht anzeigen</label>';
-				$html .= '</div>';
-				$html .= '<div class="form-group">';
-					$html .= '<input type="checkbox" id="coc-register-nl" name="coc-register-nl" autocomplete="off" />';
-					$html .= '<label class="label" for="coc-register-nl">Für den Human Connection Newsletter eintragen</label>';
-				$html .= '</div>';
-				$html .= '<div class="form-group">';
-					$html .= '<input type="checkbox" id="coc-register-privacy" name="coc-register-privacy" autocomplete="off"/>';
-					$html .= '<label class="label" for="coc-register-privacy">Ich habe die <a class="inline-link" href="https://human-connection.org/datenschutz/#_privacycoc" title="zu den Datenschutzbestimmungen" target="_blank">Datenschutzbestimmungen</a> gelesen und akzeptiere diese.</label>';
-				$html .= '</div>';
-				$html .= '<div class="form-group">';
-					$html .= '<a href="#" id="joinNowBtn" class="cocBtn">Eintragen</a>';
-				$html .= '</div>';
-			$html .= '</div>';
-		$html .= '</div>';
+        $html .= '</div>';
+        $html .= '<div class="form-group">';
+        $html .= '<label class="label" for="coc-message">Deine Botschaft an die Welt *</label>';
+        $html .= '<textarea id="coc-message" name="coc-message" autocomplete="off"></textarea>';
+        $html .= '</div>';
+        $html .= '<div class="form-group">';
+        $html .= '<input type="checkbox" id="coc-anon" name="coc-anon" autocomplete="off" />';
+        $html .= '<label class="label" for="coc-anon">Meinen Namen nicht anzeigen</label>';
+        $html .= '</div>';
+        $html .= '<div class="form-group">';
+        $html .= '<input type="checkbox" id="coc-register-nl" name="coc-register-nl" autocomplete="off" />';
+        $html .= '<label class="label" for="coc-register-nl">Für den Human Connection Newsletter eintragen</label>';
+        $html .= '</div>';
+        $html .= '<div class="form-group">';
+        $html .= '<input type="checkbox" id="coc-register-privacy" name="coc-register-privacy" autocomplete="off"/>';
+        $html .= '<label class="label" for="coc-register-privacy">Ich habe die <a class="inline-link" href="https://human-connection.org/datenschutz/#_privacycoc" title="zu den Datenschutzbestimmungen" target="_blank">Datenschutzbestimmungen</a> gelesen und akzeptiere diese.</label>';
+        $html .= '</div>';
+        $html .= '<div class="form-group">';
+        $html .= '<a href="#" id="joinNowBtn" class="cocBtn">Eintragen</a>';
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '</div>';
 
-		return html_entity_decode($html);
-	}
+        return html_entity_decode($html);
+    }
 }
