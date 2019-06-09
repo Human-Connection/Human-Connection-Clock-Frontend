@@ -371,11 +371,44 @@
         text-align: center;
         margin-top: 45px;
         height: auto;
-    }    
+    }
     .load-more-btn .btn-primary {
         padding: 10px 35px;
     }
     .cocBtn {
         width: 100%;
     }
+}
+
+#country-rankings {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #ebebeb;
+}
+
+.country-ranking-item {
+    width: 25%;
+    padding: 15px;
+    text-align: center;
+}
+
+.country-ranking-item img.country-flag {
+    height: 45px;
+    margin-bottom: 15px;
+}
+
+.country-counter {
+
+}
+
+.country-counter .digit {
+    display: inline-block;
+    padding: 4px;
+    background-color: #ffffff;
+    border-right: 2px solid #ebebeb;
+    font-size: 13px;
+    font-weight: bold;
+}
+.country-counter .digit.inactive {
+    color: #cfcfcf;
 }

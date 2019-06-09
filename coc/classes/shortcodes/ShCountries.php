@@ -6,6 +6,7 @@
 
 namespace coc\shortcodes;
 
+use coc\ClockOfChange;
 use coc\core\CoCAPI;
 
 // coc\shortcodes\shuserwall
@@ -30,7 +31,9 @@ class ShCountries
     }
 
     /**
-     *
+     * @param $atts
+     * @param $content
+     * @return string
      */
     public function renderShortcode($atts, $content)
     {
@@ -39,11 +42,40 @@ class ShCountries
             return '';
         }
 
+        $maxNumber = count($countries) < self::MAX_COUNTRIES ? count($countries) : self::MAX_COUNTRIES;
+
         // @todo display countries (max number)
+
+        $html = '';
+
+        $html .= '<div id="country-rankings">';
+
+        for ($i = 0; $i < $maxNumber; $i++) {
+
+            $imageSource = ClockOfChange::$pluginAssetsUri . '/images/flags/' . $countries[$i]->country . '.png';
+
+            $html .= '<div class="country-ranking-item">';
+            $html .= '<img class="country-flag" alt="country flag" src=' . $imageSource . '>';
+            $html .= '<div class="country-counter">';
+
+            $number = $countries[$i]->number;
+            var_dump(substr($number, 1, 1));
+            for ($digit = 0; $digit < 9; $digit++) {
+                if ($digit > strlen($number)) {
+                    $html .= '<span class="digit inactive">0</span>';
+                } else {
+                    $html .= '<span class="digit">' . substr($number, 1, 1) . '</span>';
+                }
+            }
+
+            $html .= '</div>';
+            $html .= '</div>';
+        }
+
+        $html .= '</div>';
 
         //@todo handle load more requests
 
-        $html = '';
 
         return html_entity_decode($html);
     }
