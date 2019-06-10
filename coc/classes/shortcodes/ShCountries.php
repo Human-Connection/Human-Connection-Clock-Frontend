@@ -44,11 +44,7 @@ class ShCountries
 
         $maxNumber = count($countries) < self::MAX_COUNTRIES ? count($countries) : self::MAX_COUNTRIES;
 
-        // @todo display countries (max number)
-
-        $html = '';
-
-        $html .= '<div id="country-rankings">';
+        $html = '<div id="country-rankings">';
 
         for ($i = 0; $i < $maxNumber; $i++) {
 
@@ -59,12 +55,11 @@ class ShCountries
             $html .= '<div class="country-counter">';
 
             $number = $countries[$i]->number;
-            var_dump(substr($number, 1, 1));
-            for ($digit = 0; $digit < 9; $digit++) {
+            for ($digit = 9; $digit > 0; $digit--) {
                 if ($digit > strlen($number)) {
                     $html .= '<span class="digit inactive">0</span>';
                 } else {
-                    $html .= '<span class="digit">' . substr($number, 1, 1) . '</span>';
+                    $html .= '<span class="digit">' . substr($number, strlen($number) - $digit, 1) . '</span>';
                 }
             }
 
