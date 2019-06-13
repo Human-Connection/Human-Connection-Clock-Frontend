@@ -77,7 +77,7 @@ class ShCountries
             $i++;
         }
 
-        $html .= '<div class="country-rankings-load-more"><a  href="#" class="load-more-link">mehr laden <i class="fa fa-chevron-down" aria-hidden="true"></i></a></div>';
+        $html .= '<div id="country-rankings-load-more"><a  href="#" class="load-more-link">mehr laden <i class="fa fa-chevron-down" aria-hidden="true"></i></a></div>';
 
         $html .= '</div>';
 

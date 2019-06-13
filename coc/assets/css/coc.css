@@ -417,12 +417,12 @@
     color: #cfcfcf;
 }
 
-.country-rankings-load-more {
+#country-rankings-load-more {
     width: 100%;
     text-align: center;
 }
 
-.country-rankings-load-more .load-more-link {
-    font-size: 14px;
+#country-rankings-load-more .load-more-link {
+    font-size: 13px;
     text-transform: uppercase;
 }
