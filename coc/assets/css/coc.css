@@ -392,6 +392,10 @@
     text-align: center;
 }
 
+.country-ranking-item.hidden {
+    display: none;
+}
+
 .country-ranking-item img.country-flag {
     height: 45px;
     margin-bottom: 15px;
@@ -411,4 +415,14 @@
 }
 .country-counter .digit.inactive {
     color: #cfcfcf;
+}
+
+.country-rankings-load-more {
+    width: 100%;
+    text-align: center;
+}
+
+.country-rankings-load-more .load-more-link {
+    font-size: 14px;
+    text-transform: uppercase;
 }
