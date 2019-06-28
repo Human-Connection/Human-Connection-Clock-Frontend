@@ -259,6 +259,16 @@
     line-height: 1.4em;
     word-break: break-word;
 }
+
+#user-message .message-country.loaded {
+    display: block;
+    padding-top: 15px;
+    text-align: center;
+}
+
+#user-message .message-country.loaded img {
+    height: 35px;
+}
 .message-controls .left-arrow-wrapper,
 .message-controls .right-arrow-wrapper{
     cursor: pointer;

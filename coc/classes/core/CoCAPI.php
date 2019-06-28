@@ -71,6 +71,7 @@ class CoCAPI
 				$obj->message   = $user->message;
 				$obj->image     = $user->image;
 				$obj->anon      = $user->anon;
+                $obj->country   = $user->country;
 
 				$out[] = $obj;
 			}

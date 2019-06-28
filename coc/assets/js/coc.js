@@ -1,41 +1,46 @@
+/**
+ * @var {object} cocVars
+ */
+
 window.coc = ((window, document, $) => {
-    app = {},
-        formOverlay = $('.coc-form-overlay'),
-        defaultMsg = 'Ich bin für Veränderung.',
-        defaultName = 'Mensch',
-        baseUrl = 'https://tools.human-connection.org/avataaars/composite',
-        userImages = $('.user-image'),
-        userMessage = $('#user-message'),
+    let app           = {},
+        formOverlay   = $('.coc-form-overlay'),
+        defaultMsg    = 'Ich bin für Veränderung.',
+        defaultName   = 'Mensch',
+        baseUrl       = 'https://tools.human-connection.org/avataaars/composite',
+        userImages    = $('.user-image'),
+        userMessage   = $('#user-message'),
         userWallIndex = 0,
-        files = null,
-        useOwnImage = false,
-        hair = [],
-        eyebrow = [],
-        eyes = [],
-        nose = [],
-        mouth = [],
-        facialHair = [],
-        clothing = [],
+        files         = null,
+        useOwnImage   = false,
+        countries     = {},
+        hair          = [],
+        eyebrow       = [],
+        eyes          = [],
+        nose          = [],
+        mouth         = [],
+        facialHair    = [],
+        clothing      = [],
 
-        hairIndex = 0,
-        eyebrowIndex = 0,
-        eyesIndex = 0,
-        noseIndex = 0,
-        mouthIndex = 0,
+        hairIndex       = 0,
+        eyebrowIndex    = 0,
+        eyesIndex       = 0,
+        noseIndex       = 0,
+        mouthIndex      = 0,
         facialHairIndex = 0,
-        clothingIndex = 0,
-        offset = 0;
+        clothingIndex   = 0,
+        offset          = 0;
 
-    let indexMap = new Array();
-    indexMap['hair'] = hairIndex;
-    indexMap['eyebrow'] = eyebrowIndex;
-    indexMap['eyes'] = eyesIndex;
-    indexMap['nose'] = noseIndex;
-    indexMap['mouth'] = mouthIndex;
+    let indexMap = [];
+    indexMap['hair']       = hairIndex;
+    indexMap['eyebrow']    = eyebrowIndex;
+    indexMap['eyes']       = eyesIndex;
+    indexMap['nose']       = noseIndex;
+    indexMap['mouth']      = mouthIndex;
     indexMap['facialHair'] = facialHairIndex;
-    indexMap['clothing'] = clothingIndex;
+    indexMap['clothing']   = clothingIndex;
 
-    findIndex = (elem, items) => {
+    let findIndex = (elem, items) => {
         let i, len = items.length;
         for (i = 0; i < len; i++) {
             if (items[i] === elem) {
@@ -51,6 +56,7 @@ window.coc = ((window, document, $) => {
         let anon = $(this).data('anon');
         let src = $(this).attr('src');
         let srcc = this.parentElement;
+        let country = $(this).data('country');
 
         // update index
         userWallIndex = findIndex(srcc, document.getElementsByClassName('user-item'));
@@ -64,6 +70,9 @@ window.coc = ((window, document, $) => {
             message = defaultMsg;
         }
         userMessage.find('.message-text').text(message);
+
+        app.loadCountryFlagImage(country);
+
         userMessage.show();
     };
 
@@ -99,6 +108,8 @@ window.coc = ((window, document, $) => {
     };
 
     app.init = () => {
+        app.loadCountries();
+
         $('#joinCoC').click((e) => {
             // show form
             app.toggleForm();
@@ -175,9 +186,9 @@ window.coc = ((window, document, $) => {
                     $.each(val, (j, opt) => {
                         if (isFirst === true) {
                             isFirst = false;
-                            $('.selection-' + i).append('<div class="opt-wrapper" style="text-align:center;"><img src="' + opt.url + '" /></div>');
+                            $('.selection-'+i).append('<div class="opt-wrapper" style="text-align:center;"><img src="'+opt.url+'" alt="avatar" /></div>');
                         } else {
-                            $('.selection-' + i).append('<div class="opt-wrapper" style="text-align:center;display:none;"><img src="' + opt.url + '" /></div>');
+                            $('.selection-'+i).append('<div class="opt-wrapper" style="text-align:center;display:none;"><img src="'+opt.url+'" alt="avatar" /></div>');
                         }
 
                         let activeVar;
@@ -431,7 +442,8 @@ window.coc = ((window, document, $) => {
                             let uName = obj.firstname;
                             let msg = obj.message;
                             let loadedImg = obj.image === '' ? cocVars.homeUrl + '/wp-content/plugins/coc/assets/images/coc-placeholder.jpg' : obj.image;
-                            let img = '<img class="user-image loaded" data-anon="' + obj.anon + '" data-uname="' + uName + '" data-message="' + msg + '" style="width:100%;margin-top:5px;" alt="signer-image" src="' + loadedImg + '" />';
+                            let country = obj.country;
+                            let img = '<img class="user-image" data-anon="'+obj.anon+'" data-uname="'+uName+'" data-message="'+msg+'" data-country="' + country +'" style="width:100%;margin-top:5px;" alt="signer-image" src="'+loadedImg+'" />';
                             $('.user-container').append(
                                 '<div class="user-item">' +
                                 img +
@@ -476,11 +488,13 @@ window.coc = ((window, document, $) => {
                         $('.user-container').html('');
                         for (let i = 0; i < data.length; i++) {
                             let obj = data[i];
+                            console.log(obj);
                             // got merged with lastname on server - output as firstname for compat with old fs
                             let uName = obj.firstname;
                             let msg = obj.message;
                             let loadedImg = obj.image === '' ? cocVars.homeUrl + '/wp-content/plugins/coc/assets/images/coc-placeholder.jpg' : obj.image;
-                            let img = '<img class="user-image loaded" data-anon="' + obj.anon + '" data-uname="' + uName + '" data-message="' + msg + '" style="width:100%;margin-top:5px;" alt="signer-image" src="' + loadedImg + '" />';
+                            let country = obj.country;
+                            let img = '<img class="user-image loaded" data-anon="' + obj.anon + '" data-uname="' + uName + '" data-message="' + msg + '" data-country="' + country + '" style="width:100%;margin-top:5px;" alt="signer-image" src="' + loadedImg + '" />';
                             $('.user-container').append(
                                 '<div class="user-item">' +
                                 img +
@@ -522,6 +536,9 @@ window.coc = ((window, document, $) => {
                 uName = defaultName;
             }
             userMessage.find('.message-name').text(uName);
+
+            let country = nextData.data('country');
+            app.loadCountryFlagImage(country);
         });
 
         $('#nextMessage').on('click', () => {
@@ -544,6 +561,9 @@ window.coc = ((window, document, $) => {
                 uName = defaultName;
             }
             userMessage.find('.message-name').text(uName);
+
+            let country = nextData.data('country');
+            app.loadCountryFlagImage(country);
         });
 
         app.ownImageChangeHandler();
@@ -578,6 +598,36 @@ window.coc = ((window, document, $) => {
 
     app.closeUserOverlay = () => {
         userMessage.hide();
+    };
+
+    app.loadCountryFlagImage = (country) => {
+        let messageCountryElement = userMessage.find('.message-country');
+        messageCountryElement.html('');
+
+        if (country.length === 2) {
+            let flagUrl =  cocVars.homeUrl + '/wp-content/plugins/coc/assets/images/flags/' +  country.toLowerCase() + '.png';
+            let countryName = app.getCountryNameByCountryCode(country);
+
+            messageCountryElement.addClass('loaded');
+            messageCountryElement.html(
+                '<img src="' + flagUrl + '" title="Eintrag kommt aus ' + countryName + '" alt="Eintrag kommt aus ' + countryName + '" height="35">'
+            );
+        }
+    };
+
+    app.loadCountries = () => {
+        $.getJSON(cocVars.homeUrl + '/wp-content/plugins/coc/assets/js/countries.json', function(data) {
+            app.countries = data;
+        })
+    };
+
+    app.getCountryNameByCountryCode = (countryCode) => {
+        countryCode.toUpperCase();
+        if (countryCode in app.countries) {
+            return app.countries[countryCode];
+        }
+
+        return '';
     };
 
     $(document).ready(app.init);
