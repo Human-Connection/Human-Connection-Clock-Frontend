@@ -1,5 +1,4 @@
 <?php
-
 namespace coc\shortcodes;
 
 use coc\ClockOfChange;
@@ -41,6 +40,13 @@ class ShUserwall
             $html .= '<div class="right-arrow-wrapper"><i class="fas fa-arrow-right" id="nextMessage"></i></div>';
             $html .= '</div>';
             $html .= '</div>';
+
+            $html .= '<div id="user-filter">';
+            $html .= '<div class="user-filter-element"><img src="' . home_url() . '/wp-content/plugins/coc/assets/images/filter.jpg" alt="Clock of Change Userwall Filter"></div>';
+            $html .= '<div class="user-filter-element"><strong>Sortierung: </strong><label for="orderByDate">Nach Datum </label><select name="orderByDate" id="orderByDate"><option value="desc">absteigend</option><option value="asc">aufsteigend</option></select></div>';
+            $html .= '<div class="user-filter-element"><strong>Filter: </strong><input type="checkbox" name="profileImage" id="profileImage"><label for="profileImage">nur Einträge mit Profilbild</label></div>';
+            $html .= '</div>';
+
             $html .= '<div class="user-container" id="user-list">';
             foreach ($users->results as $user) {
                 $html .= '<div class="user-item">';
