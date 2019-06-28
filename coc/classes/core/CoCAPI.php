@@ -53,8 +53,16 @@ class CoCAPI
 	}
 
 	public function loadMore(){
-		$offset = $_GET['offset'] ?? 0;
-		$users = $this->getUsers($offset * ShUserwall::PAGE_SIZE);
+		$offset = (int) $_GET['offset'] ?? 0;
+		$orderByDate = $_GET['orderByDate'] === 'asc' ? 'asc' : 'desc';
+		$filterByProfileImage = (int) $_GET['profileImage'] === 1 ? 1 : 0;
+
+		$users = $this->getUsers(
+		    $offset * ShUserwall::PAGE_SIZE,
+            true,
+            $orderByDate,
+            $filterByProfileImage
+        );
 		$out = [];
 		if(isset($users->success) && isset($users->results) && !empty($users->results)){
 			foreach($users->results as $user){
@@ -180,15 +188,22 @@ class CoCAPI
 		return json_decode($resp);
 	}
 
-	public function getUsers($offset = 0, $active = true){
+	public function getUsers($offset = 0, $active = true, $orderByDate = 'desc', $profileImage = 0){
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_HTTPHEADER, ['API-Key: '.$this->_apiKey]);
-		curl_setopt($ch, CURLOPT_URL, $this->_baseUrl.self::END_ENTRIES.'?isActive='.(int)$active.'&limit='.ShUserwall::PAGE_SIZE.'&offset='.$offset);
+		curl_setopt($ch, CURLOPT_URL,
+            $this->_baseUrl.self::END_ENTRIES
+            . '?isActive=' . (int) $active
+            . '&limit=' . ShUserwall::PAGE_SIZE
+            . '&offset=' . (int) $offset
+            . '&orderByDate=' . $orderByDate
+            . '&profileImage=' . (int) $profileImage
+        );
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 		$resp = curl_exec($ch);
 		curl_close ($ch);
-		
+
 		return json_decode($resp);
 	}
 
