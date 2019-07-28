@@ -29,7 +29,7 @@ class HCTheme
 		self::$childThemePath  = get_stylesheet_directory();
 		self::$childThemeUri   = get_stylesheet_directory_uri();
 		self::$parentThemePath = get_template_directory();
-		self::$parentThemeUri  = 'https://human-connection.org/wp-content/themes/Avada'; // get_template_directory_uri();
+		self::$parentThemeUri  = get_template_directory_uri();
 
 		add_filter( 'xmlrpc_enabled', '__return_false' );
 
