@@ -488,7 +488,6 @@ window.coc = ((window, document, $) => {
                         $('.user-container').html('');
                         for (let i = 0; i < data.length; i++) {
                             let obj = data[i];
-                            console.log(obj);
                             // got merged with lastname on server - output as firstname for compat with old fs
                             let uName = obj.firstname;
                             let msg = obj.message;

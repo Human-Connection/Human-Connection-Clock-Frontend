@@ -91,8 +91,7 @@ class ShCountries
      */
     private function loadCountryNames()
     {
-        $countryNamesFilePath = get_home_path() . 'wp-content/plugins/coc/assets/js/countries.json';
-
+        $countryNamesFilePath = WP_CONTENT_DIR. 'plugins/coc/assets/js/countries.json';
         if (file_exists($countryNamesFilePath)) {
             $countryNames = file_get_contents($countryNamesFilePath);
             return json_decode($countryNames);
