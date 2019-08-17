@@ -570,13 +570,14 @@ window.coc = ((window, document, $) => {
         $('#country-rankings-load-more .load-more-link').on('click', (event) => {
             event.preventDefault();
 
+            $('.country-ranking-item.hidden').slice(0, 12).each((index, element) => {
+                $(element).removeClass('hidden');
+            });
+
             if ($('.country-ranking-item.hidden').length === 0) {
                 $('#country-rankings-load-more').hide();
             }
 
-            $('.country-ranking-item.hidden').slice(0, 12).each((index, element) => {
-                $(element).removeClass('hidden');
-            });
             setTimeout(function(){
                 $([document.documentElement, document.body]).animate({
                     scrollTop: $('#country-rankings-load-more').offset().top

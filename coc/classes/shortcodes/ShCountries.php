@@ -9,7 +9,7 @@ namespace coc\shortcodes;
 use coc\ClockOfChange;
 use coc\core\CoCAPI;
 
-// coc\shortcodes\shuserwall
+// coc\shortcodes\countries
 class ShCountries
 {
     // Max number of countries to start with
@@ -49,8 +49,6 @@ class ShCountries
             return '';
         }
 
-        $maxNumber = count($countries) < self::MAX_COUNTRIES ? count($countries) : self::MAX_COUNTRIES;
-
         $html = '<div id="country-rankings">';
 
         $i = 0;
@@ -80,8 +78,6 @@ class ShCountries
         $html .= '<div id="country-rankings-load-more"><a  href="#" class="load-more-link">mehr laden <i class="fa fa-chevron-down" aria-hidden="true"></i></a></div>';
 
         $html .= '</div>';
-
-        //@todo handle load more requests
 
         return html_entity_decode($html);
     }

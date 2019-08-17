@@ -444,6 +444,21 @@
     padding: 15px;
     text-align: center;
 }
+@media (max-width: 1024px) {
+    .country-ranking-item {
+        width: 33%;
+    }
+}
+@media (max-width: 650px) {
+    .country-ranking-item {
+        width: 50%;
+    }
+}
+@media (max-width: 450px) {
+    .country-ranking-item {
+        width: 100%;
+    }
+}
 
 .country-ranking-item.hidden {
     display: none;
