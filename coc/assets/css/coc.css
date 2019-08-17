@@ -432,3 +432,65 @@
         width: 100%;
     }
 }
+
+#country-rankings {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #ebebeb;
+}
+
+.country-ranking-item {
+    width: 25%;
+    padding: 15px;
+    text-align: center;
+}
+@media (max-width: 1024px) {
+    .country-ranking-item {
+        width: 33%;
+    }
+}
+@media (max-width: 650px) {
+    .country-ranking-item {
+        width: 50%;
+    }
+}
+@media (max-width: 450px) {
+    .country-ranking-item {
+        width: 100%;
+    }
+}
+
+.country-ranking-item.hidden {
+    display: none;
+}
+
+.country-ranking-item img.country-flag {
+    height: 45px;
+    margin-bottom: 15px;
+}
+
+.country-counter {
+
+}
+
+.country-counter .digit {
+    display: inline-block;
+    padding: 4px;
+    background-color: #ffffff;
+    border-right: 2px solid #ebebeb;
+    font-size: 13px;
+    font-weight: bold;
+}
+.country-counter .digit.inactive {
+    color: #cfcfcf;
+}
+
+#country-rankings-load-more {
+    width: 100%;
+    text-align: center;
+}
+
+#country-rankings-load-more .load-more-link {
+    font-size: 13px;
+    text-transform: uppercase;
+}

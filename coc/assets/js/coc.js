@@ -488,7 +488,6 @@ window.coc = ((window, document, $) => {
                         $('.user-container').html('');
                         for (let i = 0; i < data.length; i++) {
                             let obj = data[i];
-                            console.log(obj);
                             // got merged with lastname on server - output as firstname for compat with old fs
                             let uName = obj.firstname;
                             let msg = obj.message;
@@ -567,6 +566,24 @@ window.coc = ((window, document, $) => {
         });
 
         app.ownImageChangeHandler();
+
+        $('#country-rankings-load-more .load-more-link').on('click', (event) => {
+            event.preventDefault();
+
+            $('.country-ranking-item.hidden').slice(0, 12).each((index, element) => {
+                $(element).removeClass('hidden');
+            });
+
+            if ($('.country-ranking-item.hidden').length === 0) {
+                $('#country-rankings-load-more').hide();
+            }
+
+            setTimeout(function(){
+                $([document.documentElement, document.body]).animate({
+                    scrollTop: $('#country-rankings-load-more').offset().top
+                }, 1000);
+            }, 150);
+        });
     };
 
     $(window).off('keyup').on('keyup', (e) => {
