@@ -421,8 +421,13 @@ window.coc = ((window, document, $) => {
 
         $('#loadMore').on('click', function (e) {
             offset = offset + 1;
+            let urlParams = {};
+            urlParams['params'] = offset;
+            urlParams['profileImage'] = $('#profileImage').prop('checked') ? 1 : 0;
+            urlParams['orderByDate'] = $('#orderByDate').val() === 'asc' ? 'asc' : 'desc';
+
             $.ajax({
-                url: cocVars.ajax_url + 'coc/v2/getEntries/?offset=' + offset,
+                url: cocVars.ajax_url + 'coc/v2/getEntries/?' + $.param(urlParams),
                 method: 'GET',
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader('X-WP-Nonce', cocVars.nonce);
@@ -488,7 +493,6 @@ window.coc = ((window, document, $) => {
                         $('.user-container').html('');
                         for (let i = 0; i < data.length; i++) {
                             let obj = data[i];
-                            console.log(obj);
                             // got merged with lastname on server - output as firstname for compat with old fs
                             let uName = obj.firstname;
                             let msg = obj.message;
