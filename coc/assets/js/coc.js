@@ -422,7 +422,7 @@ window.coc = ((window, document, $) => {
         $('#loadMore').on('click', function (e) {
             offset = offset + 1;
             let urlParams = {};
-            urlParams['params'] = offset;
+            urlParams['offset'] = offset;
             urlParams['profileImage'] = $('#profileImage').prop('checked') ? 1 : 0;
             urlParams['orderByDate'] = $('#orderByDate').val() === 'asc' ? 'asc' : 'desc';
 
