@@ -230,34 +230,46 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 19;
+    z-index: 99999;
     background: rgba(0, 0, 0, 0.9);
 }
 .user-message-text {
-    width: 320px;
+    width: 75vw;
+    max-width: 500px;
+    min-width: 240px;
     background: #fff;
     color: #555;
     position: relative;
     z-index: 20;
-    top: 50%;
-    margin: 0 auto;
+    top: 22%;
+    margin: 10px auto;
     padding: 60px;
-    transform: translateY(-50%);
+    /*transform: translateY(-50%);*/
 }
 #user-message .message-image-wrapper {
     position: relative;
     border-radius: 50%;
-    margin: 0;
+    margin: 0 auto;
     overflow: hidden;
     width: 200px;
     height: 200px;
     background: #f5f5f5;
 }
+@media (max-height: 900px) {
+    #user-message .message-image-wrapper {
+        width: 100px;
+        height: 100px;
+    }
+}
+
 #user-message .message-text {
     text-align: center;
     font-size: 16px;
     line-height: 1.4em;
     word-break: break-word;
+    overflow-y: auto;
+    max-height: 300px;
+
 }
 
 #user-message .message-country.loaded {
@@ -274,20 +286,20 @@
     cursor: pointer;
     position: absolute;
     z-index: 29;
-    width: 30px;
+    width: 26px;
     top: 50%;
     transform: translateY(-50%);
 }
 .message-controls .right-arrow-wrapper {
-    right: 20px;
+    right: 10px;
 }
 .message-controls .left-arrow-wrapper {
-    left: 20px;
+    left: 10px;
 }
 .close-wrapper {
     position: absolute;
     top: 150px;
-    right: 20px;
+    right: 10px;
 }
 #user-message .fa-times,
 #prevMessage, #nextMessage {
@@ -437,6 +449,10 @@
     display: flex;
     flex-wrap: wrap;
     background-color: #ebebeb;
+<<<<<<< HEAD
+    padding: 30px 0;
+=======
+>>>>>>> 23524a93cc2920148fd8fae4cdd37320d83e8896
 }
 
 .country-ranking-item {
@@ -488,6 +504,37 @@
 #country-rankings-load-more {
     width: 100%;
     text-align: center;
+    margin-top: 30px;
+}
+
+#country-rankings-load-more .load-more-link {
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+@media (max-width: 767px) {
+    #user-message .message-image-wrapper {
+        width: 100px;
+        height: 100px;
+    }
+    .user-message-text {
+        top: 15%;
+        padding: 30px;
+    }
+    .message-text {
+        max-height: 250px;
+    }
+    .close-wrapper {
+        top: 15%;
+    }
+    #toTop {
+        bottom: 25px !important;
+        right: 25px !important;
+        z-index: 99998;
+    }
+    #user-filter .user-filter-element {
+        margin-left: 0;
+    }
 }
 
 #country-rankings-load-more .load-more-link {
