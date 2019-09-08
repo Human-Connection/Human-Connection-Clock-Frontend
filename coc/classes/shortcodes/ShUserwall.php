@@ -1,4 +1,5 @@
 <?php
+
 namespace coc\shortcodes;
 
 use coc\ClockOfChange;
@@ -9,8 +10,10 @@ class ShUserwall
     // TEXT MAX 300 characters
     const PAGE_SIZE = 81;
 
-    public function __construct()
+    public function __construct($api)
     {
+        $this->api = $api;
+
         add_shortcode(strtolower(__CLASS__), [$this, 'renderShortcode']);
     }
 
@@ -42,7 +45,8 @@ class ShUserwall
             $html .= '</div>';
 
             $html .= '<div id="user-filter">';
-            $html .= '<div class="user-filter-element"><img src="' . home_url() . '/wp-content/plugins/coc/assets/images/filter.jpg" alt="Clock of Change Userwall Filter"></div>';
+            $html .= '<div class="user-filter-element"><img src="' . home_url(
+                ) . '/wp-content/plugins/coc/assets/images/filter.jpg" alt="Clock of Change Userwall Filter"></div>';
             $html .= '<div class="user-filter-element"><strong>Sortierung: </strong><label for="orderByDate">Nach Datum </label><select name="orderByDate" id="orderByDate"><option value="desc">absteigend</option><option value="asc">aufsteigend</option></select></div>';
             $html .= '<div class="user-filter-element"><strong>Filter: </strong><input type="checkbox" name="profileImage" id="profileImage"><label for="profileImage">nur Einträge mit Profilbild</label></div>';
             $html .= '</div>';
@@ -59,7 +63,7 @@ class ShUserwall
 
                 $uName = $user->firstname . ' ' . $user->lastname;
                 $html  .= '<img class="user-image" data-anon="' . $user->anon . '" data-uname="' . $uName . '" '
-                    . 'data-message="' . $user->message . '" data-country="' .  $user->country .'" '
+                    . 'data-message="' . $user->message . '" data-country="' . $user->country . '" '
                     . 'style="width:100%;margin-top:5px;" alt="signer-image" src="' . $src . '" />';
 
                 $html .= '</div>';

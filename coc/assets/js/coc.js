@@ -525,6 +525,24 @@ window.coc = ((window, document, $) => {
         $('#nextMessage').on('click', app.nextMessage);
 
         app.ownImageChangeHandler();
+
+        $('#country-rankings-load-more .load-more-link').on('click', (event) => {
+            event.preventDefault();
+
+            $('.country-ranking-item.hidden').slice(0, 12).each((index, element) => {
+                $(element).removeClass('hidden');
+            });
+
+            if ($('.country-ranking-item.hidden').length === 0) {
+                $('#country-rankings-load-more').hide();
+            }
+
+            setTimeout(function(){
+                $([document.documentElement, document.body]).animate({
+                    scrollTop: $('#country-rankings-load-more').offset().top
+                }, 1000);
+            }, 150);
+        });
     };
 
     $(window).off('keyup').on('keyup', (e) => {

@@ -449,7 +449,10 @@
     display: flex;
     flex-wrap: wrap;
     background-color: #ebebeb;
+<<<<<<< HEAD
     padding: 30px 0;
+=======
+>>>>>>> 23524a93cc2920148fd8fae4cdd37320d83e8896
 }
 
 .country-ranking-item {
@@ -532,4 +535,9 @@
     #user-filter .user-filter-element {
         margin-left: 0;
     }
+}
+
+#country-rankings-load-more .load-more-link {
+    font-size: 13px;
+    text-transform: uppercase;
 }
