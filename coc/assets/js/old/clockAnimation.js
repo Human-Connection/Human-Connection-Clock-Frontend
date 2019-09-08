@@ -43,6 +43,7 @@ jQuery(document).ready(function ($) {
         tlRotation = new TimelineMax({paused: true, repeat: -1});
         tlClock = new TimelineMax({paused: true});
         tlAddPerson = new TimelineMax({paused: true});
+        cocSmall = $('.hc-coc.coc-small').length !== 0;
         //resize timeout vars
 
         rtime;
@@ -239,6 +240,9 @@ jQuery(document).ready(function ($) {
 
 
     function createInitTL() {
+        if (cocSmall) {
+            radius = 70;
+        }
         tl = null;
         tl = new TimelineMax({paused: true, });
         tl.add('start');
@@ -271,6 +275,10 @@ jQuery(document).ready(function ($) {
                     x = Math.cos(toRadians(rot)) * radius - 38;
                     y = Math.sin(toRadians(rot)) * radius - 38;
                 }
+            }
+            if (cocSmall) {
+                x = Math.cos(toRadians(rot)) * radius - 18;
+                y = Math.sin(toRadians(rot)) * radius - 18;
             }
 
 
@@ -417,7 +425,6 @@ jQuery(document).ready(function ($) {
 
     function increaseCOC() {
         var amount = $('.digits').data('amount');
-console.log(amount);
         var digits = getlength(amount);
 
 //        $('').
