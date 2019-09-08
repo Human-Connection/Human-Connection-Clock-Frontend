@@ -520,55 +520,9 @@ window.coc = ((window, document, $) => {
             e.preventDefault();
         });
 
-        $('#prevMessage').on('click', () => {
-            if (userWallIndex <= 0) {
-                userWallIndex = userImages.length - 1;
-            } else {
-                userWallIndex--;
-            }
+        $('#prevMessage').on('click', app.prevMessage);
 
-            let nextData = $(userImages[userWallIndex]);
-            let msg = nextData.data('message');
-            if (msg === '') {
-                msg = defaultMsg;
-            }
-            userMessage.find('.user-message-image').attr('src', nextData[0].src);
-            userMessage.find('.message-text').text(msg);
-
-            let uName = nextData.data('uname');
-            if (nextData.data('anon') === 1) {
-                uName = defaultName;
-            }
-            userMessage.find('.message-name').text(uName);
-
-            let country = nextData.data('country');
-            app.loadCountryFlagImage(country);
-        });
-
-        $('#nextMessage').on('click', () => {
-            if (userWallIndex >= userImages.length - 1) {
-                userWallIndex = 0;
-            } else {
-                userWallIndex++;
-            }
-
-            let nextData = $(userImages[userWallIndex]);
-            let msg = nextData.data('message');
-            if (msg === '') {
-                msg = defaultMsg;
-            }
-            userMessage.find('.user-message-image').attr('src', nextData[0].src);
-            userMessage.find('.message-text').text(msg);
-
-            let uName = nextData.data('uname');
-            if (nextData.data('anon') === 1) {
-                uName = defaultName;
-            }
-            userMessage.find('.message-name').text(uName);
-
-            let country = nextData.data('country');
-            app.loadCountryFlagImage(country);
-        });
+        $('#nextMessage').on('click', app.nextMessage);
 
         app.ownImageChangeHandler();
     };
@@ -577,6 +531,12 @@ window.coc = ((window, document, $) => {
         if (e.which === 27) {
             app.closeForm();
             app.closeUserOverlay();
+        }
+        if (e.which === 37) {
+            app.prevMessage();
+        }
+        if (e.which === 39) {
+            app.nextMessage();
         }
     });
 
@@ -632,6 +592,56 @@ window.coc = ((window, document, $) => {
         }
 
         return '';
+    };
+
+    app.prevMessage = () => {
+        if (userWallIndex <= 0) {
+            userWallIndex = userImages.length - 1;
+        } else {
+            userWallIndex--;
+        }
+
+        let nextData = $(userImages[userWallIndex]);
+        let msg = nextData.data('message');
+        if (msg === '') {
+            msg = defaultMsg;
+        }
+        userMessage.find('.user-message-image').attr('src', nextData[0].src);
+        userMessage.find('.message-text').text(msg);
+
+        let uName = nextData.data('uname');
+        if (nextData.data('anon') === 1) {
+            uName = defaultName;
+        }
+        userMessage.find('.message-name').text(uName);
+
+        let country = nextData.data('country');
+        app.loadCountryFlagImage(country);
+    };
+
+    app.nextMessage = () => {
+        if (userWallIndex >= userImages.length - 1) {
+            userWallIndex = 0;
+        } else {
+            userWallIndex++;
+        }
+
+        let nextData = $(userImages[userWallIndex]);
+        let msg = nextData.data('message');
+        if (msg === '') {
+            msg = defaultMsg;
+        }
+        userMessage.find('.user-message-image').attr('src', nextData[0].src);
+        userMessage.find('.message-text').text(msg);
+
+        let uName = nextData.data('uname');
+        if (nextData.data('anon') === 1) {
+            uName = defaultName;
+        }
+        userMessage.find('.message-name').text(uName);
+
+        let country = nextData.data('country');
+        app.loadCountryFlagImage(country);
     };
 
     $(document).ready(app.init);
