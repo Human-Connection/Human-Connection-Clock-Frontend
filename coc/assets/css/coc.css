@@ -449,10 +449,7 @@
     display: flex;
     flex-wrap: wrap;
     background-color: #ebebeb;
-<<<<<<< HEAD
     padding: 30px 0;
-=======
->>>>>>> 23524a93cc2920148fd8fae4cdd37320d83e8896
 }
 
 .country-ranking-item {
@@ -541,3 +538,110 @@
     font-size: 13px;
     text-transform: uppercase;
 }
+
+.hc-coc.coc-small #worldAnimationContainer {
+    width: 150px;
+    height: 150px;
+}
+.hc-coc.coc-small #worldAnimationContainer .figurchen {
+    height: 35px;
+    width: 35px;
+}
+
+.hc-coc.coc-small #clock .digits .number {
+    padding: 4px;
+    margin: 0;
+}
+
+.hc-coc.coc-small #clock .digits div {
+    width: 20px;
+    height: 30px;
+}
+.hc-coc.coc-small #clock .digits div div
+{
+    width: 12px;
+    height: 26px;
+}
+
+
+.hc-coc.coc-medium #worldAnimationContainer {
+    width: 300px;
+    height: 300px;
+}
+.hc-coc.coc-medium #worldAnimationContainer .figurchen {
+    height: 70px;
+    width: 70px;
+}
+
+.hc-coc.coc-medium #clock .digits .number {
+    padding: 8px;
+    margin: 0;
+}
+
+.hc-coc.coc-medium #clock .digits div {
+    width: 40px;
+    height: 60px;
+}
+.hc-coc.coc-medium #clock .digits div div
+{
+    width: 24px;
+    height: 52px;
+}
+
+/* Medium */
+.hc-coc.coc-medium #clock .digits .d1{			height:4px;width:16px;top:0;left:4px;}
+.hc-coc.coc-medium #clock .digits .d1:before{	border-width:0 4px 4px 0;border-right-color:inherit;left:-4px;}
+.hc-coc.coc-medium #clock .digits .d1:after{	border-width:0 0 4px 4px;border-left-color:inherit;right:-4px;}
+
+.hc-coc.coc-medium #clock .digits .d2{			height:4px;width:16px;top:20px;left:4px;}
+.hc-coc.coc-medium #clock .digits .d2:before{	border-width:2px 2px 2px;border-right-color:inherit;left: -4px;}
+.hc-coc.coc-medium #clock .digits .d2:after{	border-width:2px 2px 2px;border-left-color:inherit;right:-4px;}
+
+.hc-coc.coc-medium #clock .digits .d3{			height:4px;width:16px;top:40px;left:4px;}
+.hc-coc.coc-medium #clock .digits .d3:before{	border-width:4px 4px 0 0;border-right-color:inherit;left:-4px;}
+.hc-coc.coc-medium #clock .digits .d3:after{	border-width:4px 0 0 4px;border-left-color:inherit;right:-4px;}
+
+.hc-coc.coc-medium #clock .digits .d4{			width:4px;height:12px;top:6px;left:0;}
+.hc-coc.coc-medium #clock .digits .d4:before{	border-width:0 4px 4px 0;border-bottom-color:inherit;top:-4px;}
+.hc-coc.coc-medium #clock .digits .d4:after{	border-width:0 0 4px 4px;border-left-color:inherit;bottom:-4px;}
+
+.hc-coc.coc-medium #clock .digits .d5{			width:4px;height:12px;top:6px;right:0;}
+.hc-coc.coc-medium #clock .digits .d5:before{	border-width:0 0 4px 4px;border-bottom-color:inherit;top:-4px;}
+.hc-coc.coc-medium #clock .digits .d5:after{	border-width:4px 0 0 4px;border-top-color:inherit;bottom:-4px;}
+
+.hc-coc.coc-medium #clock .digits .d6{			width:4px;height:12px;top:26px;left:0;}
+.hc-coc.coc-medium #clock .digits .d6:before{	border-width:0 4px 4px 0;border-bottom-color:inherit;top:-4px;}
+.hc-coc.coc-medium #clock .digits .d6:after{	border-width:0 0 4px 4px;border-left-color:inherit;bottom:-4px;}
+
+.hc-coc.coc-medium #clock .digits .d7{			width:4px;height:12px;top:26px;right:0;}
+.hc-coc.coc-medium #clock .digits .d7:before{	border-width:0 0 4px 4px;border-bottom-color:inherit;top:-4px;}
+.hc-coc.coc-medium #clock .digits .d7:after{	border-width:4px 0 0 4px;border-top-color:inherit;bottom:-4px;}
+
+/* Small */
+.hc-coc.coc-small #clock .digits .d1{			height:2px;width:8px;top:0;left:2px;}
+.hc-coc.coc-small #clock .digits .d1:before{	border-width:0 2px 2px 0;border-right-color:inherit;left:-2px;}
+.hc-coc.coc-small #clock .digits .d1:after{	border-width:0 0 2px 2px;border-left-color:inherit;right:-2px;}
+
+.hc-coc.coc-small #clock .digits .d2{			height:2px;width:8px;top:10px;left:2px;}
+.hc-coc.coc-small #clock .digits .d2:before{	border-width:1px 1px 1px;border-right-color:inherit;left: -2px;}
+.hc-coc.coc-small #clock .digits .d2:after{	border-width:1px 1px 1px;border-left-color:inherit;right:-2px;}
+
+.hc-coc.coc-small #clock .digits .d3{			height:2px;width:8px;top:20px;left:2px;}
+.hc-coc.coc-small #clock .digits .d3:before{	border-width:2px 2px 0 0;border-right-color:inherit;left:-2px;}
+.hc-coc.coc-small #clock .digits .d3:after{	border-width:2px 0 0 2px;border-left-color:inherit;right:-2px;}
+
+.hc-coc.coc-small #clock .digits .d4{			width:2px;height:6px;top:3px;left:0;}
+.hc-coc.coc-small #clock .digits .d4:before{	border-width:0 2px 2px 0;border-bottom-color:inherit;top:-2px;}
+.hc-coc.coc-small #clock .digits .d4:after{	border-width:0 0 2px 2px;border-left-color:inherit;bottom:-2px;}
+
+.hc-coc.coc-small #clock .digits .d5{			width:2px;height:6px;top:3px;right:0;}
+.hc-coc.coc-small #clock .digits .d5:before{	border-width:0 0 2px 2px;border-bottom-color:inherit;top:-2px;}
+.hc-coc.coc-small #clock .digits .d5:after{	border-width:2px 0 0 2px;border-top-color:inherit;bottom:-2px;}
+
+.hc-coc.coc-small #clock .digits .d6{			width:2px;height:6px;top:13px;left:0;}
+.hc-coc.coc-small #clock .digits .d6:before{	border-width:0 2px 2px 0;border-bottom-color:inherit;top:-2px;}
+.hc-coc.coc-small #clock .digits .d6:after{	border-width:0 0 2px 2px;border-left-color:inherit;bottom:-2px;}
+
+.hc-coc.coc-small #clock .digits .d7{			width:2px;height:6px;top:13px;right:0;}
+.hc-coc.coc-small #clock .digits .d7:before{	border-width:0 0 2px 2px;border-bottom-color:inherit;top:-2px;}
+.hc-coc.coc-small #clock .digits .d7:after{	border-width:2px 0 0 2px;border-top-color:inherit;bottom:-2px;}

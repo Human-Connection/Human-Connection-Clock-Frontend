@@ -9,7 +9,7 @@ namespace coc\shortcodes;
 use coc\ClockOfChange;
 use coc\core\CoCAPI;
 
-// coc\shortcodes\countries
+// coc\shortcodes\shcountries
 class ShCountries
 {
     // Max number of countries to start with

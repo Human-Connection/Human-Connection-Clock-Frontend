@@ -123,7 +123,7 @@ class ScriptManager
 			'coc-clock-animation',
 			ClockOfChange::$pluginRootUri . 'assets/js/old/clockAnimation.js',
 			['jquery', 'coc-greensock-timelinemax', 'coc-greensock-tweenmax', 'coc-enquire'],
-			false,
+            bin2hex(random_bytes(16)),
 			true
 		);
 
