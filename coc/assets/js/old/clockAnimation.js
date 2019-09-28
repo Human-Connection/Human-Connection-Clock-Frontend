@@ -244,7 +244,7 @@ jQuery(document).ready(function ($) {
         if (cocSmall) {
             radius = 70;
         } else if (cocMedium) {
-            radius = 140;
+            radius = 138;
         }
         tl = null;
         tl = new TimelineMax({paused: true, });
@@ -283,8 +283,8 @@ jQuery(document).ready(function ($) {
                 x = Math.cos(toRadians(rot)) * radius - 18;
                 y = Math.sin(toRadians(rot)) * radius - 18;
             } else if (cocMedium) {
-                x = Math.cos(toRadians(rot)) * radius - 36;
-                y = Math.sin(toRadians(rot)) * radius - 36;
+                x = Math.cos(toRadians(rot)) * radius - 35.2;
+                y = Math.sin(toRadians(rot)) * radius - 35.2;
             }
 
 
