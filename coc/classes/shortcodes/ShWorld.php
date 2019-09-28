@@ -36,17 +36,18 @@ class ShWorld
     }
 
     /**
-     * Show small version of CoC (1/4 size) with parameter small="1" -< [coc\shortcodes\shworld small="1"]
-     * Show medium version of CoC (1/2 size) with parameter small="1" -< [coc\shortcodes\shworld medium="1"]
+     * Show small version of CoC (1/4 size) with parameter small="1" -> [coc\shortcodes\shworld small="1"]
+     * Show medium version of CoC (1/2 size) with parameter small="1" -> [coc\shortcodes\shworld medium="1"]
+     * Exclude wordpress pages by id as comma separated list -> [coc\shortcodes\shworld excludePages="25,31,75"]
      *
      * @param array $atts
-     * @param $content
+     * @param       $content
      * @return string
      */
     public function renderShortcode($atts, $content)
     {
         $cocSizes = [
-            'small' => 'coc-small',
+            'small'  => 'coc-small',
             'medium' => 'coc-medium',
         ];
 
@@ -55,6 +56,22 @@ class ShWorld
             if (isset($atts[$key]) && (string) $atts[$key] == '1') {
                 $cocSizeClass = $value;
                 break;
+            }
+        }
+
+        if (isset($atts['excludepages'])) {
+            $excludedPages = explode(',', $atts['excludepages']);
+            $excludedPages = array_filter(
+                $excludedPages,
+                function ($value) {
+                    return intval($value) > 0;
+                }
+            );
+
+            if (get_queried_object_id() > 0) {
+                if (in_array(get_queried_object_id(), $excludedPages)) {
+                    return '';
+                }
             }
         }
 
