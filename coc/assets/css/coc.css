@@ -260,6 +260,24 @@
         width: 100px;
         height: 100px;
     }
+    .coc-form-overlay .coc-form {
+        margin-top: 30px;
+    }
+}
+
+@media (max-height: 600px) {
+    #user-message .user-message-text {
+        top: 10%;
+    }
+    #user-message .close-wrapper {
+        top: 10%;
+    }
+    #user-message div.message-text {
+        max-height: 200px;
+    }
+    .coc-form-overlay .coc-form {
+        margin-top: 0;
+    }
 }
 
 #user-message .message-text {
@@ -518,8 +536,8 @@
         top: 15%;
         padding: 30px;
     }
-    .message-text {
-        max-height: 250px;
+    #user-message .message-text {
+        max-height: 200px;
     }
     .close-wrapper {
         top: 15%;
@@ -531,6 +549,19 @@
     }
     #user-filter .user-filter-element {
         margin-left: 0;
+    }
+    .coc-form-overlay {
+        padding: 15px;
+    }
+    .coc-form-overlay .coc-form {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 400px) {
+    .coc-form-overlay .coc-form {
+        min-width: 240px;
+        max-width: 320px;
     }
 }
 
