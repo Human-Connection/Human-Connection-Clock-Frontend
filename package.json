@@ -1,0 +1,26 @@
+{
+  "name": "clock-of-change-frontend",
+  "version": "1.0.0",
+  "description": "Clock of Change Frontend",
+  "main": "webpack.config.js",
+  "dependencies": {
+    "babel-loader": "^8.0.6",
+    "webpack-cli": "^3.3.9",
+    "webpack": "^4.41.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "node_modules/.bin/webpack --progress",
+    "watch": "node_modules/.bin/webpack --progress --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Human-Connection/Clock-of-Change-Frontend.git"
+  },
+  "author": "Matthias Böhm",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Human-Connection/Clock-of-Change-Frontend/issues"
+  },
+  "homepage": "https://github.com/Human-Connection/Clock-of-Change-Frontend#readme"
+}
