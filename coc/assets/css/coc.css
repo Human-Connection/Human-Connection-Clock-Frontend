@@ -113,6 +113,14 @@
     font-size: 12px;
     color: #888;
 }
+.form-error-hint {
+    font-size: 12px;
+    color: red;
+}
+input[type="checkbox"].input-error {
+    outline: 1px solid red;
+}
+
 .label {
     font-size: 18px;
 }

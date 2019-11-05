@@ -110,12 +110,28 @@ class CoCAPI
     public function saveEntry($data)
     {
         $params = $data->get_params();
+        $response = [];
+
+        if (!isset($params['email']) || empty($params['email'])) {
+            $response['email'] = 'Missing required field';
+        }
+
+        if (!isset($params['message']) || empty($params['message'])) {
+            $response['message'] = 'Missing required field';
+        }
+
+        if (!isset($params['firstname']) || empty($params['firstname'])) {
+            $response['firstname'] = 'Missing required field';
+        }
+
+        if (!isset($params['pr']) || $params['pr'] !== 'true') {
+            $response['pr'] = 'Missing required field';
+        }
 
         // ensure required fields
         // form can only be send when pr is set while we assume that any record showing up on node has accepted privacy
-        if (!isset($params['email']) || !isset($params['message']) ||
-            $params['email'] === '' || $params['message'] === '' || !isset($params['pr']) || $params['pr'] !== 'true') {
-            return ['success' => false, 'error' => 'missing required fields.'];
+        if (!empty($response)) {
+            return array_merge(['success' => false], $response);
         }
 
         $entryData = [
