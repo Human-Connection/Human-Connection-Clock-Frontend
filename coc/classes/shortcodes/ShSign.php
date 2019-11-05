@@ -30,6 +30,7 @@ class ShSign
         $html .= '<div class="coc-form-overlay">';
         $html .= '<div class="coc-form">';
         $html .= '<span class="coc-form-close">&times;</span>';
+        $html .= '<div id="form-error"></div>';
         $html .= '<span class="avatar-label label">Avatar</span>';
         $html .= '<p class="hint">min. 200*200px</p>';
         $html .= '<div class="form-group" id="coc-add-avatar">';
@@ -341,6 +342,7 @@ EOT;
         $html .= '<label class="label" for="coc-register-privacy">Ich habe die <a class="inline-link" href="https://human-connection.org/datenschutz/#_privacycoc" title="zu den Datenschutzbestimmungen" target="_blank">Datenschutzbestimmungen</a> gelesen und akzeptiere diese.</label>';
         $html .= '</div>';
         $html .= '<div class="form-group">';
+        $html .= '<p class="hint">Die Teilnahme ist 100% kostenlos, als gemeinnützige Organisation freuen wir uns jedoch über eine Spende. DANKE im Voraus!</p>';
         $html .= '<a href="#" id="joinNowBtn" class="cocBtn">Eintragen</a>';
         $html .= '</div>';
         $html .= '</div>';
