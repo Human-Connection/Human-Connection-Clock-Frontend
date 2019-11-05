@@ -40,6 +40,19 @@ window.coc = ((window, document, $) => {
     indexMap['facialHair'] = facialHairIndex;
     indexMap['clothing']   = clothingIndex;
 
+    let fieldMapToFormId = [];
+    fieldMapToFormId['firstname'] = 'coc-firstname';
+    fieldMapToFormId['lastname'] = 'coc-lastname';
+    fieldMapToFormId['email'] = 'coc-email';
+    fieldMapToFormId['message'] = 'coc-message';
+    fieldMapToFormId['country'] = 'coc-country';
+    fieldMapToFormId['anon'] = 'coc-anon';
+    fieldMapToFormId['beta'] = 'coc-register-beta';
+    fieldMapToFormId['nl'] = 'coc-register-nl';
+    fieldMapToFormId['pr'] = 'coc-register-privacy';
+    fieldMapToFormId['file'] = 'coc-add-avatar';
+    fieldMapToFormId['error'] = 'form-error';
+
     let findIndex = (elem, items) => {
         let i, len = items.length;
         for (i = 0; i < len; i++) {
@@ -306,37 +319,21 @@ window.coc = ((window, document, $) => {
         });
 
         $('#joinNowBtn').click(function (e) {
+            console.log("test");
             e.preventDefault();
+
+            Object.values(fieldMapToFormId).forEach((value) => {
+                if ($('#' + value)) {
+                    $('#' + value).removeClass('input-error');
+                }
+            });
+            $('.form-error-hint').remove();
 
             let data = new FormData(),
                 emailInput = $('#coc-email'),
                 messageInput = $('#coc-message'),
                 fnInput = $('#coc-firstname'),
-                hasErrors = false,
                 privacyChecked = $('#coc-register-privacy')[0].checked;
-
-            if (fnInput.val() === '') {
-                fnInput.addClass('input-error');
-                hasErrors = true;
-            }
-
-            if (emailInput.val() === '') {
-                emailInput.addClass('input-error');
-                hasErrors = true;
-            }
-
-            if (messageInput.val() === '') {
-                messageInput.addClass('input-error');
-                hasErrors = true;
-            }
-
-            if (privacyChecked === 0 || privacyChecked === undefined || privacyChecked === false) {
-                $('#coc-register-privacy').parent().addClass('input-error');
-                hasErrors = true;
-            }
-
-            if (hasErrors)
-                return;
 
             // append files
             // own image?
@@ -381,7 +378,7 @@ window.coc = ((window, document, $) => {
                         // hide form
                         new PNotify({
                             title: 'Das hat geklappt!',
-                            text: 'Jetzt noch deine E-Mail adresse bestätigen und der Wandel beginnt!',
+                            text: 'DANKE, dass DU dabei bist. JEDER EINZELNE ZÄHLT! Bitte bestätige jetzt Deine Emailadresse.',
                             addclass: 'stack-bottomright',
                             stack: {'dir1': 'up', 'dir2': 'left', 'push': 'top'}
                         });
@@ -394,7 +391,15 @@ window.coc = ((window, document, $) => {
                     } else {
                         if (resp !== null) {
                             // show errors
-                            emailInput.addClass('input-error');
+                            Object.keys(resp).forEach((key) => {
+                                if (key !== 'success' || key !== 'error') {
+                                    if ($('#' + fieldMapToFormId[key])) {
+                                        $('#' + fieldMapToFormId[key]).addClass('input-error');
+                                        let lastElement = $('#' + fieldMapToFormId[key]).next().length ? $('#' + fieldMapToFormId[key]).next() : $('#' + fieldMapToFormId[key])
+                                        lastElement.after('<p class="form-error-hint">' + resp[key] + '</p>');
+                                    }
+                                }
+                            });
                         }
 
                         new PNotify({
