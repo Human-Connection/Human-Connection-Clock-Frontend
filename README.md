@@ -18,6 +18,7 @@ To find out more about the Clock of Change and Human Connection - the network be
 * JavaScript / jQuery: We use [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) and [jQuery](https://jquery.com/) for the UX, user interactions and animations
 * CSS: We use [CSS](https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/CSS_basics) to style the Frontend
 * Composer: We use [Composer](https://getcomposer.org/) to manage (PHP) dependencies
+* Webpack: We use [Webpack](https://webpack.js.org/) to transpile and bundle the JavaScript
 
 ## Project Structure & Components
 
@@ -155,6 +156,14 @@ List of Clock of Change Frontend shortcodes for Wordpress:
 | `[coc\shortcodes\shsign]`     | Display the signup modal with the form, which opens when clicking on the signup button<br/>-Requires the coc\shortcodes\shsignup shortcode |
 | `[coc\shortcodes\shuserwall]` | Display the Clock of Change user wall with the entries                                                                                     |
 
+
+**RUN WEBPACK BUILD PROCESS**
+In this project we use webpack to bundle and transpile JavaScript. This essentially means that we use a newer JavaScript syntax (ES6+),
+but compile this version to make it also possible for older browsers to run the Clock of Change (essentially IE9+).
+
+Once you have installed the npm modules with `npm install`, you can run the webpack build process with command `npm run build`.
+If you do not want to enter this command after every change, you can run `npm run watch`. This watch and automatically trigger the
+build process, once a JavaScript file has been changed.
 
 <br/>
 <br/>
