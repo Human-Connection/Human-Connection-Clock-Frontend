@@ -3,16 +3,23 @@
   "version": "1.0.0",
   "description": "Clock of Change Frontend",
   "main": "webpack.config.js",
+  "browserslist": [
+    "last 2 major versions",
+    "> 1%",
+    "maintained node versions",
+    "not dead",
+    "ie > 8"
+  ],
+  "scripts": {
+    "build": "node_modules/.bin/webpack --progress",
+    "watch": "node_modules/.bin/webpack --progress --watch"
+  },
   "dependencies": {
     "babel-loader": "^8.0.6",
     "webpack-cli": "^3.3.9",
     "webpack": "^4.41.0"
   },
   "devDependencies": {},
-  "scripts": {
-    "build": "node_modules/.bin/webpack --progress",
-    "watch": "node_modules/.bin/webpack --progress --watch"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Human-Connection/Clock-of-Change-Frontend.git"
