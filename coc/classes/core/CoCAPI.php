@@ -13,6 +13,7 @@ class CoCAPI
     const ENDPOINT_ENTRIES        = '/entries';
     const ENDPOINT_ENTRIES_TOGGLE = '/entries/toggle';
     const ENDPOINT_COUNTRIES      = '/countries';
+    const ENDPOINT_DELETE_ENTRY      = '/delete';
 
     private $_apiKey = null;
     private $_baseUrl = null;
@@ -58,6 +59,13 @@ class CoCAPI
             'coc/v2', '/getEntries/', [
                 'methods'  => 'GET',
                 'callback' => [$this, 'loadMore'],
+            ]
+        );
+
+        register_rest_route(
+            'coc/v2', '/deleteEntry/', [
+                'methods'  => 'GET',
+                'callback' => [$this, 'deleteEntry'],
             ]
         );
     }
@@ -282,5 +290,26 @@ class CoCAPI
         }
 
         return null;
+    }
+
+    public function deleteEntry($id)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['API-Key: ' . $this->_apiKey]);
+        curl_setopt(
+            $ch, CURLOPT_URL,
+            $this->_baseUrl . self::ENDPOINT_DELETE_ENTRY . '/' . esc_attr($id)
+        );
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        if ($response->status_code === 200 && $response->success === true) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }

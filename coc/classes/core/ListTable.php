@@ -99,6 +99,7 @@ class ListTable extends \WP_List_Table {
 			if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'hc_toggle_coc_user' ) ) {
 				die( 'Go get a life script kiddies' );
 			}
+
 			// check for toggle action && correct page
 			if(($this->current_action() === 'cocactivate' || $this->current_action() === 'cocdisable') && $_GET['page'] === 'coc_entries'){
 				// toggle entry status
@@ -108,6 +109,18 @@ class ListTable extends \WP_List_Table {
 					return true;
 				}
 			}
+
+            // check for toggle action && correct page
+            if ($this->current_action() === 'cocdelete' && $_GET['page'] === 'coc_entries') {
+                if ($_GET['entry'] && (int)$_GET['entry'] > 0) {
+                    $result = ClockOfChange::app()->cocAPI()->deleteEntry($_GET['entry']);
+                    if(isset($result->success) && $result->success === true){
+                        return true;
+                    }
+                }
+
+                return true;
+            }
 		}
 	}
 
@@ -154,8 +167,9 @@ class ListTable extends \WP_List_Table {
 		$title = '<strong>'.$item['status'].'</strong>';
 
 		$actions = [
-			'cocactivate' => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s">Activate</a>', esc_attr($_REQUEST['page']), 'cocactivate', absint($item['ID']), $nonce),
-			'cocdisable'  => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s">Disable</a>', esc_attr($_REQUEST['page']), 'cocdisable', absint($item['ID']), $nonce)
+			'cocactivate' => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s">Aktivieren</a>', esc_attr($_REQUEST['page']), 'cocactivate', absint($item['ID']), $nonce),
+			'cocdisable'  => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s">Deaktivieren</a>', esc_attr($_REQUEST['page']), 'cocdisable', absint($item['ID']), $nonce),
+            'cocdelete'  => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s" onclick="confirm(\'Eintrag wirklich löschen?\');">Löschen</a>', esc_attr($_REQUEST['page']), 'cocdelete', absint($item['ID']), $nonce)
 		];
 
 		return $title . $this->row_actions($actions);
