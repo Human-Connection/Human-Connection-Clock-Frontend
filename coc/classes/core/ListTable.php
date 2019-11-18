@@ -169,7 +169,7 @@ class ListTable extends \WP_List_Table {
 		$actions = [
 			'cocactivate' => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s">Aktivieren</a>', esc_attr($_REQUEST['page']), 'cocactivate', absint($item['ID']), $nonce),
 			'cocdisable'  => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s">Deaktivieren</a>', esc_attr($_REQUEST['page']), 'cocdisable', absint($item['ID']), $nonce),
-            'cocdelete'  => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s" onclick="confirm(\'Eintrag wirklich löschen?\');">Löschen</a>', esc_attr($_REQUEST['page']), 'cocdelete', absint($item['ID']), $nonce)
+            'cocdelete'  => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s" onclick="return confirm(\'Eintrag wirklich löschen?\');">Löschen</a>', esc_attr($_REQUEST['page']), 'cocdelete', absint($item['ID']), $nonce)
 		];
 
 		return $title . $this->row_actions($actions);
