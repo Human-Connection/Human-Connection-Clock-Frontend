@@ -75,6 +75,16 @@ class Translation
     }
 
     /**
+     * @param string      $translationKey
+     * @param string|null $fallbackText
+     * @return string
+     */
+    public function t($translationKey, $fallbackText = null)
+    {
+        return $this->translate($translationKey, $fallbackText);
+    }
+
+    /**
      * @param string $language
      * @return bool
      */
@@ -84,7 +94,7 @@ class Translation
 
         if (file_exists($languageFilePath)) {
             $translationData = file_get_contents($languageFilePath);
-            $this->translationData = json_decode($translationData);
+            $this->translationData = json_decode($translationData, true);
 
             return true;
         }

@@ -37,8 +37,8 @@ class ShSignUp
      */
     public function renderShortcode($atts, $content)
     {
-        $html = '';
-        $html .= '<a href="#" id="joinCoC" class="cocBtn">Sei dabei!</a>';
+        $html = '<p>„' . $this->translation->t('slogan', 'Ich glaube daran, dass Veränderung in jedem Einzelnen beginnt und dass, wenn genügend Menschen sich ändern, die Welt sich verändern wird. Ich möchte mit meinen Mitmenschen eine Brücke zu einer nachhaltigen Zukunft für die Kinder der Welt bauen.') . '”</p>';
+        $html .= '<a href="#" id="joinCoC" class="cocBtn">' . $this->translation->t('joinNowButton', 'Sei dabei!') . '</a>';
 
         return html_entity_decode($html);
     }
