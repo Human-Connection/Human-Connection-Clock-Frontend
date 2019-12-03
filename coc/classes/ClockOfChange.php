@@ -8,6 +8,7 @@ use coc\core\OptionsManager;
 use coc\core\ScriptManager;
 use coc\core\Translation;
 use coc\shortcodes\ShCountries;
+use coc\shortcodes\ShLanguageSelector;
 use coc\shortcodes\ShSign;
 use coc\shortcodes\ShSignUp;
 use coc\shortcodes\ShUserwall;
@@ -75,6 +76,7 @@ class ClockOfChange
         new ShSignUp($this->cocAPI(), $this->translation()); // need button separat for z
         new ShUserwall($this->cocAPI());
         new ShCountries($this->cocAPI());
+        new ShLanguageSelector($this->cocAPI(), $this->translation());
     }
 
     public static function app()
