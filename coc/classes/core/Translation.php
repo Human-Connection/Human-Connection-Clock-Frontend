@@ -26,7 +26,7 @@ class Translation
     /**
      * @var string
      */
-    public $currentLanguage;
+    private $currentLanguage;
 
     /**
      * @var array
@@ -46,6 +46,8 @@ class Translation
         $language = $language ?? self::DEFAULT_LANGUAGE;
 
         $this->setLanguage($language);
+
+        //@todo Add translation to js (via HTML source code) & translate via JS
     }
 
     /**
@@ -58,6 +60,14 @@ class Translation
                 $this->currentLanguage = $language;
             }
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrentLanguage(): string
+    {
+        return $this->currentLanguage;
     }
 
     /**

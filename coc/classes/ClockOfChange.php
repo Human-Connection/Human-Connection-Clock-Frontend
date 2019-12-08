@@ -61,11 +61,11 @@ class ClockOfChange
     {
         self::$pluginClasses[self::$pluginRef]        = $this;
         self::$pluginClasses[self::$optionsManager]   = new OptionsManager();
-        self::$pluginClasses[self::$scriptManager]    = new ScriptManager();
+        self::$translation = new Translation($_GET['lang']);
+        self::$pluginClasses[self::$scriptManager]    = new ScriptManager(self::$translation);
         self::$pluginClasses[self::$cocAPIManager]    = new CoCAPI();
         self::$pluginClasses[self::$avatarAPIManager] = new AvatarAPI();
         self::$pluginClasses[self::$cocAPIManager]->init();
-        self::$translation = new Translation($_GET['lang']);
     }
 
     public function initPlugin()

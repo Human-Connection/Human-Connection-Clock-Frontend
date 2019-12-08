@@ -319,7 +319,6 @@ window.coc = ((window, document, $) => {
         });
 
         $('#joinNowBtn').click(function (e) {
-            console.log("test");
             e.preventDefault();
 
             Object.values(fieldMapToFormId).forEach((value) => {

@@ -57,16 +57,16 @@ class ShLanguageSelector
 
         $html = ' <div id="language-selector">';
 
-        $currentLanguage = $this->getLanguage($this->translation->currentLanguage);
+        $currentLanguage = $this->getLanguage($this->translation->getCurrentLanguage());
         $html            .= '<button class="language-selector-dropbtn"><img src="' . sprintf(
-                $imageSourceString, $this->translation->currentLanguage
+                $imageSourceString, $this->translation->getCurrentLanguage()
             )
             . '" alt="' . $currentLanguage . '"> ' . $currentLanguage . ' <i class="fas fa-chevron-down"></i></button>';
 
 
         $html .= '<div class="language-selector-dropdown-content">';
         foreach ($this->availableTranslations as $availableTranslation) {
-            if ($availableTranslation !== $this->translation->currentLanguage) {
+            if ($availableTranslation !== $this->translation->getCurrentLanguage()) {
 
                 $language = $this->getLanguage($availableTranslation);
                 $html     .= '<a href="?lang=' . $availableTranslation . '" class="language-selector-link"><img src="' . sprintf($imageSourceString, $availableTranslation)
