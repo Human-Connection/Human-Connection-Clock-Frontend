@@ -2,7 +2,13 @@
 
 namespace coc;
 
+use coc\core\AvatarAPI;
+use coc\core\CoCAPI;
+use coc\core\OptionsManager;
+use coc\core\ScriptManager;
+use coc\core\Translation;
 use coc\shortcodes\ShCountries;
+use coc\shortcodes\ShLanguageSelector;
 use coc\shortcodes\ShSign;
 use coc\shortcodes\ShSignUp;
 use coc\shortcodes\ShUserwall;
@@ -21,6 +27,7 @@ class ClockOfChange
     public static $scriptManager = 'scriptManager';
     public static $cocAPIManager = 'cocapiManager';
     public static $avatarAPIManager = 'avatarapiManager';
+    public static $translation = 'translation';
 
     public function __construct($rootPath = '/', $rootUri = '/')
     {
@@ -50,24 +57,26 @@ class ClockOfChange
         return $value;
     }
 
+    public function loadCore()
+    {
+        self::$pluginClasses[self::$pluginRef]        = $this;
+        self::$pluginClasses[self::$optionsManager]   = new OptionsManager();
+        self::$translation = new Translation($_GET['lang']);
+        self::$pluginClasses[self::$scriptManager]    = new ScriptManager(self::$translation);
+        self::$pluginClasses[self::$cocAPIManager]    = new CoCAPI();
+        self::$pluginClasses[self::$avatarAPIManager] = new AvatarAPI();
+        self::$pluginClasses[self::$cocAPIManager]->init();
+    }
+
     public function initPlugin()
     {
         // init shortcodes
         new ShWorld($this->cocAPI());
         new ShSign($this->cocAPI());
-        new ShSignUp($this->cocAPI()); // need button separat for z
+        new ShSignUp($this->cocAPI(), $this->translation()); // need button separat for z
         new ShUserwall($this->cocAPI());
         new ShCountries($this->cocAPI());
-    }
-
-    public function loadCore()
-    {
-        self::$pluginClasses[self::$pluginRef]        = $this;
-        self::$pluginClasses[self::$optionsManager]   = new core\OptionsManager();
-        self::$pluginClasses[self::$scriptManager]    = new core\ScriptManager();
-        self::$pluginClasses[self::$cocAPIManager]    = new core\CoCAPI();
-        self::$pluginClasses[self::$avatarAPIManager] = new core\AvatarAPI();
-        self::$pluginClasses[self::$cocAPIManager]->init();
+        new ShLanguageSelector($this->cocAPI(), $this->translation());
     }
 
     public static function app()
@@ -93,5 +102,10 @@ class ClockOfChange
     public function avatarAPI()
     {
         return self::$pluginClasses[self::$avatarAPIManager];
+    }
+
+    public function translation()
+    {
+        return self::$translation;
     }
 }

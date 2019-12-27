@@ -167,7 +167,7 @@ class ListTable extends \WP_List_Table {
 		$title = '<strong>'.$item['status'].'</strong>';
 
 		$actions = [
-			'cocactivate' => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s">Aktivieren</a>', esc_attr($_REQUEST['page']), 'cocactivate', absint($item['ID']), $nonce),
+			'cocactivate' => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s#entry-%s">Aktivieren</a>', esc_attr($_REQUEST['page']), 'cocactivate', absint($item['ID']), $nonce, absint($item['ID'])),
 			'cocdisable'  => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s">Deaktivieren</a>', esc_attr($_REQUEST['page']), 'cocdisable', absint($item['ID']), $nonce),
             'cocdelete'  => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s" onclick="return confirm(\'Eintrag wirklich löschen?\');">Löschen</a>', esc_attr($_REQUEST['page']), 'cocdelete', absint($item['ID']), $nonce)
 		];
@@ -236,4 +236,17 @@ class ListTable extends \WP_List_Table {
 		] );
 		$this->items = self::getEntries($per_page, $current_page);
 	}
+
+    /**
+     * Generates content for a single row of the table
+     *
+     * @since 3.1.0
+     *
+     * @param object $item The current item
+     */
+    public function single_row( $item ) {
+        echo '<tr id="entry-' . $item['ID'] .'">';
+        $this->single_row_columns( $item );
+        echo '</tr>';
+    }
 }
