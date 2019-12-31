@@ -11,6 +11,7 @@ window.coc = ((window, document, $) => {
         userImages    = $('.user-image'),
         userMessage   = $('#user-message'),
         userWallIndex = 0,
+        entriesCount  = 0,
         files         = null,
         useOwnImage   = false,
         countries     = {},
@@ -123,7 +124,13 @@ window.coc = ((window, document, $) => {
     app.init = () => {
         app.loadCountries();
 
+        const digitsElement = document.querySelector('.display .digits');
+        if (digitsElement) {
+            entriesCount = digitsElement.getAttribute('data-amount');
+        }
+
         $('#joinCoC').click((e) => {
+            app.updateCounter();
             // show form
             app.toggleForm();
 
@@ -615,6 +622,46 @@ window.coc = ((window, document, $) => {
 
         return '';
     };
+
+    app.updateCounter = () => {
+        const cocNumberOfDigits = 8;
+        const digitClassMap = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+        // @todo fetch count via API (jQuery Ajax Request)
+        let count = 12345;
+        console.log(count);
+
+        let urlParams = {};
+        urlParams['offset'] = offset;
+        urlParams['profileImage'] = $('#profileImage').prop('checked') ? 1 : 0;
+        urlParams['orderByDate'] = $('#orderByDate').val() === 'asc' ? 'asc' : 'desc';
+
+        $.ajax({
+            url: cocVars.ajax_url + 'coc/v2/getCount', ///?' + $.param(urlParams)
+            method: 'GET',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-WP-Nonce', cocVars.nonce);
+            },
+            success: function (data) {
+                // console.log(data);
+                // } else {
+                console.log(data);
+                    // no more data - ensure load more is hidden
+                // }
+            },
+            cache: false,
+        });
+
+        console.log(digitElements);
+
+        if (Number.parseInt(entriesCount) > 0 && count !== Number.parseInt(entriesCount)) {
+            const countString = count.toString().padStart(cocNumberOfDigits, '0');
+            const digitElements = document.querySelectorAll('.digits .number');
+
+            for (i = 0; i < digitElements.length; i++) {
+                digitElements[i].firstChild.className = digitClassMap[countString[i]];
+            }
+        }
+    }
 
     app.prevMessage = () => {
         if (userWallIndex <= 0) {
