@@ -129,8 +129,9 @@ window.coc = ((window, document, $) => {
             entriesCount = digitsElement.getAttribute('data-amount');
         }
 
+        window.setTimeout(app.updateCounter, 30 * 1000);
+
         $('#joinCoC').click((e) => {
-            app.updateCounter();
             // show form
             app.toggleForm();
 
@@ -625,10 +626,8 @@ window.coc = ((window, document, $) => {
 
     app.updateCounter = () => {
         const cocNumberOfDigits = 8;
+        const refreshCounterEachNumberOfSeconds = 30;
         const digitClassMap = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-        // @todo fetch count via API (jQuery Ajax Request)
-        let count = 12345;
-        console.log(count);
 
         let urlParams = {};
         urlParams['offset'] = offset;
@@ -636,31 +635,26 @@ window.coc = ((window, document, $) => {
         urlParams['orderByDate'] = $('#orderByDate').val() === 'asc' ? 'asc' : 'desc';
 
         $.ajax({
-            url: cocVars.ajax_url + 'coc/v2/getCount', ///?' + $.param(urlParams)
+            url: cocVars.ajax_url + 'coc/v2/getCount',
             method: 'GET',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader('X-WP-Nonce', cocVars.nonce);
             },
             success: function (data) {
-                // console.log(data);
-                // } else {
-                console.log(data);
-                    // no more data - ensure load more is hidden
-                // }
+                let count = Number.parseInt(data);
+                if (count > 0 && Number.parseInt(entriesCount) > 0 && count !== Number.parseInt(entriesCount)) {
+                    const countString = count.toString().padStart(cocNumberOfDigits, '0');
+                    const digitElements = document.querySelectorAll('.digits .number');
+
+                    for (i = 0; i < digitElements.length; i++) {
+                        digitElements[i].firstChild.className = digitClassMap[countString[i]];
+                    }
+                }
             },
             cache: false,
-        });
+        })
 
-        console.log(digitElements);
-
-        if (Number.parseInt(entriesCount) > 0 && count !== Number.parseInt(entriesCount)) {
-            const countString = count.toString().padStart(cocNumberOfDigits, '0');
-            const digitElements = document.querySelectorAll('.digits .number');
-
-            for (i = 0; i < digitElements.length; i++) {
-                digitElements[i].firstChild.className = digitClassMap[countString[i]];
-            }
-        }
+        window.setTimeout(app.updateCounter, refreshCounterEachNumberOfSeconds * 1000);
     }
 
     app.prevMessage = () => {
