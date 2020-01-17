@@ -46,9 +46,6 @@ class ShSign
         $html .= '<div class="upload-own-wrapper" id="customUploadWrap">';
         $html .= '<i title="eigenes Bild hochladen" id="upload-icon" class="fas fa-upload large-icon"></i>';
         $html .= '</div>';
-        $html .= '<div class="add-avatar-wrapper">';
-        $html .= '<i class="fas fa-plus" id="add-avatar-icon" title="Klicke hier um einen Avatar zu wählen."></i>';
-        $html .= '</div>';
 
         $html .= '</div>';
         $html .= '</div>';

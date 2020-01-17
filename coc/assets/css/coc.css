@@ -210,18 +210,23 @@ input[type="checkbox"].input-error {
 #avatar-preview {
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
 #avatar-preview div {
     align-self: stretch;
     width: 33%;
-    cursor: pointer;
     justify-content: space-between;
 }
 .upload-own-wrapper, .add-avatar-wrapper {
     text-align: center;
     border: 1px solid #e2e2e2;
     cursor: pointer;
+}
+.upload-own-wrapper:hover {
+    background-color: #eeeeee;
+}
+.upload-own-wrapper {
+    transition: background-color 0.3s;
 }
 #upload-icon, #add-avatar-icon {
     cursor: pointer;
