@@ -60,7 +60,6 @@ class ScriptManager
                     true
                 );
         */
-        $avatars = $this->loadAvatars();
         wp_register_script(
             'coc-plugin',
             ClockOfChange::$pluginRootUri . 'assets/js/coc.js',
@@ -74,22 +73,9 @@ class ScriptManager
             'homeUrl'  => esc_url_raw(home_url()),
             'ajax_url' => esc_url_raw(rest_url()),
             'nonce'    => wp_create_nonce('wp_rest'),
-            'avatars'  => $avatars,
             'language' => $this->translation->getCurrentLanguage(),
         ]
         );
-    }
-
-    protected function loadAvatars()
-    {
-        $avatars = [];
-
-        $res = ClockOfChange::app()->avatarAPI()->getOptions();
-        if ($res !== null && $res !== false) {
-            return json_decode($res, true);
-        }
-
-        return false;
     }
 
     /**

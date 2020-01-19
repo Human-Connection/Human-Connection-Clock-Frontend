@@ -2,7 +2,6 @@
 
 namespace coc;
 
-use coc\core\AvatarAPI;
 use coc\core\CoCAPI;
 use coc\core\OptionsManager;
 use coc\core\ScriptManager;
@@ -26,7 +25,6 @@ class ClockOfChange
     public static $optionsManager = 'optionsManager';
     public static $scriptManager = 'scriptManager';
     public static $cocAPIManager = 'cocapiManager';
-    public static $avatarAPIManager = 'avatarapiManager';
     public static $translation = 'translation';
 
     public function __construct($rootPath = '/', $rootUri = '/')
@@ -64,7 +62,6 @@ class ClockOfChange
         self::$translation = new Translation($_GET['lang']);
         self::$pluginClasses[self::$scriptManager]    = new ScriptManager(self::$translation);
         self::$pluginClasses[self::$cocAPIManager]    = new CoCAPI();
-        self::$pluginClasses[self::$avatarAPIManager] = new AvatarAPI();
         self::$pluginClasses[self::$cocAPIManager]->init();
     }
 
@@ -97,11 +94,6 @@ class ClockOfChange
     public function cocAPI()
     {
         return self::$pluginClasses[self::$cocAPIManager];
-    }
-
-    public function avatarAPI()
-    {
-        return self::$pluginClasses[self::$avatarAPIManager];
     }
 
     public function translation()

@@ -7,7 +7,6 @@ window.coc = ((window, document, $) => {
         formOverlay   = $('.coc-form-overlay'),
         defaultMsg    = 'Ich bin für Veränderung.',
         defaultName   = 'Mensch',
-        baseUrl       = 'https://tools.human-connection.org/avataaars/composite',
         userImages    = $('.user-image'),
         userMessage   = $('#user-message'),
         userWallIndex = 0,
@@ -105,10 +104,6 @@ window.coc = ((window, document, $) => {
 
                 reader.readAsDataURL(event.target.files[0]);
                 useOwnImage = true;
-
-                $('#avatar-wrapper').html('');
-                $('#add-avatar-icon').removeClass('fa-close');
-                $('#add-avatar-icon').addClass('fa-plus');
             }
             $(this).val('');
         });
@@ -140,190 +135,6 @@ window.coc = ((window, document, $) => {
 
         $('.coc-form-close').click(() => {
             app.toggleForm();
-        });
-
-        $('#coc-add-avatar .add-avatar-wrapper').click(function () {
-            let avatarWrapper = $('#avatar-wrapper');
-            let addAvatarIcon = $('#add-avatar-icon');
-            useOwnImage = false;
-
-            if (avatarWrapper.html() === '') {
-                avatarWrapper.show();
-                addAvatarIcon.removeClass('fa-plus');
-                addAvatarIcon.addClass('fa-close');
-
-                $('#avatar-wrapper').append(
-                    '<div class="fusion-tabs fusion-tabs-2 classic horizontal-tabs icon-position-left">'
-                    + '<div class="nav">'
-                    + '<ul class="nav-tabs nav-justified" id="selection-cat-tabs">'
-                    + '<li class="active">'
-                    + '<a class="tab-link" id="hair-tab" data-toggle="tab" href="#hair" role="tab" aria-controls="hair" aria-selected="false">Haare</a>'
-                    + '</li>'
-                    + '<li>'
-                    + '<a class="tab-link" id="eyebrow-tab" data-toggle="tab" href="#eyebrow" role="tab" aria-controls="eyebrow" aria-selected="false">Augenbrauen</a>'
-                    + '</li>'
-                    + '<li>'
-                    + '<a class="tab-link" id="eyes-tab" data-toggle="tab" href="#eyes" role="tab" aria-controls="eyes" aria-selected="false">Augen</a>'
-                    + '</li>'
-                    //  + '<li>'
-                    //  + '<a class="tab-link" id="nose-tab" data-toggle="tab" href="#nose" role="tab" aria-controls="nose" aria-selected="true">Nase</a>'
-                    //  + '</li>'
-                    + '<li>'
-                    + '<a class="tab-link" id="mouth-tab" data-toggle="tab" href="#mouth" role="tab" aria-controls="mouth" aria-selected="true">Mund</a>'
-                    + '</li>'
-                    + '<li>'
-                    + '<a class="tab-link" id="facialHair-tab" data-toggle="tab" href="#facialHair" role="tab" aria-controls="facialHair" aria-selected="false">Barthaar</a>'
-                    + '</li>'
-                    + '<li>'
-                    + '<a class="tab-link" id="clothing-tab" data-toggle="tab" href="#clothing" role="tab" aria-controls="clothing" aria-selected="true">Kleidung</a>'
-                    + '</li>'
-                    + '</ul>'
-                    + '</div>'
-                    + '</div>'
-                );
-
-                $('#avatar-wrapper').append('<div class="tab-content" id="selection-tabs"></div>');
-                $.each(cocVars.avatars, (i, val) => {
-                    let isFirst = true;
-                    $('#avatar-wrapper #selection-tabs').append(
-                        '<div class="tab-pane fade fusion-clearfix" id="' + i + '" role="tabpanel" aria-labelledby="' + i + '-tab">'
-                        + '<div class="selection-wrapper">'
-                        + '<div class="selection-' + i + '">'
-                        + '</div>'
-                        + '<div class="control-wrapper">'
-                        + '<div class="go-left-wrapper pull-left disabled" data-prop="' + i + '">'
-                        + '<i class="switch-action fas fa-caret-left"></i>'
-                        + '</div>'
-                        + '<div class="go-right-wrapper pull-right" data-prop="' + i + '">'
-                        + '<i class="switch-action fas fa-caret-right"></i>'
-                        + '</div>'
-                        + '</div>'
-                        + '</div>'
-                        + '</div>'
-                    );
-                    if (i == 'hair') {
-                        $('#' + i).addClass('active in');
-                    }
-                    $.each(val, (j, opt) => {
-                        if (isFirst === true) {
-                            isFirst = false;
-                            $('.selection-'+i).append('<div class="opt-wrapper" style="text-align:center;"><img src="'+opt.url+'" alt="avatar" /></div>');
-                        } else {
-                            $('.selection-'+i).append('<div class="opt-wrapper" style="text-align:center;display:none;"><img src="'+opt.url+'" alt="avatar" /></div>');
-                        }
-
-                        let activeVar;
-
-                        switch (i) {
-                            case 'hair':
-                                activeVar = hair;
-                                break;
-                            case 'eyebrow':
-                                activeVar = eyebrow;
-                                break;
-                            case 'eyes':
-                                activeVar = eyes;
-                                break;
-                            case 'nose':
-                                activeVar = nose;
-                                break;
-                            case 'mouth':
-                                activeVar = mouth;
-                                break;
-                            case 'facialHair':
-                                activeVar = facialHair;
-                                break;
-                            case 'clothing':
-                                activeVar = clothing;
-                                break;
-                        }
-
-                        activeVar.push(opt.name);
-                    });
-                });
-
-                $('#coc-image').attr('src',
-                    baseUrl + '?hair='
-                    + hair[indexMap['hair']] +
-                    '&eyebrow=' + eyebrow[indexMap['eyebrow']] +
-                    '&eyes=' + eyes[indexMap['eyes']] +
-                    '&nose=' + nose[indexMap['nose']] +
-                    '&mouth=' + mouth[indexMap['mouth']] +
-                    '&facialHair=' + facialHair[indexMap['facialHair']] +
-                    '&clothing=' + clothing[indexMap['clothing']]
-                );
-
-                // read data('prop')
-                // count current prop index 1 up or down unless 0 or prop.length
-                // hide current active and display next or prev using img.src attr
-                $('.go-left-wrapper').click(function () {
-                    let prop = $(this).data('prop');
-                    let wraps = $('.selection-' + prop).find('.opt-wrapper');
-
-                    if (indexMap[prop] > 0) {
-                        wraps[indexMap[prop]].style.display = 'none';
-                        indexMap[prop]--;
-                        wraps[indexMap[prop]].style.display = 'block';
-
-                        $('#coc-image').attr('src',
-                            baseUrl + '?hair='
-                            + hair[indexMap['hair']] +
-                            '&eyebrow=' + eyebrow[indexMap['eyebrow']] +
-                            '&eyes=' + eyes[indexMap['eyes']] +
-                            '&nose=' + nose[indexMap['nose']] +
-                            '&mouth=' + mouth[indexMap['mouth']] +
-                            '&facialHair=' + facialHair[indexMap['facialHair']] +
-                            '&clothing=' + clothing[indexMap['clothing']]
-                        );
-                        $(this).removeClass('disabled');
-                    } else {
-                        $(this).addClass('disabled');
-                    }
-
-                    if (indexMap[prop] <= 0) {
-                        $(this).addClass('disabled');
-                    }
-
-                    if (indexMap[prop] < wraps.length - 1) {
-                        $(this).parent().find('.go-right-wrapper').removeClass('disabled');
-                    }
-                });
-
-                $('.go-right-wrapper').click(function () {
-                    let prop = $(this).data('prop');
-                    let wraps = $('.selection-' + prop).find('.opt-wrapper');
-
-                    if (wraps.length - 1 == indexMap[prop]) {
-                        $(this).addClass('disabled');
-                    } else {
-                        wraps[indexMap[prop]].style.display = 'none';
-                        indexMap[prop]++;
-                        wraps[indexMap[prop]].style.display = 'block';
-
-                        $('#coc-image').attr('src',
-                            baseUrl + '?hair='
-                            + hair[indexMap['hair']] +
-                            '&eyebrow=' + eyebrow[indexMap['eyebrow']] +
-                            '&eyes=' + eyes[indexMap['eyes']] +
-                            '&nose=' + nose[indexMap['nose']] +
-                            '&mouth=' + mouth[indexMap['mouth']] +
-                            '&facialHair=' + facialHair[indexMap['facialHair']] +
-                            '&clothing=' + clothing[indexMap['clothing']]
-                        );
-                        $(this).removeClass('disabled');
-                    }
-
-                    if (indexMap[prop] >= 1) {
-                        $(this).parent().find('.go-left-wrapper').removeClass('disabled');
-                    } else {
-                        $(this).parent().find('.go-left-wrapper').addClass('disabled');
-                    }
-                });
-            } else {
-                avatarWrapper.html('');
-                addAvatarIcon.removeClass('fa-close');
-                addAvatarIcon.addClass('fa-plus');
-            }
         });
 
         $('#joinNowBtn').click(function (e) {
