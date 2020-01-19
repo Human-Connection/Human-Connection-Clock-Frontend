@@ -11,6 +11,7 @@ window.coc = ((window, document, $) => {
         userImages    = $('.user-image'),
         userMessage   = $('#user-message'),
         userWallIndex = 0,
+        entriesCount  = 0,
         files         = null,
         useOwnImage   = false,
         countries     = {},
@@ -122,6 +123,13 @@ window.coc = ((window, document, $) => {
 
     app.init = () => {
         app.loadCountries();
+
+        const digitsElement = document.querySelector('.display .digits');
+        if (digitsElement) {
+            entriesCount = digitsElement.getAttribute('data-amount');
+        }
+
+        window.setTimeout(app.updateCounter, 30 * 1000);
 
         $('#joinCoC').click((e) => {
             // show form
@@ -615,6 +623,39 @@ window.coc = ((window, document, $) => {
 
         return '';
     };
+
+    app.updateCounter = () => {
+        const cocNumberOfDigits = 8;
+        const refreshCounterEachNumberOfSeconds = 30;
+        const digitClassMap = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+
+        let urlParams = {};
+        urlParams['offset'] = offset;
+        urlParams['profileImage'] = $('#profileImage').prop('checked') ? 1 : 0;
+        urlParams['orderByDate'] = $('#orderByDate').val() === 'asc' ? 'asc' : 'desc';
+
+        $.ajax({
+            url: cocVars.ajax_url + 'coc/v2/getCount',
+            method: 'GET',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-WP-Nonce', cocVars.nonce);
+            },
+            success: function (data) {
+                let count = Number.parseInt(data);
+                if (count > 0 && Number.parseInt(entriesCount) > 0 && count !== Number.parseInt(entriesCount)) {
+                    const countString = count.toString().padStart(cocNumberOfDigits, '0');
+                    const digitElements = document.querySelectorAll('.digits .number');
+
+                    for (i = 0; i < digitElements.length; i++) {
+                        digitElements[i].firstChild.className = digitClassMap[countString[i]];
+                    }
+                }
+            },
+            cache: false,
+        })
+
+        window.setTimeout(app.updateCounter, refreshCounterEachNumberOfSeconds * 1000);
+    }
 
     app.prevMessage = () => {
         if (userWallIndex <= 0) {

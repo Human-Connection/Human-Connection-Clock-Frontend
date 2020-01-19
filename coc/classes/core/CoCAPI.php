@@ -68,6 +68,13 @@ class CoCAPI
                 'callback' => [$this, 'deleteEntry'],
             ]
         );
+
+        register_rest_route(
+            'coc/v2', '/getCount/', [
+                'methods'  => 'GET',
+                'callback' => [$this, 'getCount'],
+            ]
+        );
     }
 
     public function loadMore()
