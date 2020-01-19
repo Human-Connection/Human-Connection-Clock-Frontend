@@ -167,9 +167,9 @@ class ListTable extends \WP_List_Table {
 		$title = '<strong>'.$item['status'].'</strong>';
 
 		$actions = [
-			'cocactivate' => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s#entry-%s">Aktivieren</a>', esc_attr($_REQUEST['page']), 'cocactivate', absint($item['ID']), $nonce, absint($item['ID'])),
-			'cocdisable'  => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s">Deaktivieren</a>', esc_attr($_REQUEST['page']), 'cocdisable', absint($item['ID']), $nonce),
-            'cocdelete'  => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s" onclick="return confirm(\'Eintrag wirklich löschen?\');">Löschen</a>', esc_attr($_REQUEST['page']), 'cocdelete', absint($item['ID']), $nonce)
+			'cocactivate' => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s#entry-%s">Aktivieren</a>', esc_attr($_REQUEST['page']), 'cocactivate', absint($item['ID']), $nonce, $this->get_pagenum(), absint($item['ID'])),
+			'cocdisable'  => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s">Deaktivieren</a>', esc_attr($_REQUEST['page']), 'cocdisable', absint($item['ID']), $nonce, $this->get_pagenum()),
+            'cocdelete'  => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s" onclick="return confirm(\'Eintrag wirklich löschen?\');">Löschen</a>', esc_attr($_REQUEST['page']), 'cocdelete', absint($item['ID']), $nonce, $this->get_pagenum())
 		];
 
 		return $title . $this->row_actions($actions);
