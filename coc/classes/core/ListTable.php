@@ -3,6 +3,7 @@ namespace coc\core;
 
 use coc\ClockOfChange;
 use coc\shortcodes\ShUserwall;
+use DateTime;
 
 class ListTable extends \WP_List_Table {
     public $items;
@@ -134,6 +135,14 @@ class ListTable extends \WP_List_Table {
 	 */
 	public function column_default($item, $column_name) {
 		switch ($column_name){
+            case 'created_at':
+            case 'updated_at':
+            case 'confirmed_at':
+                if ($item[$column_name]) {
+                    $dateTime = DateTime::createFromFormat('d-m-Y', $item[$column_name]);
+                    return $dateTime->format('d.m.Y');
+                }
+                break;
 			case 'ID':
 			case 'email':
 			case 'firstname':
@@ -143,9 +152,6 @@ class ListTable extends \WP_List_Table {
 			case 'email_confirmed':
 			case 'status':
 			case 'anon':
-			case 'created_at':
-			case 'updated_at':
-			case 'confirmed_at':
 			case 'image':
 				return $item[$column_name];
 			default:
@@ -167,9 +173,9 @@ class ListTable extends \WP_List_Table {
 		$title = '<strong>'.$item['status'].'</strong>';
 
 		$actions = [
-			'cocactivate' => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s#entry-%s">Aktivieren</a>', esc_attr($_REQUEST['page']), 'cocactivate', absint($item['ID']), $nonce, absint($item['ID'])),
-			'cocdisable'  => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s">Deaktivieren</a>', esc_attr($_REQUEST['page']), 'cocdisable', absint($item['ID']), $nonce),
-            'cocdelete'  => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s" onclick="return confirm(\'Eintrag wirklich löschen?\');">Löschen</a>', esc_attr($_REQUEST['page']), 'cocdelete', absint($item['ID']), $nonce)
+			'cocactivate' => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s#entry-%s">Aktivieren</a>', esc_attr($_REQUEST['page']), 'cocactivate', absint($item['ID']), $nonce, $this->get_pagenum(), absint($item['ID'])),
+			'cocdisable'  => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s">Deaktivieren</a>', esc_attr($_REQUEST['page']), 'cocdisable', absint($item['ID']), $nonce, $this->get_pagenum()),
+            'cocdelete'  => sprintf('<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s" onclick="return confirm(\'Eintrag wirklich löschen?\');">Löschen</a>', esc_attr($_REQUEST['page']), 'cocdelete', absint($item['ID']), $nonce, $this->get_pagenum())
 		];
 
 		return $title . $this->row_actions($actions);
@@ -210,9 +216,9 @@ class ListTable extends \WP_List_Table {
 			'country'    => __( 'Country', 'coc' ),
 			'email_confirmed'    => __( 'EMail Confirmed', 'coc' ),
 			'status'    => __( 'Status', 'coc' ),
-			'anon'    => __( 'Anon', 'coc' ),
+			'anon'    => __( 'Anonymous', 'coc' ),
 			'created_at'    => __( 'Created', 'coc' ),
-			'updated_at'    => __( 'Updated', 'coc' ),
+//			'updated_at'    => __( 'Updated', 'coc' ),
 			'confirmed_at'    => __( 'Confirmed', 'coc' ),
 			'image'    => __( 'Image', 'coc' ),
 		];
