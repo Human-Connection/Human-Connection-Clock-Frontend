@@ -62,7 +62,7 @@ class ScriptManager
         */
         wp_register_script(
             'coc-plugin',
-            ClockOfChange::$pluginRootUri . 'assets/js/coc.js',
+            ClockOfChange::$pluginRootUri . 'assets/js/coc.min.js',
             [],
             null,//false,
             true
