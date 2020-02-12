@@ -112,6 +112,9 @@ With the installation of the Clock of Change Frontend plugin in Wordpress, there
 
 The Clock of Change Frontend needs to be connected to the Clock of Change API server in order to display the data, especially the entries.
 
+First you need to import the definitions of the advanced custom fields into your Wordpress installation. 
+In the WP Admin backend under `Custom Fields -> Tools` you need to import the field definitions you will find in `coc\config\acf-export-2020-02-09.json`.
+
 To establish a connection, it is necessary to set the base url and a valid API key for the Clock of Change API server. 
 This needs to be done under `CoC Options` in the Wordpress admin backend in the respective fields.
 

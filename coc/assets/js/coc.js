@@ -124,7 +124,14 @@ window.coc = ((window, document, $) => {
             entriesCount = digitsElement.getAttribute('data-amount');
         }
 
-        window.setTimeout(app.updateCounter, 30 * 1000);
+        // Dirty Hack to update counter on english pages (url includes path '/en') to avoid acf error & broken counter
+        let refreshCounterMiliseconds = 30 * 1000;
+        if (window.location.pathname && window.location.pathname.includes('/en/')) {
+            refreshCounterMiliseconds = 1;
+        }
+
+
+        window.setTimeout(app.updateCounter, refreshCounterMiliseconds);
 
         $('#joinCoC').click((e) => {
             // show form
@@ -464,8 +471,6 @@ window.coc = ((window, document, $) => {
             },
             cache: false,
         })
-
-        window.setTimeout(app.updateCounter, refreshCounterEachNumberOfSeconds * 1000);
     }
 
     app.prevMessage = () => {
