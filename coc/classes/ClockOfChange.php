@@ -2,6 +2,10 @@
 
 namespace coc;
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 use coc\core\CoCAPI;
 use coc\core\OptionsManager;
 use coc\core\ScriptManager;
@@ -27,6 +31,12 @@ class ClockOfChange
     public static $cocAPIManager = 'cocapiManager';
     public static $translation = 'translation';
 
+    /**
+     * ClockOfChange constructor.
+     *
+     * @param string $rootPath
+     * @param string $rootUri
+     */
     public function __construct($rootPath = '/', $rootUri = '/')
     {
         if (self::$pluginRootPath === null) {
@@ -57,11 +67,11 @@ class ClockOfChange
 
     public function loadCore()
     {
-        self::$pluginClasses[self::$pluginRef]        = $this;
-        self::$pluginClasses[self::$optionsManager]   = new OptionsManager();
-        self::$translation = new Translation($_GET['lang']);
-        self::$pluginClasses[self::$scriptManager]    = new ScriptManager(self::$translation);
-        self::$pluginClasses[self::$cocAPIManager]    = new CoCAPI();
+        self::$pluginClasses[self::$pluginRef]      = $this;
+        self::$pluginClasses[self::$optionsManager] = new OptionsManager();
+        self::$pluginClasses[self::$translation]    = new Translation(isset($_GET['lang']) ? $_GET['lang'] : null);
+        self::$pluginClasses[self::$scriptManager]  = new ScriptManager($this->translation());
+        self::$pluginClasses[self::$cocAPIManager]  = new CoCAPI($this->translation());
         self::$pluginClasses[self::$cocAPIManager]->init();
     }
 
@@ -76,11 +86,17 @@ class ClockOfChange
         new ShLanguageSelector($this->cocAPI(), $this->translation());
     }
 
+    /**
+     * @return ClockOfChange
+     */
     public static function app()
     {
         return self::$pluginClasses[self::$pluginRef];
     }
 
+    /**
+     * @return OptionsManager
+     */
     public function optionsManager()
     {
         return self::$pluginClasses[self::$optionsManager];
@@ -91,13 +107,19 @@ class ClockOfChange
         self::$pluginClasses[self::$optionsManager]->loadMenu();
     }
 
+    /**
+     * @return CoCAPI
+     */
     public function cocAPI()
     {
         return self::$pluginClasses[self::$cocAPIManager];
     }
 
+    /**
+     * @return Translation
+     */
     public function translation()
     {
-        return self::$translation;
+        return self::$pluginClasses[self::$translation];
     }
 }

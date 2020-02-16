@@ -13,7 +13,7 @@ class CoCAPI
     const ENDPOINT_ENTRIES        = '/entries';
     const ENDPOINT_ENTRIES_TOGGLE = '/entries/toggle';
     const ENDPOINT_COUNTRIES      = '/countries';
-    const ENDPOINT_DELETE_ENTRY      = '/delete';
+    const ENDPOINT_DELETE_ENTRY   = '/delete';
 
     private $_apiKey = null;
     private $_baseUrl = null;
@@ -24,8 +24,20 @@ class CoCAPI
      */
     private $_uploadFolder = 'avataaars/';
 
-    public function __construct()
+    /**
+     * @var Translation
+     */
+    private $translation;
+
+    /**
+     * CoCAPI constructor.
+     *
+     * @param Translation $translation
+     */
+    public function __construct($translation)
     {
+        $this->translation = $translation;
+
         if ($this->_apiKey === null) {
             $apiKey = ClockOfChange::app()->optionsManager()->getOption(OptionsManager::OPT_API_KEY);
             if ($apiKey !== false) {
@@ -124,27 +136,27 @@ class CoCAPI
 
     public function saveEntry($data)
     {
-        $params = $data->get_params();
+        $params   = $data->get_params();
         $response = [];
 
         if (!isset($params['email']) || empty($params['email'])) {
-            $response['email'] = 'Missing required field';
+            $response['email'] = $this->translation->t('errorMissingRequiredField', 'Missing required field');
         }
 
         if (!isset($params['message']) || empty($params['message'])) {
-            $response['message'] = 'Missing required field';
+            $response['message'] = $this->translation->t('errorMissingRequiredField', 'Missing required field');
         }
 
         if (!isset($params['firstname']) || empty($params['firstname'])) {
-            $response['firstname'] = 'Missing required field';
+            $response['firstname'] = $this->translation->t('errorMissingRequiredField', 'Missing required field');
         }
 
         if (!isset($params['pr']) || $params['pr'] !== 'true') {
-            $response['pr'] = 'Missing required field';
+            $response['pr'] = $this->translation->t('errorMissingRequiredField', 'Missing required field');
         }
 
         if (!isset($params['age']) || $params['age'] !== 'true') {
-            $response['age'] = 'Missing required field';
+            $response['age'] = $this->translation->t('errorMissingRequiredField', 'Missing required field');
         }
 
         // ensure required fields

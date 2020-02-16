@@ -29,7 +29,7 @@ class Translation
     private $currentLanguage;
 
     /**
-     * @var array
+     * @var array|null
      */
     private $translationData;
 
@@ -43,7 +43,7 @@ class Translation
         $this->currentLanguage = self::DEFAULT_LANGUAGE;
         $this->translationData = null;
 
-        $language = $language ?? self::DEFAULT_LANGUAGE;
+        $language = !empty($language) ? $language : self::DEFAULT_LANGUAGE;
 
         $this->setLanguage($language);
 
@@ -77,7 +77,7 @@ class Translation
      */
     public function translate($translationKey, $fallbackText = null)
     {
-        if (array_key_exists($translationKey, $this->translationData)) {
+        if (is_array($this->translationData) && array_key_exists($translationKey, $this->translationData)) {
             return $this->translationData[$translationKey];
         }
 

@@ -1,4 +1,5 @@
 {
   "slogan": "Ich glaube daran, dass Veränderung in jedem Einzelnen beginnt und dass, wenn genügend Menschen sich ändern, die Welt sich verändern wird. Ich möchte mit meinen Mitmenschen eine Brücke zu einer nachhaltigen Zukunft für die Kinder der Welt bauen.",
-  "joinNowButton": "SEI DABEI!"
+  "joinNowButton": "SEI DABEI!",
+  "errorMissingRequiredField": "Bitte das benötigte Feld ausfüllen"
 }

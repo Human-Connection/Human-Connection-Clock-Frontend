@@ -9,7 +9,10 @@
             "email": "mimic@42geeks.gg"
         }
     ],
-    "require": {},
+    "require": {
+      "ext-curl": "*",
+      "ext-json": "*"
+    },
     "autoload": {
         "psr-4": {"coc\\": "./classes"}
     }

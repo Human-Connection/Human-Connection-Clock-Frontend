@@ -10,7 +10,7 @@ use coc\ClockOfChange;
 use coc\core\CoCAPI;
 use coc\core\Translation;
 
-// coc\shortcodes\shlanguageselector
+// coc\shortcodes\Shlanguageselector
 class ShLanguageSelector
 {
     // Max number of countries to start with
