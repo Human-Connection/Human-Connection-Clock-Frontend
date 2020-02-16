@@ -143,6 +143,10 @@ class CoCAPI
             $response['pr'] = 'Missing required field';
         }
 
+        if (!isset($params['age']) || $params['age'] !== 'true') {
+            $response['age'] = 'Missing required field';
+        }
+
         // ensure required fields
         // form can only be send when pr is set while we assume that any record showing up on node has accepted privacy
         if (!empty($response)) {

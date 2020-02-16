@@ -50,6 +50,7 @@ window.coc = ((window, document, $) => {
     fieldMapToFormId['beta'] = 'coc-register-beta';
     fieldMapToFormId['nl'] = 'coc-register-nl';
     fieldMapToFormId['pr'] = 'coc-register-privacy';
+    fieldMapToFormId['age'] = 'coc-register-age';
     fieldMapToFormId['file'] = 'coc-add-avatar';
     fieldMapToFormId['error'] = 'form-error';
 
@@ -178,6 +179,7 @@ window.coc = ((window, document, $) => {
             data.append('anon', $('#coc-anon')[0].checked);
             data.append('beta', '0');
             data.append('nl', $('#coc-register-nl')[0].checked);
+            data.append('age', $('#coc-register-age')[0].checked);
             data.append('pr', privacyChecked);
 
             // PAX
