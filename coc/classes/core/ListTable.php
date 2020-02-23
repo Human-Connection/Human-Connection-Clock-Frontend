@@ -46,7 +46,10 @@ class ListTable extends \WP_List_Table {
 	public static function getEntries( $per_page = 5, $page_number = 1 ) {
         $result = null;
         $offset = $page_number === 1 ? 0 : $page_number * $per_page;
-		$users = ClockOfChange::app()->cocAPI()->getUsers($offset, false);
+        $orderBy = $_GET['orderby'] ? $_GET['orderby'] : null;
+        $order = $_GET['order'] ? $_GET['order'] : null;
+
+		$users = ClockOfChange::app()->cocAPI()->getUsers($offset, false, $orderBy, $order);
 		if(!empty($users) && isset($users->results)){
 			foreach($users->results as $user){
 				$userArr['ID']              = $user->id;
@@ -187,17 +190,18 @@ class ListTable extends \WP_List_Table {
 	 * @return array
 	 */
 	public function get_sortable_columns() {
-		$sortable_columns = array(
-			/*'email' => [ 'email', false ],
+		return [
+            'ID' => [ 'id', false ],
+			'email' => [ 'email', false ],
 			'firstname' => [ 'firstname', false ],
 			'lastname' => [ 'lastname', false ],
 			'country' => [ 'country', false ],
+            'email_confirmed' => ['email_confirmed', false],
 			'status' => [ 'status', false  ],
 			'anon' => [ 'anon', false ],
 			'created_at' => [ 'created_at', true],
-			*/
-		);
-		return $sortable_columns;
+            'confirmed_at' => ['confirmed_at', true],
+		];
 	}
 
 	/**

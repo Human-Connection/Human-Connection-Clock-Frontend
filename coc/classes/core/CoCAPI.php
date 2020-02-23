@@ -92,13 +92,13 @@ class CoCAPI
     public function loadMore()
     {
         $offset               = (int) $_GET['offset'] ?? 0;
-        $orderByDate          = $_GET['orderByDate'] === 'asc' ? 'asc' : 'desc';
         $filterByProfileImage = (int) $_GET['profileImage'] === 1 ? 1 : 0;
 
         $users = $this->getUsers(
             $offset * ShUserwall::PAGE_SIZE,
             true,
-            $orderByDate,
+            $_GET['orderByDate'] ? 'id' : null,
+            $_GET['orderByDate'] ? $_GET['orderByDate'] : null,
             $filterByProfileImage
         );
         $out   = [];
@@ -258,7 +258,7 @@ class CoCAPI
         return json_decode($resp);
     }
 
-    public function getUsers($offset = 0, $active = true, $orderByDate = 'desc', $profileImage = 0)
+    public function getUsers($offset = 0, $active = true, $orderBy = null, $order = null, $profileImage = 0)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['API-Key: ' . $this->_apiKey]);
@@ -268,7 +268,8 @@ class CoCAPI
             . '?isActive=' . (int) $active
             . '&limit=' . ShUserwall::PAGE_SIZE
             . '&offset=' . (int) $offset
-            . '&orderByDate=' . $orderByDate
+            . '&orderBy=' . (string) $orderBy
+            . '&order=' . (string) $order
             . '&profileImage=' . (int) $profileImage
         );
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
