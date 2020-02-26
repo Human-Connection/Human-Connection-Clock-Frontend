@@ -67,7 +67,7 @@ jQuery(document).ready(function ($) {
                 tlClock.pause();
 
                 tablet = false;
-                radius = 211;
+                radius = 212;
                 createInitTL();
                 createRotationTL();
                 createAddPersonTL();
@@ -97,7 +97,7 @@ jQuery(document).ready(function ($) {
                 mobile = false;
 
                 tablet = true;
-                radius = 146;
+                radius = 147;
                 createInitTL();
                 createRotationTL();
                 createAddPersonTL();
@@ -125,7 +125,7 @@ jQuery(document).ready(function ($) {
                 tlClock.pause();
                 mobile = true;
                 tablet = false;
-                radius = 102;
+                radius = 104;
                 createInitTL();
                 createClockTL();
                 createRotationTL();
