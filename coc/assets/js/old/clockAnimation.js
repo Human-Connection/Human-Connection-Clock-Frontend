@@ -67,7 +67,7 @@ jQuery(document).ready(function ($) {
                 tlClock.pause();
 
                 tablet = false;
-                radius = 210;
+                radius = 212;
                 createInitTL();
                 createRotationTL();
                 createAddPersonTL();
@@ -97,7 +97,7 @@ jQuery(document).ready(function ($) {
                 mobile = false;
 
                 tablet = true;
-                radius = 146;
+                radius = 147;
                 createInitTL();
                 createRotationTL();
                 createAddPersonTL();
@@ -125,7 +125,7 @@ jQuery(document).ready(function ($) {
                 tlClock.pause();
                 mobile = true;
                 tablet = false;
-                radius = 102;
+                radius = 104;
                 createInitTL();
                 createClockTL();
                 createRotationTL();
@@ -288,7 +288,7 @@ jQuery(document).ready(function ($) {
             }
 
 
-            tl.set($(this), {opacity: 1, rotation: 90 + rot}, 'start+=' + (0.05 * cnt + 3.3));
+            tl.set($(this), {opacity: 1, rotation: 85 + rot}, 'start+=' + (0.05 * cnt + 3.3));
             tl.fromTo($(this), 1, {x: 0, y: 0}, {x: x, y: y, ease: Power1.easeOut}, 'start+=' + (0.08 * cnt + 3.3));
 
 //            tl.set($(this), {zIndex: cnt}, 'startPeople+=' + (0.08 * cnt + 1));
