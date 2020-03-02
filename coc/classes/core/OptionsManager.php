@@ -2,7 +2,6 @@
 namespace coc\core;
 
 use coc\ClockOfChange;
-use coc\core\ListTable;
 use coc\shortcodes\ShUserwall;
 
 class OptionsManager

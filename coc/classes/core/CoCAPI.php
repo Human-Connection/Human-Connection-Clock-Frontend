@@ -5,7 +5,7 @@ namespace coc\core;
 use coc\ClockOfChange;
 use coc\shortcodes\ShUserwall;
 use Exception;
-use \Requests;
+use Requests;
 
 class CoCAPI
 {
@@ -92,14 +92,18 @@ class CoCAPI
     public function loadMore()
     {
         $offset               = (int) $_GET['offset'] ?? 0;
-        $filterByProfileImage = (int) $_GET['profileImage'] === 1 ? 1 : 0;
+        $filterByProfileImage = (bool) $_GET['profileImage'] === 1 ? 1 : 0;
+
+        $filter = [
+            'active'       => true,
+            'profileImage' => $filterByProfileImage
+        ];
 
         $users = $this->getUsers(
             $offset * ShUserwall::PAGE_SIZE,
-            true,
+            $filter,
             $_GET['orderByDate'] ? 'id' : null,
-            $_GET['orderByDate'] ? $_GET['orderByDate'] : null,
-            $filterByProfileImage
+            $_GET['orderByDate'] ? $_GET['orderByDate'] : null
         );
         $out   = [];
 
@@ -258,19 +262,34 @@ class CoCAPI
         return json_decode($resp);
     }
 
-    public function getUsers($offset = 0, $active = true, $orderBy = null, $order = null, $profileImage = 0)
+    public function getUsers($offset = 0, $filter = [], $orderBy = null, $order = null)
     {
+        if (!isset($filter['active'])) {
+            $filter['active'] = true;
+        }
+        if (!isset($filter['profileImage'])) {
+            $filter['profileImage'] = false;
+        }
+        if (!isset($filter['confirmed'])) {
+            $filter['confirmed'] = 'all';
+        }
+        if (!isset($filter['status'])) {
+            $filter['status'] = 'all';
+        }
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['API-Key: ' . $this->_apiKey]);
         curl_setopt(
             $ch, CURLOPT_URL,
             $this->_baseUrl . self::ENDPOINT_ENTRIES
-            . '?isActive=' . (int) $active
+            . '?isActive=' . (int) $filter['active']
             . '&limit=' . ShUserwall::PAGE_SIZE
             . '&offset=' . (int) $offset
             . '&orderBy=' . (string) $orderBy
             . '&order=' . (string) $order
-            . '&profileImage=' . (int) $profileImage
+            . '&profileImage=' . (int) $filter['profileImage']
+            . '&confirmed=' . (string) $filter['confirmed']
+            . '&status=' . (string) $filter['status']
         );
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 

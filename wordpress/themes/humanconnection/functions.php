@@ -31,7 +31,7 @@ function hc_columns( $column, $post_id ) {
 	       	$auth_id	= get_post_field( 'post_author', $post_id, 'raw' );
 	       	$user_id	= !empty( $modr_id ) ? $modr_id : $auth_id;
 	       	$user_info	= get_userdata( $user_id );
-	
+
 	       	echo '<p class="mod-date">';
 	       	echo '<em>'.$modified.'</em><br />';
 	       	echo 'by <strong>'.$user_info->display_name.'<strong>';
