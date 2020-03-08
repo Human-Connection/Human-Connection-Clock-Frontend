@@ -299,16 +299,34 @@ class CoCAPI
         return json_decode($resp);
     }
 
-    public function getCount()
+    public function getCount($filter = [])
     {
-        $url = $this->_baseUrl . '/' . self::ENDPOINT_GET_COUNT;
+        if (!isset($filter['active'])) {
+            $filter['active'] = true;
+        }
+        if (!isset($filter['profileImage'])) {
+            $filter['profileImage'] = false;
+        }
+        if (!isset($filter['confirmed'])) {
+            $filter['confirmed'] = 'all';
+        }
+        if (!isset($filter['status'])) {
+            $filter['status'] = 'all';
+        }
+
+        $url = $this->_baseUrl . '/' . self::ENDPOINT_GET_COUNT
+            . '?isActive=' . (int) $filter['active']
+            . '&profileImage=' . (int) $filter['profileImage']
+            . '&confirmed=' . (string) $filter['confirmed']
+            . '&status=' . (string) $filter['status'];
+
         try {
             $response = Requests::get($url);
             if ($response->status_code === 200 && $response->success === true) {
                 return $response->body;
             }
         } catch (Exception $e) {
-            return 5000;
+            return 0;
         }
     }
 

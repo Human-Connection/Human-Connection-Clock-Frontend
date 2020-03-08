@@ -77,7 +77,9 @@ class OptionsManager
 				<div id="post-body" class="metabox-holder columns-2">
 					<div id="post-body-content">
 						<div class="meta-box-sortables ui-sortable">
-							<form method="post">
+							<form method="get">
+                                <input type="hidden" id="page" name="page" value="<?= esc_attr($_REQUEST['page']); ?>">
+                                <input type="hidden" id="page" name="_wp_http_referer" value="">
 								<?php
 								$this->items->prepare_items();
 								$this->items->display(); ?>

@@ -94,7 +94,16 @@ class ListTable extends \WP_List_Table
      */
     public static function record_count()
     {
-        return ClockOfChange::app()->cocAPI()->getCount();
+        $confirmed = isset($_REQUEST['confirmed']) ? $_REQUEST['confirmed'] : null;
+        $status    = isset($_REQUEST['status']) ? $_REQUEST['status'] : null;
+
+        $filter = [
+            'active'    => false,
+            'confirmed' => $confirmed,
+            'status'    => $status,
+        ];
+
+        return ClockOfChange::app()->cocAPI()->getCount($filter);
     }
 
     /** Text displayed when no customer data is available */
