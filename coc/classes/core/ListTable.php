@@ -39,7 +39,7 @@ class ListTable extends \WP_List_Table
     function column_cb($item)
     {
         // use this line to get the multi action checkbox
-        return false; //sprintf('<input type="checkbox" name="bulk-activate[]" value="%s" />', $item['ID']);
+        return sprintf('<input type="checkbox" name="bulk-activate[]" value="%s" />', $item['ID']);
     }
 
     /**
@@ -120,8 +120,8 @@ class ListTable extends \WP_List_Table
     public function get_bulk_actions()
     {
         $actions = [
-            //'bulk-activate' => 'Activate',
-            //'bulk-disable' => 'Disable'
+            'bulk-activate' => 'Activate',
+            'bulk-disable' => 'Disable'
         ];
 
         return $actions;
@@ -130,10 +130,11 @@ class ListTable extends \WP_List_Table
     public function process_bulk_action()
     {
         if (current_user_can('manage_options') && $this->current_action() !== false) {
-            if (!wp_verify_nonce($_GET['_wpnonce'], 'hc_toggle_coc_user')) {
+            $action = 'bulk-' . $this->_args['plural'];
+
+            if (!wp_verify_nonce($_GET['_wpnonce'], $action)) {
                 die('Go get a life script kiddies');
             }
-
             // check for toggle action && correct page
             if (($this->current_action() === 'cocactivate' || $this->current_action(
                     ) === 'cocdisable') && $_GET['page'] === 'coc_entries') {
@@ -255,7 +256,7 @@ class ListTable extends \WP_List_Table
     function get_columns()
     {
         $columns = [
-            // 'cb'      => '<input type="checkbox" />',
+             'cb'              => '<input type="checkbox" />',
             'ID'              => __('ID', 'coc'),
             'email'           => __('Email', 'coc'),
             'firstname'       => __('Firstname', 'coc'),
