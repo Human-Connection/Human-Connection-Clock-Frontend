@@ -39,7 +39,7 @@ class ListTable extends \WP_List_Table
     function column_cb($item)
     {
         // use this line to get the multi action checkbox
-        return sprintf('<input type="checkbox" name="bulk-activate[]" value="%s" />', $item['ID']);
+        return sprintf('<input type="checkbox" name="bulk-entries[]" value="%s" />', $item['ID']);
     }
 
     /**
@@ -121,7 +121,8 @@ class ListTable extends \WP_List_Table
     {
         $actions = [
             'bulk-activate' => 'Activate',
-            'bulk-disable' => 'Disable'
+            'bulk-disable'  => 'Disable',
+            'bulk-delete'   => 'Delete',
         ];
 
         return $actions;
@@ -135,27 +136,29 @@ class ListTable extends \WP_List_Table
             if (!wp_verify_nonce($_GET['_wpnonce'], $action)) {
                 die('Go get a life script kiddies');
             }
-            // check for toggle action && correct page
-            if (($this->current_action() === 'cocactivate' || $this->current_action(
-                    ) === 'cocdisable') && $_GET['page'] === 'coc_entries') {
-                // toggle entry status
-                // object(stdClass)#7800 (2) { ["success"]=> bool(true) ["message"]=> string(14) "toggled status" }
-                $result = ClockOfChange::app()->cocAPI()->toggleStatus($_GET['entry'], $this->current_action());
-                if (isset($result->success) && $result->success === true) {
-                    return true;
-                }
-            }
 
             // check for toggle action && correct page
-            if ($this->current_action() === 'cocdelete' && $_GET['page'] === 'coc_entries') {
-                if ($_GET['entry'] && (int) $_GET['entry'] > 0) {
-                    $result = ClockOfChange::app()->cocAPI()->deleteEntry($_GET['entry']);
-                    if (isset($result->success) && $result->success === true) {
-                        return true;
+            if ($_GET['page'] === 'coc_entries') {
+                $ids = $_GET['bulk-entries'];
+                if ($this->current_action() === 'bulk-activate') {
+                    foreach ($ids as $id) {
+                        if ((int) $id > 0) {
+                            $result = ClockOfChange::app()->cocAPI()->toggleStatus($id, 'cocactivate');
+                        }
+                    }
+                } else if ($this->current_action() === 'bulk-disable') {
+                    foreach ($ids as $id) {
+                        if ((int) $id > 0) {
+                            $result = ClockOfChange::app()->cocAPI()->toggleStatus($id, 'cocdisable');
+                        }
+                    }
+                } else if ($this->current_action() === 'bulk-delete') {
+                    foreach ($ids as $id) {
+                        if ((int) $id > 0) {
+                            $result = ClockOfChange::app()->cocAPI()->deleteEntry($id);
+                        }
                     }
                 }
-
-                return true;
             }
         }
     }
@@ -210,16 +213,16 @@ class ListTable extends \WP_List_Table
 
         $actions = [
             'cocactivate' => sprintf(
-                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s#entry-%s">Aktivieren</a>',
+                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s#entry-%s">Activate</a>',
                 esc_attr($_REQUEST['page']), 'cocactivate', absint($item['ID']), $nonce, $this->get_pagenum(),
                 absint($item['ID'])
             ),
             'cocdisable'  => sprintf(
-                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s">Deaktivieren</a>',
+                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s">Disable</a>',
                 esc_attr($_REQUEST['page']), 'cocdisable', absint($item['ID']), $nonce, $this->get_pagenum()
             ),
             'cocdelete'   => sprintf(
-                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s" onclick="return confirm(\'Eintrag wirklich löschen?\');">Löschen</a>',
+                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s" onclick="return confirm(\'Really delete entry? This cannot be undone.\');">Delete</a>',
                 esc_attr($_REQUEST['page']), 'cocdelete', absint($item['ID']), $nonce, $this->get_pagenum()
             ),
         ];
@@ -256,7 +259,7 @@ class ListTable extends \WP_List_Table
     function get_columns()
     {
         $columns = [
-             'cb'              => '<input type="checkbox" />',
+            'cb'              => '<input type="checkbox" />',
             'ID'              => __('ID', 'coc'),
             'email'           => __('Email', 'coc'),
             'firstname'       => __('Firstname', 'coc'),
@@ -326,11 +329,62 @@ class ListTable extends \WP_List_Table
                 <select name="status" id="filter-by-status" class="postform">
                     <option value="all">All status</option>
                     <option value="active" <?= $status === 'active' ? 'selected="selected"' : ''; ?>>Active</option>
-                    <option value="inactive" <?= $status === 'inactive' ? 'selected="selected"' : ''; ?>>Inactive</option>
+                    <option value="inactive" <?= $status === 'inactive' ? 'selected="selected"' : ''; ?>>Inactive
+                    </option>
                 </select>
                 <?php submit_button('Filter', 'action', 'filter-action', false); ?>
             </div>
             <?php
         }
+    }
+
+    /**
+     * Display the bulk actions dropdown.
+     *
+     * @param string $which The location of the bulk actions: 'top' or 'bottom'.
+     *                      This is designated as optional for backward compatibility.
+     * @since 3.1.0
+     */
+    protected function bulk_actions($which = '')
+    {
+        if (is_null($this->_actions)) {
+            $this->_actions = $this->get_bulk_actions();
+            /**
+             * Filters the list table Bulk Actions drop-down.
+             * The dynamic portion of the hook name, `$this->screen->id`, refers
+             * to the ID of the current screen, usually a string.
+             * This filter can currently only be used to remove bulk actions.
+             *
+             * @param string[] $actions An array of the available bulk actions.
+             * @since 3.5.0
+             */
+            $this->_actions = apply_filters(
+                "bulk_actions-{$this->screen->id}", $this->_actions
+            );  // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
+            $two            = '';
+        } else {
+            $two = '2';
+        }
+
+        if (empty($this->_actions)) {
+            return;
+        }
+
+        echo '<label for="bulk-action-selector-' . esc_attr($which) . '" class="screen-reader-text">' . __(
+                'Select bulk action'
+            ) . '</label>';
+        echo '<select name="action' . $two . '" id="bulk-action-selector-' . esc_attr($which) . "\">\n";
+        echo '<option value="-1">' . __('Bulk Actions') . "</option>\n";
+
+        foreach ($this->_actions as $name => $title) {
+            $class = 'edit' === $name ? ' class="hide-if-no-js"' : '';
+
+            echo "\t" . '<option value="' . $name . '"' . $class . ' ' . ($name === 'bulk-delete' ? 'onclick="return confirm(\'Info: Deleting entries is permanent and cannot be undone! \');"' : '') . '>' . $title . "</option>\n";
+        }
+
+        echo "</select>\n";
+
+        submit_button(__('Apply'), 'action', '', false, ['id' => "doaction$two"]);
+        echo "\n";
     }
 }
