@@ -128,9 +128,11 @@ class ListTable extends \WP_List_Table
         return $actions;
     }
 
-    public function process_bulk_action()
+    public function processBulkAction()
     {
-        if (current_user_can('manage_options') && $this->current_action() !== false) {
+        if (current_user_can('manage_options') && $this->current_action() !== false && in_array(
+                $this->current_action(), array_keys($this->get_bulk_actions())
+            )) {
             $action = 'bulk-' . $this->_args['plural'];
 
             if (!wp_verify_nonce($_GET['_wpnonce'], $action)) {
@@ -159,6 +161,46 @@ class ListTable extends \WP_List_Table
                         }
                     }
                 }
+            }
+        }
+    }
+
+    public function processSingleAction()
+    {
+        $singleActions = [
+            'cocactivate',
+            'cocdisable',
+            'cocdelete',
+        ];
+
+        if (current_user_can('manage_options') && $this->current_action() !== false && in_array(
+                $this->current_action(), $singleActions
+            )) {
+            if (!wp_verify_nonce($_GET['_wpnonce'], 'hc_toggle_coc_user')) {
+                die('Go get a life script kiddies');
+            }
+
+            // check for toggle action && correct page
+            if (($this->current_action() === 'cocactivate' || $this->current_action(
+                    ) === 'cocdisable') && $_GET['page'] === 'coc_entries') {
+                // toggle entry status
+                // object(stdClass)#7800 (2) { ["success"]=> bool(true) ["message"]=> string(14) "toggled status" }
+                $result = ClockOfChange::app()->cocAPI()->toggleStatus($_GET['entry'], $this->current_action());
+                if (isset($result->success) && $result->success === true) {
+                    return true;
+                }
+            }
+
+            // check for toggle action && correct page
+            if ($this->current_action() === 'cocdelete' && $_GET['page'] === 'coc_entries') {
+                if ($_GET['entry'] && (int) $_GET['entry'] > 0) {
+                    $result = ClockOfChange::app()->cocAPI()->deleteEntry($_GET['entry']);
+                    if (isset($result->success) && $result->success === true) {
+                        return true;
+                    }
+                }
+
+                return true;
             }
         }
     }
@@ -285,7 +327,8 @@ class ListTable extends \WP_List_Table
     {
         $this->_column_headers = $this->get_column_info();
         /* Process bulk action */
-        $this->process_bulk_action();
+        $this->processSingleAction();
+        $this->processBulkAction();
         $per_page     = $this->get_items_per_page('entries_per_page', ShUserwall::PAGE_SIZE);
         $current_page = $this->get_pagenum();
         $total_items  = self::record_count();

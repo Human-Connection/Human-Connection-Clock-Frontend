@@ -92,7 +92,7 @@ class CoCAPI
     public function loadMore()
     {
         $offset               = (int) $_GET['offset'] ?? 0;
-        $filterByProfileImage = (bool) $_GET['profileImage'] === 1 ? 1 : 0;
+        $filterByProfileImage = (int) $_GET['profileImage'] === 1 ? 1 : 0;
 
         $filter = [
             'active'       => true,
