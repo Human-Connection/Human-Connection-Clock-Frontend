@@ -5,7 +5,7 @@ namespace coc\core;
 use coc\ClockOfChange;
 use coc\shortcodes\ShUserwall;
 use Exception;
-use \Requests;
+use Requests;
 
 class CoCAPI
 {
@@ -92,14 +92,18 @@ class CoCAPI
     public function loadMore()
     {
         $offset               = (int) $_GET['offset'] ?? 0;
-        $orderByDate          = $_GET['orderByDate'] === 'asc' ? 'asc' : 'desc';
         $filterByProfileImage = (int) $_GET['profileImage'] === 1 ? 1 : 0;
+
+        $filter = [
+            'active'       => true,
+            'profileImage' => $filterByProfileImage
+        ];
 
         $users = $this->getUsers(
             $offset * ShUserwall::PAGE_SIZE,
-            true,
-            $orderByDate,
-            $filterByProfileImage
+            $filter,
+            $_GET['orderByDate'] ? 'id' : null,
+            $_GET['orderByDate'] ? $_GET['orderByDate'] : null
         );
         $out   = [];
 
@@ -258,18 +262,34 @@ class CoCAPI
         return json_decode($resp);
     }
 
-    public function getUsers($offset = 0, $active = true, $orderByDate = 'desc', $profileImage = 0)
+    public function getUsers($offset = 0, $filter = [], $orderBy = null, $order = null)
     {
+        if (!isset($filter['active'])) {
+            $filter['active'] = true;
+        }
+        if (!isset($filter['profileImage'])) {
+            $filter['profileImage'] = false;
+        }
+        if (!isset($filter['confirmed'])) {
+            $filter['confirmed'] = 'all';
+        }
+        if (!isset($filter['status'])) {
+            $filter['status'] = 'all';
+        }
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['API-Key: ' . $this->_apiKey]);
         curl_setopt(
             $ch, CURLOPT_URL,
             $this->_baseUrl . self::ENDPOINT_ENTRIES
-            . '?isActive=' . (int) $active
+            . '?isActive=' . (int) $filter['active']
             . '&limit=' . ShUserwall::PAGE_SIZE
             . '&offset=' . (int) $offset
-            . '&orderByDate=' . $orderByDate
-            . '&profileImage=' . (int) $profileImage
+            . '&orderBy=' . (string) $orderBy
+            . '&order=' . (string) $order
+            . '&profileImage=' . (int) $filter['profileImage']
+            . '&confirmed=' . (string) $filter['confirmed']
+            . '&status=' . (string) $filter['status']
         );
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
@@ -279,16 +299,34 @@ class CoCAPI
         return json_decode($resp);
     }
 
-    public function getCount()
+    public function getCount($filter = [])
     {
-        $url = $this->_baseUrl . '/' . self::ENDPOINT_GET_COUNT;
+        if (!isset($filter['active'])) {
+            $filter['active'] = true;
+        }
+        if (!isset($filter['profileImage'])) {
+            $filter['profileImage'] = false;
+        }
+        if (!isset($filter['confirmed'])) {
+            $filter['confirmed'] = 'all';
+        }
+        if (!isset($filter['status'])) {
+            $filter['status'] = 'all';
+        }
+
+        $url = $this->_baseUrl . '/' . self::ENDPOINT_GET_COUNT
+            . '?isActive=' . (int) $filter['active']
+            . '&profileImage=' . (int) $filter['profileImage']
+            . '&confirmed=' . (string) $filter['confirmed']
+            . '&status=' . (string) $filter['status'];
+
         try {
             $response = Requests::get($url);
             if ($response->status_code === 200 && $response->success === true) {
                 return $response->body;
             }
         } catch (Exception $e) {
-            return 5000;
+            return 0;
         }
     }
 
