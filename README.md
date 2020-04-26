@@ -126,6 +126,10 @@ API base url: http://coc-api:1337
 
 Please mind that a trailing slash for the API base url is not allowed.
 
+Note: Due to problems with the Advanced Custom Fields Plugin and the Localization Plugin WPML, there is a second
+fallback config under `coc\config\custom.php`. Please never commit your config settings with Git, because it will be visible to everybody on GitHub.
+Only change the settings in the file on the live server.
+
 **MANAGE COC ENTRIES IN WORDPRESS**
 
 After setting valid options for the Clock of Change API server, we can list and manage all the Clock of Change entries 

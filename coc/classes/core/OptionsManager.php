@@ -10,10 +10,19 @@ class OptionsManager
 	const OPT_API_URL = 'coc_api_url';
 
 	private $_options = null;
+
+	// Custom options that don't rely on Advanced Custom Fields Plugin
+	private $customOptions = null;
+
 	public $items;
 
 	public function __construct(){
 		$this->_options = require_once(ClockOfChange::$pluginRootPath . '/config/options.php');
+
+		if (file_exists(ClockOfChange::$pluginRootPath . '/config/custom.php')) {
+            $this->customOptions = require_once(ClockOfChange::$pluginRootPath . '/config/custom.php');
+        }
+
 		$this->_initThemeOptions();
 	}
 
@@ -29,8 +38,15 @@ class OptionsManager
 		);
 
 		if(isset($key[0]) && isset($this->_options['fields'][$key[0]])){
-			return get_field($this->_options['fields'][$key[0]]['key'], 'option');
+            $value = get_field($this->_options['fields'][$key[0]]['key'], 'option');
+            if ($value) {
+                return $value;
+            }
 		}
+
+		if (!empty($this->customOptions) && isset($this->customOptions[$name])) {
+		    return $this->customOptions[$name];
+        }
 
 		return false;
 	}
