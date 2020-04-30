@@ -69,7 +69,7 @@ class ClockOfChange
     {
         self::$pluginClasses[self::$pluginRef]      = $this;
         self::$pluginClasses[self::$optionsManager] = new OptionsManager();
-        self::$pluginClasses[self::$translation]    = new Translation(isset($_GET['lang']) ? $_GET['lang'] : null);
+        self::$pluginClasses[self::$translation]    = new Translation();
         self::$pluginClasses[self::$scriptManager]  = new ScriptManager($this->translation());
         self::$pluginClasses[self::$cocAPIManager]  = new CoCAPI($this->translation());
         self::$pluginClasses[self::$cocAPIManager]->init();
