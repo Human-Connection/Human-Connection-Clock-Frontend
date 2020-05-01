@@ -1,5 +1,12 @@
 {
   "slogan": "Ich glaube daran, dass Veränderung in jedem Einzelnen beginnt und dass, wenn genügend Menschen sich ändern, die Welt sich verändern wird. Ich möchte mit meinen Mitmenschen eine Brücke zu einer nachhaltigen Zukunft für die Kinder der Welt bauen.",
   "joinNowButton": "JOIN NOW!",
-  "errorMissingRequiredField": "Please fill out this field"
+  "loadMore": "Load more",
+  "sort": "Sort",
+  "sortByDate": "By date",
+  "ascending": "ascending",
+  "descending": "descending",
+  "errorMissingRequiredField": "Please fill out the required field",
+  "filter": "Filter",
+  "filterByProfileImage": "only entries with profile picture"
 }

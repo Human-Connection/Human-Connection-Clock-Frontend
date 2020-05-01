@@ -3,6 +3,8 @@
 namespace coc\shortcodes;
 
 use coc\ClockOfChange;
+use coc\core\CoCAPI;
+use coc\core\Translation;
 
 // coc\shortcodes\shuserwall
 class ShUserwall
@@ -10,9 +12,26 @@ class ShUserwall
     // TEXT MAX 300 characters
     const PAGE_SIZE = 81;
 
-    public function __construct($api)
+    /**
+     * @var CoCAPI
+     */
+    private $api;
+
+    /**
+     * @var Translation
+     */
+    private $translation;
+
+    /**
+     * ShUserwall constructor.
+     *
+     * @param CoCAPI      $api
+     * @param Translation $translation
+     */
+    public function __construct($api, $translation)
     {
-        $this->api = $api;
+        $this->api         = $api;
+        $this->translation = $translation;
 
         add_shortcode(strtolower(__CLASS__), [$this, 'renderShortcode']);
     }
@@ -47,8 +66,20 @@ class ShUserwall
             $html .= '<div id="user-filter">';
             $html .= '<div class="user-filter-element"><img src="' . home_url(
                 ) . '/wp-content/plugins/coc/assets/images/filter.jpg" alt="Clock of Change Userwall Filter"></div>';
-            $html .= '<div class="user-filter-element"><strong>Sortierung: </strong><label for="orderByDate">Nach Datum </label><select name="orderByDate" id="orderByDate"><option value="desc">absteigend</option><option value="asc">aufsteigend</option></select></div>';
-            $html .= '<div class="user-filter-element"><strong>Filter: </strong><input type="checkbox" name="profileImage" id="profileImage"><label for="profileImage">nur Einträge mit Profilbild</label></div>';
+            $html .= '<div class="user-filter-element"><strong>' . $this->translation->t(
+                    'sort', 'Sortierung'
+                ) . ': </strong><label for="orderByDate">' . $this->translation->t(
+                    'sortByDate', 'Nach Datum'
+                ) . ' </label><select name="orderByDate" id="orderByDate"><option value="desc">' . $this->translation->t(
+                    'descending', 'absteigend'
+                ) . '</option><option value="asc">' . $this->translation->t(
+                    'ascending', 'aufsteigend'
+                ) . '</option></select></div>';
+            $html .= '<div class="user-filter-element"><strong>' . $this->translation->t(
+                    'filter', 'Filter'
+                ) . ': </strong><input type="checkbox" name="profileImage" id="profileImage"><label for="profileImage">' . $this->translation->t(
+                    'filterByProfileImage', 'nur Einträge mit Profilbild'
+                ) . '</label></div>';
             $html .= '</div>';
 
             $html .= '<div class="user-container" id="user-list">';
@@ -70,7 +101,9 @@ class ShUserwall
             }
             $html .= '</div>';
             $html .= '<div class="load-more-btn">';
-            $html .= '<a id="loadMore" href="#" class="cocBtn">' . __('mehr laden') . '</a>';
+            $html .= '<a id="loadMore" href="#" class="cocBtn">' . __(
+                    $this->translation->t('loadMore', 'mehr laden')
+                ) . '</a>';
             $html .= '</div>';
         }
 
