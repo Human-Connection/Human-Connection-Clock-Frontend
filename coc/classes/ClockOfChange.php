@@ -82,7 +82,7 @@ class ClockOfChange
         new ShSign($this->cocAPI());
         new ShSignUp($this->cocAPI(), $this->translation()); // need button separat for z
         new ShUserwall($this->cocAPI(), $this->translation());
-        new ShCountries($this->cocAPI());
+        new ShCountries($this->cocAPI(), $this->translation());
         new ShLanguageSelector($this->cocAPI(), $this->translation());
     }
 

@@ -8,6 +8,7 @@ namespace coc\shortcodes;
 
 use coc\ClockOfChange;
 use coc\core\CoCAPI;
+use coc\core\Translation;
 
 // coc\shortcodes\shcountries
 class ShCountries
@@ -21,16 +22,27 @@ class ShCountries
     private $api;
 
     /**
+     * @var Translation
+     */
+    private $translation;
+
+
+    /**
      * @var object|null
      */
     private $countryNames;
 
     /**
-     * @param $api
+     * ShCountries constructor.
+     *
+     * @param CoCAPI      $api
+     * @param Translation $translation
      */
-    public function __construct($api)
+    public function __construct($api, $translation)
     {
-        $this->api = $api;
+        $this->api         = $api;
+        $this->translation = $translation;
+
 
         $this->countryNames = $this->loadCountryNames();
 
@@ -52,12 +64,14 @@ class ShCountries
         $html = '<div id="country-rankings">';
 
         $i = 0;
-        foreach($countries as $country) {
+        foreach ($countries as $country) {
 
             $imageSource = ClockOfChange::$pluginAssetsUri . '/images/flags/' . strtolower($country->country) . '.png';
 
             $html .= '<div class="country-ranking-item ' . ($i >= self::MAX_COUNTRIES ? 'hidden' : '') . '">';
-            $html .= '<img class="country-flag" alt="' . $this->getCountryName($country->country) . '" title="' . $this->getCountryName($country->country) . '" src=' . $imageSource . '>';
+            $html .= '<img class="country-flag" alt="' . $this->getCountryName(
+                    $country->country
+                ) . '" title="' . $this->getCountryName($country->country) . '" src=' . $imageSource . '>';
             $html .= '<div class="country-counter">';
 
             $number = $country->number;
@@ -75,7 +89,9 @@ class ShCountries
             $i++;
         }
 
-        $html .= '<div id="country-rankings-load-more"><a  href="#" class="load-more-link">mehr laden <i class="fa fa-chevron-down" aria-hidden="true"></i></a></div>';
+        $html .= '<div id="country-rankings-load-more"><a  href="#" class="load-more-link">' . $this->translation->t(
+                'loadMore', 'mehr laden'
+            ) . ' <i class="fa fa-chevron-down" aria-hidden="true"></i></a></div>';
 
         $html .= '</div>';
 
@@ -87,9 +103,15 @@ class ShCountries
      */
     private function loadCountryNames()
     {
-        $countryNamesFilePath = WP_CONTENT_DIR. 'plugins/coc/assets/js/countries.json';
+        $countryNamesFilePath = WP_CONTENT_DIR . '/plugins/coc/assets/translation/countries_' . $this->translation->getCurrentLanguage(
+            ) . '.json';
+        if (!file_exists($countryNamesFilePath)) {
+            $countryNamesFilePath = WP_CONTENT_DIR . '/plugins/coc/assets/translation/countries_' . Translation::DEFAULT_LANGUAGE . '.json';
+        }
+
         if (file_exists($countryNamesFilePath)) {
             $countryNames = file_get_contents($countryNamesFilePath);
+
             return json_decode($countryNames);
         }
 
