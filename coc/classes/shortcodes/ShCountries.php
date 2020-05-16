@@ -100,12 +100,15 @@ class ShCountries
 
     /**
      * @return object|null
-     */
+*/
     private function loadCountryNames()
     {
-        $countryNamesFilePath = WP_CONTENT_DIR . '/plugins/coc/assets/translation/countries_' . $this->translation->getCurrentLanguage(
-            ) . '.json';
-        if (!file_exists($countryNamesFilePath)) {
+        $countryNamesFilePath = '';
+        if ($this->translation->getCurrentLanguage() !== Translation::DEFAULT_LANGUAGE) {
+            $countryNamesFilePath = WP_CONTENT_DIR . '/plugins/coc/assets/translation/countries_en.json';
+        }
+
+        if ($countryNamesFilePath == '' || !file_exists($countryNamesFilePath)) {
             $countryNamesFilePath = WP_CONTENT_DIR . '/plugins/coc/assets/translation/countries_' . Translation::DEFAULT_LANGUAGE . '.json';
         }
 
