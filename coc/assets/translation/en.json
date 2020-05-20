@@ -8,5 +8,21 @@
   "descending": "descending",
   "errorMissingRequiredField": "Please fill out the required field",
   "filter": "Filter",
-  "filterByProfileImage": "only entries with profile picture"
+  "filterByProfileImage": "only entries with profile picture",
+  "avatar": "Avatar",
+  "minSizeAvatar": "min. 200*200px",
+  "uploadOwnImage": "Upload own image",
+  "firstName": "First name",
+  "lastName": "Last name",
+  "emailAddress": "E-Mail address",
+  "country": "Country",
+  "message": "Your message to the world",
+  "hideName": "Hide my name",
+  "signupNewsletter": "Sign up for the Human Connection Newsletter",
+  "acceptDataPrivacyPolicy": "I have read the <a class=\"inline-link\" href=\"https://human-connection.org/datenschutz/#_privacycoc\" title=\"to the privacy policy\" target=\"_blank\">privacy policy</a> and accept it.",
+  "verifyOverEighteen": "I am 18 years old or above",
+  "noticeEntryIsFree": "Signing up for the clock of change is completely free, but we happily welcome your donation as a nonprofit organization. THANK YOU in advance!",
+  "noticeActivateAccount": "PLEASE NOTE: You have to verify your submission by clicking on the verification link in the email you will shortly receive. If you do not receive an email, make sure to look into your junk folder and put Human Connection on your safe recipients list. Signing up for the clock of change is does not sign you up for the Human Connection social network.<br>In case you want to sign up for the Human Connection network, please follow this link: <a href=\"https://human-connection.social/\" style=\"display: inline-block; width: auto;\">https://human-connection.social/</a>. Signing up is completely free, Human Connection is accepted as a nonprofit organization.",
+  "joinNow": "Sign up"
+
 }

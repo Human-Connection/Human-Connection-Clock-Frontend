@@ -79,7 +79,7 @@ class ClockOfChange
     {
         // init shortcodes
         new ShWorld($this->cocAPI());
-        new ShSign($this->cocAPI());
+        new ShSign($this->cocAPI(),  $this->translation());
         new ShSignUp($this->cocAPI(), $this->translation()); // need button separat for z
         new ShUserwall($this->cocAPI(), $this->translation());
         new ShCountries($this->cocAPI(), $this->translation());
