@@ -64,8 +64,8 @@ class ShUserwall
             $html .= '</div>';
 
             $html .= '<div id="user-filter">';
-            $html .= '<div class="user-filter-element"><img src="' . home_url(
-                ) . '/wp-content/plugins/coc/assets/images/filter.jpg" alt="Clock of Change Userwall Filter"></div>';
+            $html .= '<div class="user-filter-element"><img src="' . esc_url_raw(site_url())
+                . '/wp-content/plugins/coc/assets/images/filter.jpg" alt="Clock of Change Userwall Filter"></div>';
             $html .= '<div class="user-filter-element"><strong>' . $this->translation->t(
                     'sort', 'Sortierung'
                 ) . ': </strong><label for="orderByDate">' . $this->translation->t(
