@@ -43,7 +43,13 @@ class Translation
         $this->currentLanguage = self::DEFAULT_LANGUAGE;
         $this->translationData = null;
 
-        $language = !empty($language) ? $language : self::DEFAULT_LANGUAGE;
+        if (empty($language)) {
+            $language = $this->determineLanguageViaWPML();
+        }
+
+        if (empty($language)) {
+            $language = self::DEFAULT_LANGUAGE;
+        }
 
         $this->setLanguage($language);
 
@@ -110,5 +116,19 @@ class Translation
         }
 
         return false;
+    }
+
+    /**
+     * Determine language via Wordpress plugin WPML
+     *
+     * @return string|null
+     */
+    private function determineLanguageViaWPML()
+    {
+        if ( defined( 'ICL_LANGUAGE_CODE' ) ) {
+            return ICL_LANGUAGE_CODE;
+        }
+
+        return null;
     }
 }

@@ -3,6 +3,8 @@
 namespace coc\shortcodes;
 
 use coc\ClockOfChange;
+use coc\core\CoCAPI;
+use coc\core\Translation;
 
 // coc\shortcodes\shsign
 class ShSign
@@ -12,9 +14,18 @@ class ShSign
      */
     private $api;
 
-    public function __construct($api)
+    /**
+     * ShSign constructor.
+     *
+     * @param CoCAPI      $api
+     * @param Translation $translation
+     */
+    private $translation;
+
+    public function __construct($api, $translation)
     {
-        $this->api = $api;
+        $this->api         = $api;
+        $this->translation = $translation;
 
         add_shortcode(strtolower(__CLASS__), [$this, 'renderShortcode']);
     }
@@ -31,8 +42,8 @@ class ShSign
         $html .= '<div class="coc-form">';
         $html .= '<span class="coc-form-close">&times;</span>';
         $html .= '<div id="form-error"></div>';
-        $html .= '<span class="avatar-label label">Avatar</span>';
-        $html .= '<p class="hint">min. 200*200px</p>';
+        $html .= '<span class="avatar-label label">' . $this->translation->t('avatar', 'Avatar') . '</span>';
+        $html .= '<p class="hint">' . $this->translation->t('minSizeAvatar', 'min. 200*200px') . '</p>';
         $html .= '<div class="form-group" id="coc-add-avatar">';
         $html .= '<div id="add-avatar-inner">';
         $html .= '<div class="avatar-preview" id="avatar-preview">';
@@ -44,7 +55,7 @@ class ShSign
 
         $html .= '<input type="file" id="ownImageUpload" style="display:none" autocomplete="off">';
         $html .= '<div class="upload-own-wrapper" id="customUploadWrap">';
-        $html .= '<i title="eigenes Bild hochladen" id="upload-icon" class="fas fa-upload large-icon"></i>';
+        $html .= '<i title="' . $this->translation->t('uploadOwnImage', 'Eigenes Bild hochladen') . '" id="upload-icon" class="fas fa-upload large-icon"></i>';
         $html .= '</div>';
 
         $html .= '</div>';
@@ -54,19 +65,19 @@ class ShSign
         $html .= '</div>';
         $html .= '<div class="input-group">';
         $html .= '<div class="form-group">';
-        $html .= '<label class="label" for="coc-firstname">Vorname *</label>';
+        $html .= '<label class="label" for="coc-firstname">' . $this->translation->t('firstName', 'Vorname') . ' *</label>';
         $html .= '<input type="text" id="coc-firstname" name="coc-firstname" autocomplete="off" />';
         $html .= '</div>';
         $html .= '<div class="form-group">';
-        $html .= '<label class="label" for="coc-lastname">Nachname</label>';
+        $html .= '<label class="label" for="coc-lastname">' . $this->translation->t('lastName', 'Nachname') . '</label>';
         $html .= '<input type="text" id="coc-lastname" name="coc-lastname" autocomplete="off" />';
         $html .= '</div>';
         $html .= '<div class="form-group">';
-        $html .= '<label class="label" for="coc-email">E-Mail Adresse *</label>';
+        $html .= '<label class="label" for="coc-email">' . $this->translation->t('emailAddress', 'E-Mail Adresse') . ' *</label>';
         $html .= '<input type="text" id="coc-email" name="coc-email" autocomplete="off" />';
         $html .= '</div>';
         $html .= '<div class="form-group">';
-        $html .= '<label class="label" for="coc-country">Land</label><br />';
+        $html .= '<label class="label" for="coc-country">' . $this->translation->t('country', 'Land') . '</label><br />';
         $html .= '</div>';
         $html .= <<<EOT
 <select id="coc-country" name="coc-country" autocomplete="off">
@@ -323,29 +334,29 @@ class ShSign
 EOT;
         $html .= '</div>';
         $html .= '<div class="form-group">';
-        $html .= '<label class="label" for="coc-message">Deine Botschaft an die Welt *</label>';
+        $html .= '<label class="label" for="coc-message">' . $this->translation->t('message', 'Deine Botschaft an die Welt') . ' *</label>';
         $html .= '<textarea id="coc-message" name="coc-message" autocomplete="off"></textarea>';
         $html .= '</div>';
         $html .= '<div class="form-group">';
         $html .= '<input type="checkbox" id="coc-anon" name="coc-anon" autocomplete="off" />';
-        $html .= '<label class="label" for="coc-anon">Meinen Namen nicht anzeigen</label>';
+        $html .= '<label class="label" for="coc-anon">' . $this->translation->t('hideName', 'Meinen Namen nicht anzeigen') . '</label>';
         $html .= '</div>';
         $html .= '<div class="form-group">';
         $html .= '<input type="checkbox" id="coc-register-nl" name="coc-register-nl" autocomplete="off" />';
-        $html .= '<label class="label" for="coc-register-nl">Für den Human Connection Newsletter eintragen</label>';
+        $html .= '<label class="label" for="coc-register-nl">' . $this->translation->t('signupNewsletter', 'Für den Human Connection Newsletter eintragen') . '</label>';
         $html .= '</div>';
         $html .= '<div class="form-group">';
         $html .= '<input type="checkbox" id="coc-register-privacy" name="coc-register-privacy" autocomplete="off"/>';
-        $html .= '<label class="label" for="coc-register-privacy">Ich habe die <a class="inline-link" href="https://human-connection.org/datenschutz/#_privacycoc" title="zu den Datenschutzbestimmungen" target="_blank">Datenschutzbestimmungen</a> gelesen und akzeptiere diese.</label>';
+        $html .= '<label class="label" for="coc-register-privacy">' . $this->translation->t('acceptDataPrivacyPolicy', 'Ich habe die <a class="inline-link" href="https://human-connection.org/datenschutz/#_privacycoc" title="zu den Datenschutzbestimmungen" target="_blank">Datenschutzbestimmungen</a> gelesen und akzeptiere diese.') . '</label>';
         $html .= '</div>';
         $html .= '<div class="form-group">';
         $html .= '<input type="checkbox" id="coc-register-age" name="coc-register-age" autocomplete="off"/>';
-        $html .= '<label class="label" for="coc-register-age">Ich bin 18 Jahre alt oder älter</label>';
+        $html .= '<label class="label" for="coc-register-age">' . $this->translation->t('verifyOverEighteen', 'Ich bin 18 Jahre alt oder älter') . '</label>';
         $html .= '</div>';
         $html .= '<div class="form-group">';
-        $html .= '<p class="hint">Die Teilnahme ist 100% kostenlos, als gemeinnützige Organisation freuen wir uns jedoch über eine Spende. DANKE im Voraus!</p>';
-        $html .= '<p class="hint">BITTE BEACHTEN: Der Eintrag muss noch einmal von Euch bestätigt werden. Dazu bitte den Bestätigungslink in der Email klicken, welche Ihr von uns bekommt. Falls keine Email eingeht, bitte im SPAM nachschauen und am besten Human Connection als sicheren Absender kennzeichnen. Die Teilnahme an der Uhr des Wandels ist keine automatische Teilnahme im Human Connection Netzwerk.<br>Falls Du Dich im Netzwerk registrieren möchtest, folge bitte diesem Link: <a href="https://human-connection.social/" style="display: inline-block; width: auto;">https://human-connection.social/</a>. Die Teilnahme ist 100% kostenlos, Human Connection ist als gemeinnützig anerkannt.</p>';
-        $html .= '<a href="#" id="joinNowBtn" class="cocBtn">Eintragen</a>';
+        $html .= '<p class="hint">' . $this->translation->t('noticeEntryIsFree', 'Die Teilnahme ist 100% kostenlos, als gemeinnützige Organisation freuen wir uns jedoch über eine Spende. DANKE im Voraus!') . '</p>';
+        $html .= '<p class="hint">' . $this->translation->t('noticeActivateAccount', 'BITTE BEACHTEN: Der Eintrag muss noch einmal von Euch bestätigt werden. Dazu bitte den Bestätigungslink in der Email klicken, welche Ihr von uns bekommt. Falls keine Email eingeht, bitte im SPAM nachschauen und am besten Human Connection als sicheren Absender kennzeichnen. Die Teilnahme an der Uhr des Wandels ist keine automatische Teilnahme im Human Connection Netzwerk.<br>Falls Du Dich im Netzwerk registrieren möchtest, folge bitte diesem Link: <a href="https://human-connection.social/" style="display: inline-block; width: auto;">https://human-connection.social/</a>. Die Teilnahme ist 100% kostenlos, Human Connection ist als gemeinnützig anerkannt.') . '</p>';
+        $html .= '<a href="#" id="joinNowBtn" class="cocBtn">' . $this->translation->t('joinNow', 'Eintragen') . '</a>';
         $html .= '</div>';
         $html .= '</div>';
         $html .= '</div>';

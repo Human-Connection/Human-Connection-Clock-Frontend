@@ -69,7 +69,7 @@ class ClockOfChange
     {
         self::$pluginClasses[self::$pluginRef]      = $this;
         self::$pluginClasses[self::$optionsManager] = new OptionsManager();
-        self::$pluginClasses[self::$translation]    = new Translation(isset($_GET['lang']) ? $_GET['lang'] : null);
+        self::$pluginClasses[self::$translation]    = new Translation();
         self::$pluginClasses[self::$scriptManager]  = new ScriptManager($this->translation());
         self::$pluginClasses[self::$cocAPIManager]  = new CoCAPI($this->translation());
         self::$pluginClasses[self::$cocAPIManager]->init();
@@ -79,10 +79,10 @@ class ClockOfChange
     {
         // init shortcodes
         new ShWorld($this->cocAPI());
-        new ShSign($this->cocAPI());
+        new ShSign($this->cocAPI(),  $this->translation());
         new ShSignUp($this->cocAPI(), $this->translation()); // need button separat for z
-        new ShUserwall($this->cocAPI());
-        new ShCountries($this->cocAPI());
+        new ShUserwall($this->cocAPI(), $this->translation());
+        new ShCountries($this->cocAPI(), $this->translation());
         new ShLanguageSelector($this->cocAPI(), $this->translation());
     }
 
