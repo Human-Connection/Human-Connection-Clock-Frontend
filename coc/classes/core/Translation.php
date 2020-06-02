@@ -14,7 +14,7 @@ class Translation
      *
      * @var string
      */
-    const DEFAULT_LANGUAGE = 'de';
+    const DEFAULT_LANGUAGE = 'en';
 
     /**
      * File path to the translation files directory (stored in json format, e.g. de.json)
@@ -98,6 +98,14 @@ class Translation
     public function t($translationKey, $fallbackText = null)
     {
         return $this->translate($translationKey, $fallbackText);
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getTranslationData()
+    {
+        return $this->translationData;
     }
 
     /**

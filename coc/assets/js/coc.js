@@ -204,8 +204,8 @@ window.coc = ((window, document, $) => {
                     if (resp !== null && resp.success === true) {
                         // hide form
                         new PNotify({
-                            title: 'Das hat geklappt!',
-                            text: 'DANKE, dass DU dabei bist. JEDER EINZELNE ZÄHLT! Bitte bestätige jetzt Deine Emailadresse.',
+                            title: app.t('successNotificationTitle', 'Das hat geklappt!'),
+                            text: app.t('successNotificationMessage', 'DANKE, dass DU dabei bist. JEDER EINZELNE ZÄHLT! Bitte bestätige jetzt Deine Emailadresse.') ,
                             addclass: 'stack-bottomright',
                             stack: {'dir1': 'up', 'dir2': 'left', 'push': 'top'}
                         });
@@ -230,8 +230,8 @@ window.coc = ((window, document, $) => {
                         }
 
                         new PNotify({
-                            title: 'Ups! Das geht schief!',
-                            text: 'Bitte probiere es erneut!',
+                            title: app.t('errorNotificationTitle', 'Ups! Das geht schief!'),
+                            text: app.t('errorNotificationMessage', 'Bitte probiere es erneut!'),
                             addclass: 'stack-bottomright',
                             stack: {'dir1': 'up', 'dir2': 'left', 'push': 'top'}
                         });
@@ -375,6 +375,9 @@ window.coc = ((window, document, $) => {
                 }, 1000);
             }, 150);
         });
+
+        defaultMsg    = app.t('defaultEntryMessage', 'Ich bin für Veränderung.');
+        defaultName   = app.t('defaultEntryName', 'Mensch');
     };
 
     $(window).off('keyup').on('keyup', (e) => {
@@ -421,28 +424,46 @@ window.coc = ((window, document, $) => {
         if (country.length === 2) {
             let flagUrl =  cocVars.homeUrl + '/wp-content/plugins/coc/assets/images/flags/' +  country.toLowerCase() + '.png';
             let countryName = app.getCountryNameByCountryCode(country);
+            let entryLabel = app.t('entryIsFrom', 'Eintrag kommt aus');
 
             messageCountryElement.addClass('loaded');
             messageCountryElement.html(
-                '<img src="' + flagUrl + '" title="Eintrag kommt aus ' + countryName + '" alt="Eintrag kommt aus ' + countryName + '" height="35">'
+                '<img src="' + flagUrl + '" title="' + entryLabel + ' ' + countryName + '" alt="' + entryLabel + ' ' + countryName + '" height="35">'
             );
         }
     };
 
     app.loadCountries = () => {
-        $.getJSON(cocVars.homeUrl + '/wp-content/plugins/coc/assets/js/countries.json', function(data) {
+        let countryFileName = 'countries_en.json';
+        if (typeof( cocVars.language) !== 'undefined' && cocVars.language === 'de') {
+            countryFileName = 'countries_de.json';
+        }
+
+        $.getJSON(cocVars.homeUrl + '/wp-content/plugins/coc/assets/translation/' + countryFileName, function(data) {
             app.countries = data;
         })
     };
 
     app.getCountryNameByCountryCode = (countryCode) => {
         countryCode.toUpperCase();
-        if (countryCode in app.countries) {
+        if (app.countries && countryCode in app.countries) {
             return app.countries[countryCode];
         }
 
         return '';
     };
+
+    app.translate = (key, fallback = '') => {
+        if (cocVars.translation && typeof(cocVars.translation[key]) !== 'undefined' && cocVars.translation[key] !== '') {
+            return cocVars.translation[key];
+        }
+
+        return fallback;
+    }
+
+    app.t = (key, fallback = '') => {
+        return app.translate(key, fallback);
+    }
 
     app.updateCounter = () => {
         const cocNumberOfDigits = 8;
