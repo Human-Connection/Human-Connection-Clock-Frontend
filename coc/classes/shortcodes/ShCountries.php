@@ -104,7 +104,7 @@ class ShCountries
     private function loadCountryNames()
     {
         $countryNamesFilePath = '';
-        if ($this->translation->getCurrentLanguage() !== Translation::DEFAULT_LANGUAGE) {
+        if ($this->translation->getCurrentLanguage() !== 'de') {
             $countryNamesFilePath = WP_CONTENT_DIR . '/plugins/coc/assets/translation/countries_en.json';
         }
 
