@@ -378,6 +378,11 @@ window.coc = ((window, document, $) => {
 
         defaultMsg    = app.t('defaultEntryMessage', 'Ich bin für Veränderung.');
         defaultName   = app.t('defaultEntryName', 'Mensch');
+
+        let closeIcn = document.getElementsByClassName("close-wrapper")[0];
+        let lightBoxWrap = document.getElementsByClassName("user-message-text")[0];
+        lightBoxWrap.prepend(closeIcn);
+
     };
 
     $(window).off('keyup').on('keyup', (e) => {

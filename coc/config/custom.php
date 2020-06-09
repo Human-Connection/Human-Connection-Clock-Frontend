@@ -5,6 +5,6 @@
  */
 
 return [
-    'coc_api_url' => '',
-    'coc_api_key' => '',
+    'coc_api_url' => 'http://coc-api:1337',
+    'coc_api_key' => 'secret',
 ];

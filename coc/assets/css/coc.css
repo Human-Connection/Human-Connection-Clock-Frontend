@@ -550,7 +550,8 @@ input[type="checkbox"].input-error {
         padding: 30px;
     }
     #user-message .message-text {
-        max-height: 200px;
+        max-height: 350px;
+        font-size: 14px;
     }
     .close-wrapper {
         top: 15%;
@@ -760,3 +761,23 @@ input[type="checkbox"].input-error {
 .hc-coc.coc-small #clock .digits .d7{			width:2px;height:6px;top:13px;right:0;}
 .hc-coc.coc-small #clock .digits .d7:before{	border-width:0 0 2px 2px;border-bottom-color:inherit;top:-2px;}
 .hc-coc.coc-small #clock .digits .d7:after{	border-width:2px 0 0 2px;border-top-color:inherit;bottom:-2px;}
+
+
+#user-message {
+    height: 100vh !important;
+}
+
+.user-message-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: fit-content;
+}
+
+.close-wrapper {
+    position: absolute;
+    top: 0 !important;
+    right: 0 !important;
+    transform: translateX(150%);
+}
