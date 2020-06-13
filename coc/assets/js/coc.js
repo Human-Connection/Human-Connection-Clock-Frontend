@@ -379,10 +379,11 @@ window.coc = ((window, document, $) => {
         defaultMsg    = app.t('defaultEntryMessage', 'Ich bin für Veränderung.');
         defaultName   = app.t('defaultEntryName', 'Mensch');
 
-        let closeIcn = document.getElementsByClassName("close-wrapper")[0];
-        let lightBoxWrap = document.getElementsByClassName("user-message-text")[0];
-        lightBoxWrap.prepend(closeIcn);
-
+        let closeIcn = document.getElementsByClassName("close-wrapper");
+        let lightBoxWrap = document.getElementsByClassName("user-message-text");
+        if (lightBoxWrap.length > 0 && closeIcn.length > 0) {
+            lightBoxWrap[0].prepend(closeIcn[0]);
+        }
     };
 
     $(window).off('keyup').on('keyup', (e) => {
