@@ -500,6 +500,8 @@ window.coc = ((window, document, $) => {
             },
             cache: false,
         })
+
+        window.setTimeout(app.updateCounter, refreshCounterEachNumberOfSeconds * 1000);
     }
 
     app.prevMessage = () => {
