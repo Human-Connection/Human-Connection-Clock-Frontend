@@ -120,9 +120,11 @@ class ListTable extends \WP_List_Table
     public function get_bulk_actions()
     {
         $actions = [
-            'bulk-activate' => 'Activate',
-            'bulk-disable'  => 'Disable',
-            'bulk-delete'   => 'Delete',
+            'bulk-activate'       => 'Activate',
+            'bulk-disable'        => 'Disable',
+            'bulk-delete'         => 'Delete',
+            'bulk-email-activate' => 'Activate Email',
+            'bulk-email-disable'  => 'Disable Email',
         ];
 
         return $actions;
@@ -160,6 +162,18 @@ class ListTable extends \WP_List_Table
                             $result = ClockOfChange::app()->cocAPI()->deleteEntry($id);
                         }
                     }
+                } else if ($this->current_action() === 'bulk-email-activate') {
+                    foreach ($ids as $id) {
+                        if ((int) $id > 0) {
+                            $result = ClockOfChange::app()->cocAPI()->toggleEmailConfirmed($id, 'cocemailactivate');
+                        }
+                    }
+                } else if ($this->current_action() === 'bulk-email-disable') {
+                    foreach ($ids as $id) {
+                        if ((int) $id > 0) {
+                            $result = ClockOfChange::app()->cocAPI()->toggleEmailConfirmed($id, 'cocemaildisable');
+                        }
+                    }
                 }
             }
         }
@@ -171,6 +185,8 @@ class ListTable extends \WP_List_Table
             'cocactivate',
             'cocdisable',
             'cocdelete',
+            'cocemailactivate',
+            'cocemaildisable',
         ];
 
         if (current_user_can('manage_options') && $this->current_action() !== false && in_array(
@@ -191,7 +207,18 @@ class ListTable extends \WP_List_Table
                 }
             }
 
-            // check for toggle action && correct page
+            // check for email verified toggle action && correct page
+            if (($this->current_action() === 'cocemailactivate' || $this->current_action(
+                    ) === 'cocemaildisable') && $_GET['page'] === 'coc_entries') {
+                // toggle entry status
+                // object(stdClass)#7800 (2) { ["success"]=> bool(true) ["message"]=> string(14) "toggled email status" }
+                $result = ClockOfChange::app()->cocAPI()->toggleEmailConfirmed($_GET['entry'], $this->current_action());
+                if (isset($result->success) && $result->success === true) {
+                    return true;
+                }
+            }
+
+            // check for delete action && correct page
             if ($this->current_action() === 'cocdelete' && $_GET['page'] === 'coc_entries') {
                 if ($_GET['entry'] && (int) $_GET['entry'] > 0) {
                     $result = ClockOfChange::app()->cocAPI()->deleteEntry($_GET['entry']);
@@ -266,6 +293,34 @@ class ListTable extends \WP_List_Table
             'cocdelete'   => sprintf(
                 '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s" onclick="return confirm(\'Really delete entry? This cannot be undone.\');">Delete</a>',
                 esc_attr($_REQUEST['page']), 'cocdelete', absint($item['ID']), $nonce, $this->get_pagenum()
+            ),
+        ];
+
+        return $title . $this->row_actions($actions);
+    }
+
+    /**
+     * Method for email_confirmed column
+     *
+     * @param array $item an array of DB data
+     * @return string
+     */
+    function column_email_confirmed($item)
+    {
+        // create a nonce
+        $nonce = wp_create_nonce('hc_toggle_coc_user');
+
+        $title = '<strong>' . $item['email_confirmed'] . '</strong>';
+
+        $actions = [
+            'cocemailactivate' => sprintf(
+                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s#entry-%s">Activate</a>',
+                esc_attr($_REQUEST['page']), 'cocemailactivate', absint($item['ID']), $nonce, $this->get_pagenum(),
+                absint($item['ID'])
+            ),
+            'cocemaildisable'  => sprintf(
+                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s">Disable</a>',
+                esc_attr($_REQUEST['page']), 'cocemaildisable', absint($item['ID']), $nonce, $this->get_pagenum()
             ),
         ];
 
