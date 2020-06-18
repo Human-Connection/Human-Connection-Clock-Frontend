@@ -15,9 +15,11 @@
     "watch": "node_modules/.bin/webpack --progress --watch"
   },
   "dependencies": {
+    "@babel/core": "^7.10.2",
+    "@babel/preset-env": "^7.10.2",
     "babel-loader": "^8.0.6",
-    "webpack-cli": "^3.3.9",
-    "webpack": "^4.41.0"
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9"
   },
   "devDependencies": {},
   "repository": {

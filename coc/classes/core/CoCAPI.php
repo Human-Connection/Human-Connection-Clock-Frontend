@@ -9,11 +9,12 @@ use Requests;
 
 class CoCAPI
 {
-    const ENDPOINT_GET_COUNT      = 'cube.php';
-    const ENDPOINT_ENTRIES        = '/entries';
-    const ENDPOINT_ENTRIES_TOGGLE = '/entries/toggle';
-    const ENDPOINT_COUNTRIES      = '/countries';
-    const ENDPOINT_DELETE_ENTRY   = '/delete';
+    const ENDPOINT_GET_COUNT                      = 'cube.php';
+    const ENDPOINT_ENTRIES                        = '/entries';
+    const ENDPOINT_ENTRIES_TOGGLE                 = '/entries/toggle';
+    const ENDPOINT_ENTRIES_TOGGLE_EMAIL_CONFIRMED = '/entries/toggle-email-confirmed';
+    const ENDPOINT_COUNTRIES                      = '/countries';
+    const ENDPOINT_DELETE_ENTRY                   = '/delete';
 
     private $_apiKey = null;
     private $_baseUrl = null;
@@ -96,7 +97,7 @@ class CoCAPI
 
         $filter = [
             'active'       => true,
-            'profileImage' => $filterByProfileImage
+            'profileImage' => $filterByProfileImage,
         ];
 
         $users = $this->getUsers(
@@ -129,6 +130,21 @@ class CoCAPI
         $ch   = curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['API-Key: ' . $this->_apiKey]);
         curl_setopt($ch, CURLOPT_URL, $this->_baseUrl . self::ENDPOINT_ENTRIES_TOGGLE);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, ['id' => $entryId, 'state' => $aMap[$action]]);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $resp = curl_exec($ch);
+        curl_close($ch);
+
+        return json_decode($resp);
+    }
+
+    public function toggleEmailConfirmed($entryId, $action)
+    {
+        $aMap = ['cocemailactivate' => 1, 'cocemaildisable' => 0];
+        $ch   = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['API-Key: ' . $this->_apiKey]);
+        curl_setopt($ch, CURLOPT_URL, $this->_baseUrl . self::ENDPOINT_ENTRIES_TOGGLE_EMAIL_CONFIRMED);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, ['id' => $entryId, 'state' => $aMap[$action]]);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
