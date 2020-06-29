@@ -384,6 +384,14 @@ window.coc = ((window, document, $) => {
         if (lightBoxWrap.length > 0 && closeIcn.length > 0) {
             lightBoxWrap[0].prepend(closeIcn[0]);
         }
+
+        const messageInputElement = document.querySelector('#coc-message');
+
+        messageInputElement.addEventListener('input',  (event) => {
+            let value = event.target.value;
+            const counterElement = document.getElementById('messageCounter');
+            counterElement.textContent =  value.length + '/500';
+        });
     };
 
     $(window).off('keyup').on('keyup', (e) => {

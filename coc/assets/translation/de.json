@@ -29,5 +29,6 @@
   "errorNotificationMessage": "Bitte probiere es erneut!",
   "successNotificationTitle": "Das hat geklappt!",
   "successNotificationMessage": "DANKE, dass DU dabei bist. JEDER EINZELNE ZÄHLT! Bitte bestätige jetzt Deine Emailadresse.",
-  "entryIsFrom": "Eintrag kommt aus"
+  "entryIsFrom": "Eintrag kommt aus",
+  "pleaseSelect": "Bitte auswählen"
 }
