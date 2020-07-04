@@ -163,7 +163,7 @@ class CoCAPI
             $response['email'] = $this->translation->t('errorMissingRequiredField', 'Missing required field');
         }
 
-        if (!isset($params['country']) || empty($params['country'])) {
+        if (!isset($params['country']) || empty($params['country']) || $params['country'] === 'null') {
             $response['country'] = $this->translation->t('errorMissingRequiredField', 'Missing required field');
         }
 
