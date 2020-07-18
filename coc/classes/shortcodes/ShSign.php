@@ -77,10 +77,12 @@ class ShSign
         $html .= '<input type="text" id="coc-email" name="coc-email" autocomplete="off" />';
         $html .= '</div>';
         $html .= '<div class="form-group">';
-        $html .= '<label class="label" for="coc-country">' . $this->translation->t('country', 'Land') . '</label><br />';
+        $html .= '<label class="label" for="coc-country">' . $this->translation->t('country', 'Land') . '* </label><br />';
         $html .= '</div>';
-        $html .= <<<EOT
+        $html .= '
 <select id="coc-country" name="coc-country" autocomplete="off">
+    <option disabled selected value> - ' . $this->translation->t('pleaseSelect', 'Bitte auswählen') . ' - </option>';
+        $html .= <<<EOT
 	<option value="AF">Afghanistan</option>
 	<option value="AX">Åland Islands</option>
 	<option value="AL">Albania</option>
@@ -163,7 +165,7 @@ class ShSign
 	<option value="GA">Gabon</option>
 	<option value="GM">Gambia</option>
 	<option value="GE">Georgia</option>
-	<option value="DE" selected>Germany</option>
+	<option value="DE">Germany</option>
 	<option value="GH">Ghana</option>
 	<option value="GI">Gibraltar</option>
 	<option value="GR">Greece</option>
@@ -334,8 +336,9 @@ class ShSign
 EOT;
         $html .= '</div>';
         $html .= '<div class="form-group">';
-        $html .= '<label class="label" for="coc-message">' . $this->translation->t('message', 'Deine Botschaft an die Welt') . ' *</label>';
+        $html .= '<label class="label" for="coc-message">' . $this->translation->t('message', 'Deine Botschaft an die Welt') . '</label>';
         $html .= '<textarea id="coc-message" name="coc-message" autocomplete="off"></textarea>';
+        $html .= '<p id="messageCounter" class="hint">0/500</p>';
         $html .= '</div>';
         $html .= '<div class="form-group">';
         $html .= '<input type="checkbox" id="coc-anon" name="coc-anon" autocomplete="off" />';
