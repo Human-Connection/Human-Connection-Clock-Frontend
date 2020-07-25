@@ -387,11 +387,13 @@ window.coc = ((window, document, $) => {
 
         const messageInputElement = document.querySelector('#coc-message');
 
-        messageInputElement.addEventListener('input',  (event) => {
-            let value = event.target.value;
-            const counterElement = document.getElementById('messageCounter');
-            counterElement.textContent =  value.length + '/500';
-        });
+        if (messageInputElement && messageInputElement.length > 0) {
+            messageInputElement.addEventListener('input',  (event) => {
+                let value = event.target.value;
+                const counterElement = document.getElementById('messageCounter');
+                counterElement.textContent =  value.length + '/500';
+            });
+        }
     };
 
     $(window).off('keyup').on('keyup', (e) => {
