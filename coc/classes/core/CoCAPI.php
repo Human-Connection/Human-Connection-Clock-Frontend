@@ -92,12 +92,14 @@ class CoCAPI
 
     public function loadMore()
     {
-        $offset               = (int) $_GET['offset'] ?? 0;
-        $filterByProfileImage = (int) $_GET['profileImage'] === 1 ? 1 : 0;
+        $offset               = (int) ($_GET['offset'] ?? 0);
+        $filterByProfileImage = (int) ($_GET['profileImage'] === 1 ? 1 : 0);
+        $filterByCountry      = (string) ($_GET['country'] ?? '');
 
         $filter = [
             'active'       => true,
             'profileImage' => $filterByProfileImage,
+            'country'      => strtolower($filterByCountry),
         ];
 
         $users = $this->getUsers(
@@ -292,6 +294,9 @@ class CoCAPI
         if (!isset($filter['status'])) {
             $filter['status'] = 'all';
         }
+        if (!isset($filter['country'])) {
+            $filter['country'] = '';
+        }
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['API-Key: ' . $this->_apiKey]);
@@ -306,6 +311,7 @@ class CoCAPI
             . '&profileImage=' . (int) $filter['profileImage']
             . '&confirmed=' . (string) $filter['confirmed']
             . '&status=' . (string) $filter['status']
+            . '&country=' . (string) $filter['country']
         );
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 

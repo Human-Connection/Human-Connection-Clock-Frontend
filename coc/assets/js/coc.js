@@ -302,10 +302,11 @@ window.coc = ((window, document, $) => {
             e.preventDefault();
         });
 
-        $('#profileImage, #orderByDate').on('change', function (e) {
+        $('#profileImage, #orderByDate, #filterByCountry').on('change', function (e) {
             let urlParams = {};
             urlParams['profileImage'] = $('#profileImage').prop('checked') ? 1 : 0;
             urlParams['orderByDate'] = $('#orderByDate').val() === 'asc' ? 'asc' : 'desc';
+            urlParams['country'] = $('#filterByCountry').val();
 
             $.ajax({
                 url: cocVars.ajax_url + 'coc/v2/getEntries/?' + $.param(urlParams),
