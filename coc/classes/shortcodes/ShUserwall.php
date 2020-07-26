@@ -23,6 +23,11 @@ class ShUserwall
     private $translation;
 
     /**
+     * @var object|null
+     */
+    private $countryNames;
+
+    /**
      * ShUserwall constructor.
      *
      * @param CoCAPI      $api
@@ -33,6 +38,8 @@ class ShUserwall
         $this->api         = $api;
         $this->translation = $translation;
 
+        $this->countryNames = $this->loadCountryNames();
+
         add_shortcode(strtolower(__CLASS__), [$this, 'renderShortcode']);
     }
 
@@ -41,6 +48,16 @@ class ShUserwall
      */
     public function renderShortcode($atts, $content)
     {
+        $countryRankings = $this->api->getCountries();
+        $countries       = [];
+        if (!empty($countryRankings)) {
+            foreach ($countryRankings as $countryRanking) {
+                $countries[$countryRanking->country] = $this->getCountryName($countryRanking->country);
+            }
+        }
+        var_dump($countries);
+
+
         $html = '';
 
         $users = ClockOfChange::app()->cocAPI()->getUsers();
@@ -68,7 +85,8 @@ class ShUserwall
                 . '/wp-content/plugins/coc/assets/images/filter.jpg" alt="Clock of Change Userwall Filter"></div>';
             $html .= '<div class="user-filter-element"><strong>' . $this->translation->t(
                     'sort', 'Sortierung'
-                ) . ': </strong><label for="orderByDate">' . $this->translation->t(
+                ) . ': </strong>';
+            $html .= '<label for="orderByDate">' . $this->translation->t(
                     'sortByDate', 'Nach Datum'
                 ) . ' </label><select name="orderByDate" id="orderByDate"><option value="desc">' . $this->translation->t(
                     'descending', 'absteigend'
@@ -80,7 +98,23 @@ class ShUserwall
                 ) . ': </strong><input type="checkbox" name="profileImage" id="profileImage"><label for="profileImage">' . $this->translation->t(
                     'filterByProfileImage', 'nur Einträge mit Profilbild'
                 ) . '</label></div>';
-            $html .= '</div>';
+
+            if (!empty($countries)) {
+                $html .= '<div class="user-filter-element"><label for="filterByCountry">' . $this->translation->t(
+                        'filterByCountry', 'nur folgende Länder'
+                    ) . ' </label><select name="filterByCountry" id="orderByDate"><option value="all">' . $this->translation->t(
+                        'allCountries', 'alle Länder'
+                    ) . '</option>';
+
+                foreach ($countries as $key => $value) {
+                    if ($key && $value) {
+                        $html .= '<option value="' . esc_attr__($key) . '">' . esc_html($value) . '</option>';
+                    }
+                }
+
+                $html .= '</select></div>';
+                $html .= '</div>';
+            }
 
             $html .= '<div class="user-container" id="user-list">';
             foreach ($users->results as $user) {
@@ -108,5 +142,43 @@ class ShUserwall
         }
 
         return html_entity_decode($html);
+    }
+
+    /**
+     * @return object|null
+     */
+    private function loadCountryNames()
+    {
+        $countryNamesFilePath = '';
+        if ($this->translation->getCurrentLanguage() === 'de') {
+            $countryNamesFilePath = WP_CONTENT_DIR . '/plugins/coc/assets/translation/countries_de.json';
+        }
+
+        if ($countryNamesFilePath == '' || !file_exists($countryNamesFilePath)) {
+            $countryNamesFilePath = WP_CONTENT_DIR . '/plugins/coc/assets/translation/countries_' . Translation::DEFAULT_LANGUAGE . '.json';
+        }
+
+        if (file_exists($countryNamesFilePath)) {
+            $countryNames = file_get_contents($countryNamesFilePath);
+
+            return json_decode($countryNames);
+        }
+
+        return null;
+    }
+
+    /**
+     * @param string $shortcode
+     * @return string
+     */
+    private function getCountryName($shortcode)
+    {
+        $propertyName = strtoupper($shortcode);
+
+        if (is_object($this->countryNames) && property_exists($this->countryNames, $propertyName)) {
+            return $this->countryNames->$propertyName;
+        }
+
+        return '';
     }
 }
