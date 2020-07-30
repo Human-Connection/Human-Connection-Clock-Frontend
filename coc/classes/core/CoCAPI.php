@@ -93,13 +93,13 @@ class CoCAPI
     public function loadMore()
     {
         $offset               = (int) ($_GET['offset'] ?? 0);
-        $filterByProfileImage = (int) ($_GET['profileImage'] === 1 ? 1 : 0);
+        $filterByProfileImage = $_GET['profileImage'] == 1 ? 1 : 0;
         $filterByCountry      = (string) ($_GET['country'] ?? '');
 
         $filter = [
             'active'       => true,
             'profileImage' => $filterByProfileImage,
-            'country'      => strtolower($filterByCountry),
+            'country'      => $filterByCountry,
         ];
 
         $users = $this->getUsers(
