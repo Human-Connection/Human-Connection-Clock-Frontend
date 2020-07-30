@@ -101,7 +101,7 @@ class ShUserwall
             if (!empty($countries)) {
                 $html .= '<div class="user-filter-element"><label for="filterByCountry">' . $this->translation->t(
                         'filterByCountry', 'nur folgende Länder'
-                    ) . ' </label><select name="filterByCountry" id="filterByCountry"><option value="">' . $this->translation->t(
+                    ) . ' </label><select name="filterByCountry" id="filterByCountry" autocomplete="off"><option value="">' . $this->translation->t(
                         'allCountries', 'alle Länder'
                     ) . '</option>';
 

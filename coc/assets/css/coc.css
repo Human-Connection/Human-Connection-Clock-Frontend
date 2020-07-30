@@ -403,11 +403,12 @@ input[type="checkbox"].input-error {
 #user-list {
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-around;
+    /*justify-content: space-around;*/
+    justify-content: flex-start;
 }
 #user-list .user-item {
-    flex: auto;
-    align-self: stretch;
+    /*flex: auto;*/
+    /*align-self: stretch;*/
     width: 11%;
     cursor: pointer;
     overflow: hidden;
