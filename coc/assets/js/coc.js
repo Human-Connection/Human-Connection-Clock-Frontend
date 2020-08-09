@@ -257,6 +257,7 @@ window.coc = ((window, document, $) => {
             urlParams['offset'] = offset;
             urlParams['profileImage'] = $('#profileImage').prop('checked') ? 1 : 0;
             urlParams['orderByDate'] = $('#orderByDate').val() === 'asc' ? 'asc' : 'desc';
+            urlParams['country'] = $('#filterByCountry').val();
 
             $.ajax({
                 url: cocVars.ajax_url + 'coc/v2/getEntries/?' + $.param(urlParams),
@@ -302,10 +303,11 @@ window.coc = ((window, document, $) => {
             e.preventDefault();
         });
 
-        $('#profileImage, #orderByDate').on('change', function (e) {
+        $('#profileImage, #orderByDate, #filterByCountry').on('change', function (e) {
             let urlParams = {};
             urlParams['profileImage'] = $('#profileImage').prop('checked') ? 1 : 0;
             urlParams['orderByDate'] = $('#orderByDate').val() === 'asc' ? 'asc' : 'desc';
+            urlParams['country'] = $('#filterByCountry').val();
 
             $.ajax({
                 url: cocVars.ajax_url + 'coc/v2/getEntries/?' + $.param(urlParams),
@@ -387,11 +389,13 @@ window.coc = ((window, document, $) => {
 
         const messageInputElement = document.querySelector('#coc-message');
 
-        messageInputElement.addEventListener('input',  (event) => {
-            let value = event.target.value;
-            const counterElement = document.getElementById('messageCounter');
-            counterElement.textContent =  value.length + '/500';
-        });
+        if (messageInputElement && messageInputElement.length > 0) {
+            messageInputElement.addEventListener('input',  (event) => {
+                let value = event.target.value;
+                const counterElement = document.getElementById('messageCounter');
+                counterElement.textContent =  value.length + '/500';
+            });
+        }
     };
 
     $(window).off('keyup').on('keyup', (e) => {
@@ -483,11 +487,6 @@ window.coc = ((window, document, $) => {
         const cocNumberOfDigits = 8;
         const refreshCounterEachNumberOfSeconds = 30;
         const digitClassMap = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-
-        let urlParams = {};
-        urlParams['offset'] = offset;
-        urlParams['profileImage'] = $('#profileImage').prop('checked') ? 1 : 0;
-        urlParams['orderByDate'] = $('#orderByDate').val() === 'asc' ? 'asc' : 'desc';
 
         $.ajax({
             url: cocVars.ajax_url + 'coc/v2/getCount',
