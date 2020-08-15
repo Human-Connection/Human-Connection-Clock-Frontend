@@ -123,6 +123,7 @@ class ListTable extends \WP_List_Table
             'bulk-activate'       => 'Activate',
             'bulk-disable'        => 'Disable',
             'bulk-delete'         => 'Delete',
+            'bulk-delete-image'   => 'Delete Image',
             'bulk-email-activate' => 'Activate Email',
             'bulk-email-disable'  => 'Disable Email',
         ];
@@ -162,6 +163,12 @@ class ListTable extends \WP_List_Table
                             $result = ClockOfChange::app()->cocAPI()->deleteEntry($id);
                         }
                     }
+                } else if ($this->current_action() === 'bulk-delete-image') {
+                    foreach ($ids as $id) {
+                        if ((int) $id > 0) {
+                            $result = ClockOfChange::app()->cocAPI()->deleteImage($id);
+                        }
+                    }
                 } else if ($this->current_action() === 'bulk-email-activate') {
                     foreach ($ids as $id) {
                         if ((int) $id > 0) {
@@ -187,6 +194,7 @@ class ListTable extends \WP_List_Table
             'cocdelete',
             'cocemailactivate',
             'cocemaildisable',
+            'cocdeleteimage',
         ];
 
         if (current_user_can('manage_options') && $this->current_action() !== false && in_array(
@@ -222,6 +230,18 @@ class ListTable extends \WP_List_Table
             if ($this->current_action() === 'cocdelete' && $_GET['page'] === 'coc_entries') {
                 if ($_GET['entry'] && (int) $_GET['entry'] > 0) {
                     $result = ClockOfChange::app()->cocAPI()->deleteEntry($_GET['entry']);
+                    if (isset($result->success) && $result->success === true) {
+                        return true;
+                    }
+                }
+
+                return true;
+            }
+
+            // check for delete image action && correct page
+            if ($this->current_action() === 'cocdeleteimage' && $_GET['page'] === 'coc_entries') {
+                if ($_GET['entry'] && (int) $_GET['entry'] > 0) {
+                    $result = ClockOfChange::app()->cocAPI()->deleteImage($_GET['entry']);
                     if (isset($result->success) && $result->success === true) {
                         return true;
                     }
@@ -321,6 +341,30 @@ class ListTable extends \WP_List_Table
             'cocemaildisable'  => sprintf(
                 '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s">Disable</a>',
                 esc_attr($_REQUEST['page']), 'cocemaildisable', absint($item['ID']), $nonce, $this->get_pagenum()
+            ),
+        ];
+
+        return $title . $this->row_actions($actions);
+    }
+
+    /**
+     * Method for image column
+     *
+     * @param array $item an array of DB data
+     * @return string
+     */
+    function column_image($item)
+    {
+        // create a nonce
+        $nonce = wp_create_nonce('hc_toggle_coc_user');
+
+        $title = $item['image'];
+
+        $actions = [
+            'cocdeleteimage' => sprintf(
+                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s#entry-%s" onclick="return confirm(\'Really delete image for the entry? This cannot be undone.\');">Delete image</a>',
+                esc_attr($_REQUEST['page']), 'cocdeleteimage', absint($item['ID']), $nonce, $this->get_pagenum(),
+                absint($item['ID'])
             ),
         ];
 
@@ -477,7 +521,7 @@ class ListTable extends \WP_List_Table
         foreach ($this->_actions as $name => $title) {
             $class = 'edit' === $name ? ' class="hide-if-no-js"' : '';
 
-            echo "\t" . '<option value="' . $name . '"' . $class . ' ' . ($name === 'bulk-delete' ? 'onclick="return confirm(\'Info: Deleting entries is permanent and cannot be undone! \');"' : '') . '>' . $title . "</option>\n";
+            echo "\t" . '<option value="' . $name . '"' . $class . ' ' . ($name === 'bulk-delete' ? 'onclick="return confirm(\'Info: Deleting entries is permanent and cannot be undone! \');"' : ($name === 'bulk-delete-image' ? 'onclick="return confirm(\'Info: Deleting image of entries is permanent and cannot be undone! \');"' : '')) . '>' . $title . "</option>\n";
         }
 
         echo "</select>\n";
