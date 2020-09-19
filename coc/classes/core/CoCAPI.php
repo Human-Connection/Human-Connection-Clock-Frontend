@@ -16,6 +16,7 @@ class CoCAPI
     const ENDPOINT_COUNTRIES                      = '/countries';
     const ENDPOINT_DELETE_ENTRY                   = '/delete';
     const ENDPOINT_DELETE_IMAGE                   = '/deleteImage';
+    const ENDPOINT_ROTATE_IMAGE                   = '/rotateImage';
 
     private $_apiKey = null;
     private $_baseUrl = null;
@@ -87,6 +88,13 @@ class CoCAPI
             'coc/v2', '/deleteImage/', [
                 'methods'  => 'GET',
                 'callback' => [$this, 'deleteImage'],
+            ]
+        );
+
+        register_rest_route(
+            'coc/v2', '/rotateImage/', [
+                'methods'  => 'GET',
+                'callback' => [$this, 'rotateImage'],
             ]
         );
 
@@ -410,6 +418,26 @@ class CoCAPI
         curl_setopt(
             $ch, CURLOPT_URL,
             $this->_baseUrl . self::ENDPOINT_DELETE_IMAGE . '/' . esc_attr($id)
+        );
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        if ($response->status_code === 200 && $response->success === true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function rotateImage($id, $degree)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['API-Key: ' . $this->_apiKey]);
+        curl_setopt(
+            $ch, CURLOPT_URL,
+            $this->_baseUrl . self::ENDPOINT_ROTATE_IMAGE . '/' . esc_attr($id) . '/' . esc_attr($degree)
         );
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 

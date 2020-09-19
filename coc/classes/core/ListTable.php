@@ -195,6 +195,7 @@ class ListTable extends \WP_List_Table
             'cocemailactivate',
             'cocemaildisable',
             'cocdeleteimage',
+            'cocrotateimage',
         ];
 
         if (current_user_can('manage_options') && $this->current_action() !== false && in_array(
@@ -242,6 +243,18 @@ class ListTable extends \WP_List_Table
             if ($this->current_action() === 'cocdeleteimage' && $_GET['page'] === 'coc_entries') {
                 if ($_GET['entry'] && (int) $_GET['entry'] > 0) {
                     $result = ClockOfChange::app()->cocAPI()->deleteImage($_GET['entry']);
+                    if (isset($result->success) && $result->success === true) {
+                        return true;
+                    }
+                }
+
+                return true;
+            }
+
+            // check for rotate image action && correct page
+            if ($this->current_action() === 'cocrotateimage' && $_GET['page'] === 'coc_entries') {
+                if ($_GET['entry'] && (int) $_GET['entry'] > 0 && (int) $_GET['degree'] >= 0) {
+                    $result = ClockOfChange::app()->cocAPI()->rotateImage($_GET['entry'], (int) $_GET['degree']);
                     if (isset($result->success) && $result->success === true) {
                         return true;
                     }
@@ -367,8 +380,46 @@ class ListTable extends \WP_List_Table
                 absint($item['ID'])
             ),
         ];
+        //var_dump(WP_CONTENT_DIR . '/plugins/coc/assets/images/reload.png');
+        //var_dump(file_exists(WP_CONTENT_DIR . '/plugins/coc/assets/images/reload.png'));
+        //die();
 
-        return $title . $this->row_actions($actions);
+        $rotateActions = '<div class="row-actions">';
+
+        $rotateActions .= sprintf(
+            '<a href="?page=%s&action=%s&entry=%s&degree=%d&_wpnonce=%s&paged=%s#entry-%s">%s</a>',
+            esc_attr($_REQUEST['page']), 'cocrotateimage', absint($item['ID']), 0, $nonce, $this->get_pagenum(),
+            absint($item['ID']),
+            '<img class="rotate-image-right" style="width: 15px; height: 15px; margin-right: 5px;" src="' . ClockOfChange::$pluginRootUri . 'assets/images/rotate_0.png" alt="Rotate to 0 degree" title="Rotate to 0 degree">'
+        );
+
+        $rotateActions .= sprintf(
+            '<a href="?page=%s&action=%s&entry=%s&degree=%d&_wpnonce=%s&paged=%s#entry-%s">%s</a>',
+            esc_attr($_REQUEST['page']), 'cocrotateimage', absint($item['ID']), 90, $nonce, $this->get_pagenum(),
+            absint($item['ID']),
+            '<img class="rotate-image-right" style="width: 15px; height: 15px; margin-right: 5px;" src="' . ClockOfChange::$pluginRootUri . 'assets/images/rotate_90.png" alt="Rotate to 90 degree" title="Rotate to 90 degree">'
+        );
+
+        $rotateActions .= sprintf(
+            '<a href="?page=%s&action=%s&entry=%s&degree=%d&_wpnonce=%s&paged=%s#entry-%s" >%s</a>',
+            esc_attr($_REQUEST['page']), 'cocrotateimage', absint($item['ID']), 180, $nonce, $this->get_pagenum(),
+            absint($item['ID']),
+            '<img class="rotate-image-right" style="width: 15px; height: 15px; margin-right: 5px;" src="' . ClockOfChange::$pluginRootUri . 'assets/images/rotate_180.png" alt="Rotate to 180 degree" title="Rotate to 180 degree">'
+        );
+
+        $rotateActions .= sprintf(
+            '<a href="?page=%s&action=%s&entry=%s&degree=%d&_wpnonce=%s&paged=%s#entry-%s">%s</a>',
+            esc_attr($_REQUEST['page']), 'cocrotateimage', absint($item['ID']), 270, $nonce, $this->get_pagenum(),
+            absint($item['ID']),
+            '<img class="rotate-image-right" style="width: 15px; height: 15px; margin-right: 5px;" src="' . ClockOfChange::$pluginRootUri . 'assets/images/rotate_270.png" alt="Rotate to 270 degree" title="Rotate to 270 degree">'
+        );
+
+        $rotateActions .= '</div>';
+        if ($item['image'] == '' || strstr($item['image'], 'coc-placeholder.jpg')) {
+            $rotateActions = '';
+        }
+
+        return $title . $this->row_actions($actions) . $rotateActions;
     }
 
     /**
