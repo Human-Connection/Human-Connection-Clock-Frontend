@@ -197,6 +197,10 @@ class CoCAPI
             $response['age'] = $this->translation->t('errorMissingRequiredField', 'Missing required field');
         }
 
+        if (!isset($params['slogan']) || $params['slogan'] !== 'true') {
+            $response['slogan'] = $this->translation->t('errorMissingRequiredField', 'Missing required field');
+        }
+
         // ensure required fields
         // form can only be send when pr is set while we assume that any record showing up on node has accepted privacy
         if (!empty($response)) {
