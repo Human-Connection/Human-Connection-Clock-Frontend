@@ -5,7 +5,7 @@
 window.coc = ((window, document, $) => {
     let app           = {},
         formOverlay   = $('.coc-form-overlay'),
-        defaultMsg    = 'Ich bin für Veränderung.',
+        defaultMsg    = '',
         defaultName   = 'Mensch',
         userImages    = $('.user-image'),
         userMessage   = $('#user-message'),
@@ -51,6 +51,7 @@ window.coc = ((window, document, $) => {
     fieldMapToFormId['nl'] = 'coc-register-nl';
     fieldMapToFormId['pr'] = 'coc-register-privacy';
     fieldMapToFormId['age'] = 'coc-register-age';
+    fieldMapToFormId['slogan'] = 'coc-slogan';
     fieldMapToFormId['file'] = 'coc-add-avatar';
     fieldMapToFormId['error'] = 'form-error';
 
@@ -80,9 +81,6 @@ window.coc = ((window, document, $) => {
         }
         userMessage.find('.message-name').text(uName);
 
-        if (message === '') {
-            message = defaultMsg;
-        }
         userMessage.find('.message-text').text(message);
 
         app.loadCountryFlagImage(country);
@@ -180,6 +178,7 @@ window.coc = ((window, document, $) => {
             data.append('beta', '0');
             data.append('nl', $('#coc-register-nl')[0].checked);
             data.append('age', $('#coc-register-age')[0].checked);
+            data.append('slogan', $('#coc-slogan')[0].checked);
             data.append('pr', privacyChecked);
 
             // PAX
@@ -378,7 +377,6 @@ window.coc = ((window, document, $) => {
             }, 150);
         });
 
-        defaultMsg    = app.t('defaultEntryMessage', 'Ich bin für Veränderung.');
         defaultName   = app.t('defaultEntryName', 'Mensch');
 
         let closeIcn = document.getElementsByClassName("close-wrapper");
@@ -520,9 +518,7 @@ window.coc = ((window, document, $) => {
 
         let nextData = $(userImages[userWallIndex]);
         let msg = nextData.data('message');
-        if (msg === '') {
-            msg = defaultMsg;
-        }
+
         userMessage.find('.user-message-image').attr('src', nextData[0].src);
         userMessage.find('.message-text').text(msg);
 
@@ -545,9 +541,7 @@ window.coc = ((window, document, $) => {
 
         let nextData = $(userImages[userWallIndex]);
         let msg = nextData.data('message');
-        if (msg === '') {
-            msg = defaultMsg;
-        }
+
         userMessage.find('.user-message-image').attr('src', nextData[0].src);
         userMessage.find('.message-text').text(msg);
 
