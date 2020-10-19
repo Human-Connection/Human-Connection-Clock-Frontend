@@ -14,59 +14,27 @@ class OptionsManager
      */
     private $options;
 
-	private $_options = null;
-
 	// Custom options that don't rely on Advanced Custom Fields Plugin
 	private $customOptions = null;
 
 	public $items;
 
 	public function __construct(){
-		$this->_options = require_once(ClockOfChange::$pluginRootPath . '/config/options.php');
 
 		if (file_exists(ClockOfChange::$pluginRootPath . '/config/custom.php')) {
             $this->customOptions = require_once(ClockOfChange::$pluginRootPath . '/config/custom.php');
         }
 
-//		$this->_initThemeOptions();
-        $this->options = get_option( 'my_option_name' );
+        $this->options = get_option( 'coc_settings' );
 
         add_action( 'admin_menu', array( $this, 'add_plugin_page' ) );
         add_action( 'admin_init', array( $this, 'page_init' ) );
 	}
 
 	public function getOption($name){
-//	    var_dump($name);
-//	    var_dump(get_option($name));
-//        var_dump($this->options);
-//        var_dump($name);
-//	    return get_option($name);
-//	    return $this->options[$name];
-
-		// ensure option is a theme option
-//		$key = array_keys(
-//			array_filter(
-//				$this->_options['fields'],
-//				function($item) use($name){
-//					return $item['name'] === $name;
-//				}
-//			)
-//		);
-//
-//		if(isset($key[0]) && isset($this->_options['fields'][$key[0]])){
-//            $value = get_field($this->_options['fields'][$key[0]]['key'], 'option');
-//            if ($value) {
-//                return $value;
-//            }
-//		}
-
         if (!empty($this->options) && isset($this->options[$name])) {
             return $this->options[$name];
         }
-
-//		if (!empty($this->customOptions) && isset($this->customOptions[$name])) {
-//		    return $this->customOptions[$name];
-//        }
 
 		return false;
 	}
@@ -129,29 +97,6 @@ class OptionsManager
 		<?php
 	}
 
-	private function _initThemeOptions(){
-		$args = [
-			'page_title' => 'Clock of Change options',
-			'menu_title' => 'CoC Options',
-			'menu_slug' => 'coc-settings',
-			'capability' => 'edit_posts',
-			'position' => false,
-			'parent_slug' => '',
-			'icon_url' => false,
-			'redirect' => true,
-			'post_id' => 'options',
-			'autoload' => false,
-		];
-
-		acf_add_options_page($args);
-		$this->_initOptions();
-	}
-
-	private function _initOptions(){
-		if($this->_options !== null)
-			acf_add_local_field_group($this->_options);
-	}
-
     /**
      * Add options page
      */
@@ -175,14 +120,14 @@ class OptionsManager
     public function create_admin_page()
     {
         // Set class property
-        $this->options = get_option( 'my_option_name' );
+        $this->options = get_option( 'coc_settings' );
         ?>
         <div class="wrap">
             <h1>My Settings</h1>
             <form method="post" action="options.php">
                 <?php
                 // This prints out all hidden setting fields
-                settings_fields( 'my_option_group' );
+                settings_fields( 'coc_settings_group' );
                 do_settings_sections( 'coc-setting-admin' );
                 submit_button();
                 ?>
@@ -197,8 +142,8 @@ class OptionsManager
     public function page_init()
     {
         register_setting(
-            'my_option_group', // Option group
-            'my_option_name', // Option name
+            'coc_settings_group', // Option group
+            'coc_settings', // Option name
             array( $this, 'sanitize' ) // Sanitize
         );
 
@@ -258,7 +203,7 @@ class OptionsManager
     {
 
         printf(
-            '<input type="text" id="%s" name="my_option_name[%s]" value="%s" />',
+            '<input type="text" id="%s" name="coc_settings[%s]" value="%s" />',
             self::OPT_API_KEY,
             self::OPT_API_KEY,
             isset( $this->options[self::OPT_API_KEY] ) ? esc_attr( $this->options[self::OPT_API_KEY]) : ''
@@ -271,7 +216,7 @@ class OptionsManager
     public function apiUrlTextField()
     {
         printf(
-            '<input type="text" id="%s" name="my_option_name[%s]" value="%s" />',
+            '<input type="text" id="%s" name="coc_settings[%s]" value="%s" />',
             self::OPT_API_URL,
             self::OPT_API_URL,
             isset( $this->options[self::OPT_API_URL] ) ? esc_attr( $this->options[self::OPT_API_URL]) : ''
