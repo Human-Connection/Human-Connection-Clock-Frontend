@@ -42,27 +42,6 @@ class ShSign
         $html .= '<div class="coc-form">';
         $html .= '<span class="coc-form-close">&times;</span>';
         $html .= '<div id="form-error"></div>';
-        $html .= '<span class="avatar-label label">' . $this->translation->t('avatar', 'Avatar') . '</span>';
-        $html .= '<p class="hint">' . $this->translation->t('minSizeAvatar', 'min. 200*200px') . '</p>';
-        $html .= '<div class="form-group" id="coc-add-avatar">';
-        $html .= '<div id="add-avatar-inner">';
-        $html .= '<div class="avatar-preview" id="avatar-preview">';
-
-        // preview image
-        $html .= '<div class="preview-wrapper">';
-        $html .= '<img src="' . ClockOfChange::$pluginAssetsUri . '/images/coc-placeholder.jpg" id="coc-image" name="image" />';
-        $html .= '</div>';
-
-        $html .= '<input type="file" id="ownImageUpload" style="display:none" autocomplete="off">';
-        $html .= '<div class="upload-own-wrapper" id="customUploadWrap">';
-        $html .= '<i title="' . $this->translation->t('uploadOwnImage', 'Eigenes Bild hochladen') . '" id="upload-icon" class="fas fa-upload large-icon"></i>';
-        $html .= '</div>';
-
-        $html .= '</div>';
-        $html .= '</div>';
-        $html .= '</div>';
-        $html .= '<div id="avatar-wrapper">';
-        $html .= '</div>';
         $html .= '<div class="input-group">';
         $html .= '<div class="form-group">';
         $html .= '<label class="label" for="coc-firstname">' . $this->translation->t('firstName', 'Vorname') . ' *</label>';
@@ -340,6 +319,29 @@ EOT;
         $html .= '<textarea id="coc-message" name="coc-message" autocomplete="off"></textarea>';
         $html .= '<p id="messageCounter" class="hint">0/500</p>';
         $html .= '</div>';
+
+        $html .= '<span class="avatar-label label">' . $this->translation->t('avatar', 'Avatar') . '</span>';
+        $html .= '<p class="hint">' . $this->translation->t('minSizeAvatar', 'min. 200*200px') . '</p>';
+        $html .= '<div class="form-group" id="coc-add-avatar">';
+        $html .= '<div id="add-avatar-inner">';
+        $html .= '<div class="avatar-preview" id="avatar-preview">';
+
+        // preview image
+        $html .= '<div class="preview-wrapper">';
+        $html .= '<img src="' . ClockOfChange::$pluginAssetsUri . '/images/coc-placeholder.jpg" id="coc-image" name="image" />';
+        $html .= '</div>';
+
+        $html .= '<input type="file" id="ownImageUpload" style="display:none" autocomplete="off">';
+        $html .= '<div class="upload-own-wrapper" id="customUploadWrap">';
+        $html .= '<i title="' . $this->translation->t('uploadOwnImage', 'Eigenes Bild hochladen') . '" id="upload-icon" class="fas fa-upload large-icon"></i>';
+        $html .= '</div>';
+
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '<div id="avatar-wrapper">';
+        $html .= '</div>';
+
         $html .= '<div class="form-group">';
         $html .= '<input type="checkbox" id="coc-slogan" name="coc-slogan" autocomplete="off"/>';
         $html .= '<label class="label" for="coc-slogan">' . $this->translation->t('slogan', 'Ich glaube daran, dass Veränderung in jedem Einzelnen beginnt und dass, wenn genügend Menschen sich ändern, die Welt sich verändern wird. Ich möchte mit meinen Mitmenschen eine Brücke zu einer nachhaltigen Zukunft für die Kinder der Welt bauen') . '</label>';

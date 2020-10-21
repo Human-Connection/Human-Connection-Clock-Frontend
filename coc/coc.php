@@ -29,11 +29,4 @@ if(class_exists( 'coc\\ClockOfChange' )){
 	$pluginRootPath = plugin_dir_path(__FILE__);
 	$pluginRootUri  = plugin_dir_url(__FILE__);
 	$plugin = new \coc\ClockOfChange($pluginRootPath, $pluginRootUri);
-
-	include_once($pluginRootPath.'/vendor/acf/acf.php');
-
-	add_filter('acf/settings/path', 'cocSetAcfSettingsPath');
-	add_filter('acf/settings/dir', 'cocSetAcfSettingsDir');
-
-	include_once($pluginRootPath.'/helper/acfinit.php');
 }
