@@ -16,6 +16,7 @@
   "emailAddress": "E-Mail address (will never be published)",
   "country": "Country",
   "message": "Your message to the world",
+  "messageDisclaimer": "ATTENTION: commercial, political and not helpful and Human Disconnection submissions will not be approved. Links will be removed.",
   "hideName": "Hide my name",
   "signupNewsletter": "Sign up for the Human Connection Newsletter",
   "acceptDataPrivacyPolicy": "I have read the <a class=\"inline-link\" href=\"https://human-connection.org/datenschutz/#_privacycoc\" title=\"to the privacy policy\" target=\"_blank\">privacy policy</a> and accept it.",

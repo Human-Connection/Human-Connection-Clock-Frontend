@@ -49,6 +49,7 @@ services:
       WORDPRESS_DB_HOST: db_frontend:3306
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: 123456
+    command: exit 0
 
 volumes:
   dbdata:

@@ -387,7 +387,7 @@ window.coc = ((window, document, $) => {
 
         const messageInputElement = document.querySelector('#coc-message');
 
-        if (messageInputElement && messageInputElement.length > 0) {
+        if (messageInputElement) {
             messageInputElement.addEventListener('input',  (event) => {
                 let value = event.target.value;
                 const counterElement = document.getElementById('messageCounter');

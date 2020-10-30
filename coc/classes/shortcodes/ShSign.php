@@ -316,7 +316,7 @@ EOT;
         $html .= '</div>';
         $html .= '<div class="form-group">';
         $html .= '<label class="label" for="coc-message">' . $this->translation->t('message', 'Deine Botschaft an die Welt') . '</label>';
-        $html .= '<textarea id="coc-message" name="coc-message" autocomplete="off"></textarea>';
+        $html .= '<textarea id="coc-message" name="coc-message" autocomplete="off" placeholder="' . $this->translation->t('messageDisclaimer', 'ACHTUNG: kommerzielle, politische, nicht förderliche bzw. Human Disconnection-Beiträge werden nicht freigeschaltet. Links werden entfernt.') . '"></textarea>';
         $html .= '<p id="messageCounter" class="hint">0/500</p>';
         $html .= '</div>';
 
