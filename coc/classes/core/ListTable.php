@@ -57,11 +57,13 @@ class ListTable extends \WP_List_Table
         $order     = isset($_GET['order']) ? $_GET['order'] : null;
         $confirmed = isset($_REQUEST['confirmed']) ? $_REQUEST['confirmed'] : null;
         $status    = isset($_REQUEST['status']) ? $_REQUEST['status'] : null;
+        $search    = isset($_REQUEST['search']) ? $_REQUEST['search'] : null;
 
         $filter = [
             'active'    => false,
             'confirmed' => $confirmed,
             'status'    => $status,
+            'search'    => $search
         ];
 
         $users = ClockOfChange::app()->cocAPI()->getUsers($offset, $filter, $orderBy, $order);
@@ -96,11 +98,13 @@ class ListTable extends \WP_List_Table
     {
         $confirmed = isset($_REQUEST['confirmed']) ? $_REQUEST['confirmed'] : null;
         $status    = isset($_REQUEST['status']) ? $_REQUEST['status'] : null;
+        $search    = isset($_REQUEST['search']) ? $_REQUEST['search'] : null;
 
         $filter = [
             'active'    => false,
             'confirmed' => $confirmed,
             'status'    => $status,
+            'search'    => $search
         ];
 
         return ClockOfChange::app()->cocAPI()->getCount($filter);
@@ -509,6 +513,7 @@ class ListTable extends \WP_List_Table
         if ($which === 'top') {
             $confirmed = isset($_REQUEST['confirmed']) ? $_REQUEST['confirmed'] : null;
             $status    = isset($_REQUEST['status']) ? $_REQUEST['status'] : null;
+            $search    = isset($_REQUEST['search']) ? $_REQUEST['search'] : null;
             ?>
             <div class="alignleft actions">
                 <label for="filter-by-confirmed" class="screen-reader-text">Filter by email confirmed</label>
@@ -525,6 +530,7 @@ class ListTable extends \WP_List_Table
                     <option value="inactive" <?= $status === 'inactive' ? 'selected="selected"' : ''; ?>>Inactive
                     </option>
                 </select>
+                <input type="text" name="search" id="filter-by-search" class="postform" placeholder="Search by text" value="<?= $search ?>">
                 <?php submit_button('Filter', 'action', 'filter-action', false); ?>
             </div>
             <?php
