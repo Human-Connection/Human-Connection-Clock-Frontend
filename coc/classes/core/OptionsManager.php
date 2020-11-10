@@ -43,7 +43,7 @@ class OptionsManager
 		$hook = add_menu_page(
 			'Clock of Change entries',
 			'CoC Entries',
-			'manage_options',
+			'manage_categories',
 			'coc_entries',
 			[$this, 'pluginSettingsPage']
 		);

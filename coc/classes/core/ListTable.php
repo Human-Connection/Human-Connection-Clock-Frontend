@@ -57,11 +57,13 @@ class ListTable extends \WP_List_Table
         $order     = isset($_GET['order']) ? $_GET['order'] : null;
         $confirmed = isset($_REQUEST['confirmed']) ? $_REQUEST['confirmed'] : null;
         $status    = isset($_REQUEST['status']) ? $_REQUEST['status'] : null;
+        $search    = isset($_REQUEST['search']) ? $_REQUEST['search'] : null;
 
         $filter = [
             'active'    => false,
             'confirmed' => $confirmed,
             'status'    => $status,
+            'search'    => $search
         ];
 
         $users = ClockOfChange::app()->cocAPI()->getUsers($offset, $filter, $orderBy, $order);
@@ -96,11 +98,13 @@ class ListTable extends \WP_List_Table
     {
         $confirmed = isset($_REQUEST['confirmed']) ? $_REQUEST['confirmed'] : null;
         $status    = isset($_REQUEST['status']) ? $_REQUEST['status'] : null;
+        $search    = isset($_REQUEST['search']) ? $_REQUEST['search'] : null;
 
         $filter = [
             'active'    => false,
             'confirmed' => $confirmed,
             'status'    => $status,
+            'search'    => $search
         ];
 
         return ClockOfChange::app()->cocAPI()->getCount($filter);
@@ -315,17 +319,20 @@ class ListTable extends \WP_List_Table
 
         $actions = [
             'cocactivate' => sprintf(
-                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s#entry-%s">Activate</a>',
+                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s&%s&filter-action=Filter#entry-%s">Activate</a>',
                 esc_attr($_REQUEST['page']), 'cocactivate', absint($item['ID']), $nonce, $this->get_pagenum(),
+                $this->getFilterUrlParams(),
                 absint($item['ID'])
             ),
             'cocdisable'  => sprintf(
-                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s">Disable</a>',
-                esc_attr($_REQUEST['page']), 'cocdisable', absint($item['ID']), $nonce, $this->get_pagenum()
+                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s&%s&filter-action=Filter#entry-%s">Disable</a>',
+                esc_attr($_REQUEST['page']), 'cocdisable', absint($item['ID']), $nonce, $this->get_pagenum(),
+                $this->getFilterUrlParams(),
+                absint($item['ID'])
             ),
             'cocdelete'   => sprintf(
-                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s" onclick="return confirm(\'Really delete entry? This cannot be undone.\');">Delete</a>',
-                esc_attr($_REQUEST['page']), 'cocdelete', absint($item['ID']), $nonce, $this->get_pagenum()
+                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s&%s&filter-action=Filter#entry-%s" onclick="return confirm(\'Really delete entry? This cannot be undone.\');">Delete</a>',
+                esc_attr($_REQUEST['page']), 'cocdelete', absint($item['ID']), $nonce, $this->get_pagenum(), $this->getFilterUrlParams(), absint($item['ID'])
             ),
         ];
 
@@ -347,13 +354,14 @@ class ListTable extends \WP_List_Table
 
         $actions = [
             'cocemailactivate' => sprintf(
-                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s#entry-%s">Activate</a>',
+                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s&%s&filter-action=Filter#entry-%s">Activate</a>',
                 esc_attr($_REQUEST['page']), 'cocemailactivate', absint($item['ID']), $nonce, $this->get_pagenum(),
-                absint($item['ID'])
+                $this->getFilterUrlParams(), absint($item['ID'])
             ),
             'cocemaildisable'  => sprintf(
-                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s">Disable</a>',
-                esc_attr($_REQUEST['page']), 'cocemaildisable', absint($item['ID']), $nonce, $this->get_pagenum()
+                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s&%s&filter-action=Filter#entry-%s">Disable</a>',
+                esc_attr($_REQUEST['page']), 'cocemaildisable', absint($item['ID']), $nonce, $this->get_pagenum(),
+                $this->getFilterUrlParams(), absint($item['ID'])
             ),
         ];
 
@@ -375,9 +383,9 @@ class ListTable extends \WP_List_Table
 
         $actions = [
             'cocdeleteimage' => sprintf(
-                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s#entry-%s" onclick="return confirm(\'Really delete image for the entry? This cannot be undone.\');">Delete image</a>',
+                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s&%s&filter-action=Filter#entry-%s" onclick="return confirm(\'Really delete image for the entry? This cannot be undone.\');">Delete image</a>',
                 esc_attr($_REQUEST['page']), 'cocdeleteimage', absint($item['ID']), $nonce, $this->get_pagenum(),
-                absint($item['ID'])
+                $this->getFilterUrlParams(), absint($item['ID'])
             ),
         ];
         //var_dump(WP_CONTENT_DIR . '/plugins/coc/assets/images/reload.png');
@@ -387,30 +395,30 @@ class ListTable extends \WP_List_Table
         $rotateActions = '<div class="row-actions">';
 
         $rotateActions .= sprintf(
-            '<a href="?page=%s&action=%s&entry=%s&degree=%d&_wpnonce=%s&paged=%s#entry-%s">%s</a>',
+            '<a href="?page=%s&action=%s&entry=%s&degree=%d&_wpnonce=%s&paged=%s&%s&filter-action=Filter#entry-%s">%s</a>',
             esc_attr($_REQUEST['page']), 'cocrotateimage', absint($item['ID']), 0, $nonce, $this->get_pagenum(),
-            absint($item['ID']),
+            $this->getFilterUrlParams(), absint($item['ID']),
             '<img class="rotate-image-right" style="width: 15px; height: 15px; margin-right: 5px;" src="' . ClockOfChange::$pluginRootUri . 'assets/images/rotate_0.png" alt="Rotate to 0 degree" title="Rotate to 0 degree">'
         );
 
         $rotateActions .= sprintf(
-            '<a href="?page=%s&action=%s&entry=%s&degree=%d&_wpnonce=%s&paged=%s#entry-%s">%s</a>',
+            '<a href="?page=%s&action=%s&entry=%s&degree=%d&_wpnonce=%s&paged=%s&%s&filter-action=Filter#entry-%s">%s</a>',
             esc_attr($_REQUEST['page']), 'cocrotateimage', absint($item['ID']), 90, $nonce, $this->get_pagenum(),
-            absint($item['ID']),
+            $this->getFilterUrlParams(), absint($item['ID']),
             '<img class="rotate-image-right" style="width: 15px; height: 15px; margin-right: 5px;" src="' . ClockOfChange::$pluginRootUri . 'assets/images/rotate_90.png" alt="Rotate to 90 degree" title="Rotate to 90 degree">'
         );
 
         $rotateActions .= sprintf(
-            '<a href="?page=%s&action=%s&entry=%s&degree=%d&_wpnonce=%s&paged=%s#entry-%s" >%s</a>',
+            '<a href="?page=%s&action=%s&entry=%s&degree=%d&_wpnonce=%s&paged=%s&%s&filter-action=Filter#entry-%s" >%s</a>',
             esc_attr($_REQUEST['page']), 'cocrotateimage', absint($item['ID']), 180, $nonce, $this->get_pagenum(),
-            absint($item['ID']),
+            $this->getFilterUrlParams(), absint($item['ID']),
             '<img class="rotate-image-right" style="width: 15px; height: 15px; margin-right: 5px;" src="' . ClockOfChange::$pluginRootUri . 'assets/images/rotate_180.png" alt="Rotate to 180 degree" title="Rotate to 180 degree">'
         );
 
         $rotateActions .= sprintf(
-            '<a href="?page=%s&action=%s&entry=%s&degree=%d&_wpnonce=%s&paged=%s#entry-%s">%s</a>',
+            '<a href="?page=%s&action=%s&entry=%s&degree=%d&_wpnonce=%s&paged=%s&%s&filter-action=Filter#entry-%s">%s</a>',
             esc_attr($_REQUEST['page']), 'cocrotateimage', absint($item['ID']), 270, $nonce, $this->get_pagenum(),
-            absint($item['ID']),
+            $this->getFilterUrlParams(), absint($item['ID']),
             '<img class="rotate-image-right" style="width: 15px; height: 15px; margin-right: 5px;" src="' . ClockOfChange::$pluginRootUri . 'assets/images/rotate_270.png" alt="Rotate to 270 degree" title="Rotate to 270 degree">'
         );
 
@@ -509,6 +517,7 @@ class ListTable extends \WP_List_Table
         if ($which === 'top') {
             $confirmed = isset($_REQUEST['confirmed']) ? $_REQUEST['confirmed'] : null;
             $status    = isset($_REQUEST['status']) ? $_REQUEST['status'] : null;
+            $search    = isset($_REQUEST['search']) ? $_REQUEST['search'] : null;
             ?>
             <div class="alignleft actions">
                 <label for="filter-by-confirmed" class="screen-reader-text">Filter by email confirmed</label>
@@ -525,6 +534,7 @@ class ListTable extends \WP_List_Table
                     <option value="inactive" <?= $status === 'inactive' ? 'selected="selected"' : ''; ?>>Inactive
                     </option>
                 </select>
+                <input type="text" name="search" id="filter-by-search" class="postform" placeholder="Search by text" value="<?= $search ?>">
                 <?php submit_button('Filter', 'action', 'filter-action', false); ?>
             </div>
             <?php
@@ -579,5 +589,19 @@ class ListTable extends \WP_List_Table
 
         submit_button(__('Apply'), 'action', '', false, ['id' => "doaction$two"]);
         echo "\n";
+    }
+
+    /**
+     * @return string
+     */
+    private function getFilterUrlParams()
+    {
+        $urlParams = [
+            'confirmed' => isset($_REQUEST['confirmed']) ? $_REQUEST['confirmed'] : null,
+            'status'    => isset($_REQUEST['status']) ? $_REQUEST['status'] : null,
+            'search'    => isset($_REQUEST['search']) ? $_REQUEST['search'] : null,
+        ];
+
+        return http_build_query($urlParams);
     }
 }

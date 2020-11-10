@@ -317,6 +317,9 @@ class CoCAPI
         if (!isset($filter['country'])) {
             $filter['country'] = '';
         }
+        if (!isset($filter['search'])) {
+            $filter['search'] = '';
+        }
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['API-Key: ' . $this->_apiKey]);
@@ -332,6 +335,7 @@ class CoCAPI
             . '&confirmed=' . (string) $filter['confirmed']
             . '&status=' . (string) $filter['status']
             . '&country=' . (string) $filter['country']
+            . '&search=' . (string) $filter['search']
         );
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
@@ -356,11 +360,16 @@ class CoCAPI
             $filter['status'] = 'all';
         }
 
+        if (!isset($filter['search'])) {
+            $filter['search'] = '';
+        }
+
         $url = $this->_baseUrl . '/' . self::ENDPOINT_GET_COUNT
             . '?isActive=' . (int) $filter['active']
             . '&profileImage=' . (int) $filter['profileImage']
             . '&confirmed=' . (string) $filter['confirmed']
-            . '&status=' . (string) $filter['status'];
+            . '&status=' . (string) $filter['status']
+            . '&search=' . (string) $filter['search'];
 
         try {
             $response = Requests::get($url);

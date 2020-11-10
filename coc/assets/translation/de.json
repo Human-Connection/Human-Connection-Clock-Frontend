@@ -16,6 +16,7 @@
   "emailAddress": "E-Mail Adresse (wird nie öffentlich angezeigt)",
   "country": "Land",
   "message": "Deine Botschaft an die Welt",
+  "messageDisclaimer": "ACHTUNG: kommerzielle, politische, nicht förderliche bzw. Human Disconnection-Beiträge werden nicht freigeschaltet. Links werden entfernt.",
   "hideName": "Meinen Namen nicht anzeigen",
   "signupNewsletter": "Für den Human Connection Newsletter eintragen",
   "acceptDataPrivacyPolicy": "Ich habe die <a class=\"inline-link\" href=\"https://human-connection.org/datenschutz/#_privacycoc\" title=\"zu den Datenschutzbestimmungen\" target=\"_blank\">Datenschutzbestimmungen</a> gelesen und akzeptiere diese.",
