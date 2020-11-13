@@ -51,19 +51,20 @@ class ListTable extends \WP_List_Table
      */
     public static function getEntries($per_page = 5, $page_number = 1)
     {
-        $result    = null;
-        $offset    = $page_number === 1 ? 0 : $page_number * $per_page;
-        $orderBy   = isset($_GET['orderby']) ? $_GET['orderby'] : null;
-        $order     = isset($_GET['order']) ? $_GET['order'] : null;
-        $confirmed = isset($_REQUEST['confirmed']) ? $_REQUEST['confirmed'] : null;
-        $status    = isset($_REQUEST['status']) ? $_REQUEST['status'] : null;
-        $search    = isset($_REQUEST['search']) ? $_REQUEST['search'] : null;
+        $result        = null;
+        $offset        = $page_number === 1 ? 0 : $page_number * $per_page;
+        $orderBy       = isset($_GET['orderby']) ? $_GET['orderby'] : null;
+        $order         = isset($_GET['order']) ? $_GET['order'] : null;
+        $confirmed     = isset($_REQUEST['confirmed']) ? $_REQUEST['confirmed'] : null;
+        $status        = isset($_REQUEST['status']) ? $_REQUEST['status'] : null;
+        $search        = isset($_REQUEST['search']) ? $_REQUEST['search'] : null;
+        $rotateImageId = isset($_REQUEST['rotateImageId']) ? $_REQUEST['rotateImageId'] : null;
 
         $filter = [
             'active'    => false,
             'confirmed' => $confirmed,
             'status'    => $status,
-            'search'    => $search
+            'search'    => $search,
         ];
 
         $users = ClockOfChange::app()->cocAPI()->getUsers($offset, $filter, $orderBy, $order);
@@ -81,7 +82,7 @@ class ListTable extends \WP_List_Table
                 $userArr['created_at']      = date('d-m-Y', $user->created_at / 1000);
                 $userArr['updated_at']      = date('d-m-Y', $user->updated_at / 1000);
                 $userArr['confirmed_at']    = date('d-m-Y', $user->confirmed_at / 1000);
-                $userArr['image']           = $user->image !== '' ? '<img style="width:75px;height:75px;" src="' . $user->image . '"/>' : '<img style="width:75px;height:75px;" src="' . ClockOfChange::$pluginAssetsUri . '/images/coc-placeholder.jpg"/>';
+                $userArr['image']           = $user->image !== '' ? '<img style="width:75px;height:75px;" src="' . $user->image . (isset($rotateImageId) && $rotateImageId == $user->id ? '?' . md5(microtime()) : '' ) . '"/>' : '<img style="width:75px;height:75px;" src="' . ClockOfChange::$pluginAssetsUri . '/images/coc-placeholder.jpg"/>';
                 $result[]                   = $userArr;
             }
         }
@@ -104,7 +105,7 @@ class ListTable extends \WP_List_Table
             'active'    => false,
             'confirmed' => $confirmed,
             'status'    => $status,
-            'search'    => $search
+            'search'    => $search,
         ];
 
         return ClockOfChange::app()->cocAPI()->getCount($filter);
@@ -332,7 +333,8 @@ class ListTable extends \WP_List_Table
             ),
             'cocdelete'   => sprintf(
                 '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s&%s&filter-action=Filter#entry-%s" onclick="return confirm(\'Really delete entry? This cannot be undone.\');">Delete</a>',
-                esc_attr($_REQUEST['page']), 'cocdelete', absint($item['ID']), $nonce, $this->get_pagenum(), $this->getFilterUrlParams(), absint($item['ID'])
+                esc_attr($_REQUEST['page']), 'cocdelete', absint($item['ID']), $nonce, $this->get_pagenum(),
+                $this->getFilterUrlParams(), absint($item['ID'])
             ),
         ];
 
@@ -388,37 +390,34 @@ class ListTable extends \WP_List_Table
                 $this->getFilterUrlParams(), absint($item['ID'])
             ),
         ];
-        //var_dump(WP_CONTENT_DIR . '/plugins/coc/assets/images/reload.png');
-        //var_dump(file_exists(WP_CONTENT_DIR . '/plugins/coc/assets/images/reload.png'));
-        //die();
 
         $rotateActions = '<div class="row-actions">';
 
         $rotateActions .= sprintf(
-            '<a href="?page=%s&action=%s&entry=%s&degree=%d&_wpnonce=%s&paged=%s&%s&filter-action=Filter#entry-%s">%s</a>',
+            '<a href="?page=%s&action=%s&entry=%s&degree=%d&_wpnonce=%s&paged=%s&%s&filter-action=Filter&rotateImageId=%d#entry-%s">%s</a>',
             esc_attr($_REQUEST['page']), 'cocrotateimage', absint($item['ID']), 0, $nonce, $this->get_pagenum(),
-            $this->getFilterUrlParams(), absint($item['ID']),
+            $this->getFilterUrlParams(), absint($item['ID']), absint($item['ID']),
             '<img class="rotate-image-right" style="width: 15px; height: 15px; margin-right: 5px;" src="' . ClockOfChange::$pluginRootUri . 'assets/images/rotate_0.png" alt="Rotate to 0 degree" title="Rotate to 0 degree">'
         );
 
         $rotateActions .= sprintf(
-            '<a href="?page=%s&action=%s&entry=%s&degree=%d&_wpnonce=%s&paged=%s&%s&filter-action=Filter#entry-%s">%s</a>',
+            '<a href="?page=%s&action=%s&entry=%s&degree=%d&_wpnonce=%s&paged=%s&%s&filter-action=Filter&rotateImageId=%d#entry-%s">%s</a>',
             esc_attr($_REQUEST['page']), 'cocrotateimage', absint($item['ID']), 90, $nonce, $this->get_pagenum(),
-            $this->getFilterUrlParams(), absint($item['ID']),
+            $this->getFilterUrlParams(), absint($item['ID']), absint($item['ID']),
             '<img class="rotate-image-right" style="width: 15px; height: 15px; margin-right: 5px;" src="' . ClockOfChange::$pluginRootUri . 'assets/images/rotate_90.png" alt="Rotate to 90 degree" title="Rotate to 90 degree">'
         );
 
         $rotateActions .= sprintf(
-            '<a href="?page=%s&action=%s&entry=%s&degree=%d&_wpnonce=%s&paged=%s&%s&filter-action=Filter#entry-%s" >%s</a>',
+            '<a href="?page=%s&action=%s&entry=%s&degree=%d&_wpnonce=%s&paged=%s&%s&filter-action=Filter&rotateImageId=%d#entry-%s" >%s</a>',
             esc_attr($_REQUEST['page']), 'cocrotateimage', absint($item['ID']), 180, $nonce, $this->get_pagenum(),
-            $this->getFilterUrlParams(), absint($item['ID']),
+            $this->getFilterUrlParams(), absint($item['ID']), absint($item['ID']),
             '<img class="rotate-image-right" style="width: 15px; height: 15px; margin-right: 5px;" src="' . ClockOfChange::$pluginRootUri . 'assets/images/rotate_180.png" alt="Rotate to 180 degree" title="Rotate to 180 degree">'
         );
 
         $rotateActions .= sprintf(
-            '<a href="?page=%s&action=%s&entry=%s&degree=%d&_wpnonce=%s&paged=%s&%s&filter-action=Filter#entry-%s">%s</a>',
+            '<a href="?page=%s&action=%s&entry=%s&degree=%d&_wpnonce=%s&paged=%s&%s&filter-action=Filter&rotateImageId=%d#entry-%s">%s</a>',
             esc_attr($_REQUEST['page']), 'cocrotateimage', absint($item['ID']), 270, $nonce, $this->get_pagenum(),
-            $this->getFilterUrlParams(), absint($item['ID']),
+            $this->getFilterUrlParams(), absint($item['ID']), absint($item['ID']),
             '<img class="rotate-image-right" style="width: 15px; height: 15px; margin-right: 5px;" src="' . ClockOfChange::$pluginRootUri . 'assets/images/rotate_270.png" alt="Rotate to 270 degree" title="Rotate to 270 degree">'
         );
 
@@ -534,7 +533,8 @@ class ListTable extends \WP_List_Table
                     <option value="inactive" <?= $status === 'inactive' ? 'selected="selected"' : ''; ?>>Inactive
                     </option>
                 </select>
-                <input type="text" name="search" id="filter-by-search" class="postform" placeholder="Search by text" value="<?= $search ?>">
+                <input type="text" name="search" id="filter-by-search" class="postform" placeholder="Search by text"
+                       value="<?= $search ?>">
                 <?php submit_button('Filter', 'action', 'filter-action', false); ?>
             </div>
             <?php
