@@ -17,6 +17,7 @@ class CoCAPI
     const ENDPOINT_DELETE_ENTRY                   = '/delete';
     const ENDPOINT_DELETE_IMAGE                   = '/deleteImage';
     const ENDPOINT_ROTATE_IMAGE                   = '/rotateImage';
+    const ENDPOINT_UPDATE_ENTRY                   = '/update';
 
     private $_apiKey = null;
     private $_baseUrl = null;
@@ -452,6 +453,28 @@ class CoCAPI
             $ch, CURLOPT_URL,
             $this->_baseUrl . self::ENDPOINT_ROTATE_IMAGE . '/' . esc_attr($id) . '/' . esc_attr($degree)
         );
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        if ($response->status_code === 200 && $response->success === true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function updateEntry($id, $attributes)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['API-Key: ' . $this->_apiKey]);
+        curl_setopt(
+            $ch, CURLOPT_URL,
+            $this->_baseUrl . self::ENDPOINT_UPDATE_ENTRY . '/' . esc_attr($id)
+        );
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $attributes);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $response = curl_exec($ch);
