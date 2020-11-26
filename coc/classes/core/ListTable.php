@@ -13,6 +13,7 @@ class ListTable extends \WP_List_Table
     public function __construct()
     {
         add_filter('removable_query_args', [$this, 'rmqa'], 10, 1);
+        add_action('admin_head', [$this, 'admin_header']);
         parent::__construct(
             [
                 'singular' => __('Entry', 'coc'), //singular name of the listed records
@@ -200,12 +201,13 @@ class ListTable extends \WP_List_Table
             'cocemaildisable',
             'cocdeleteimage',
             'cocrotateimage',
+            'cocupdatemessage'
         ];
 
         if (current_user_can('manage_options') && $this->current_action() !== false && in_array(
                 $this->current_action(), $singleActions
             )) {
-            if (!wp_verify_nonce($_GET['_wpnonce'], 'hc_toggle_coc_user')) {
+            if (!wp_verify_nonce($_REQUEST['_wpnonce'], 'hc_toggle_coc_user')) {
                 die('Go get a life script kiddies');
             }
 
@@ -265,6 +267,21 @@ class ListTable extends \WP_List_Table
                 }
 
                 return true;
+            }
+
+            // check for update message action action && correct page
+            if ($this->current_action() === 'cocupdatemessage' && $_REQUEST['page'] === 'coc_entries') {
+                $message = strip_tags(trim($_POST['message']));
+
+                if ($_REQUEST['entry'] && (int) $_REQUEST['entry'] > 0 && $message) {
+                    $attributes['message'] = (string) $_REQUEST['message'];
+                    $result = ClockOfChange::app()->cocAPI()->updateEntry($_REQUEST['entry'], $attributes);
+                    if (isset($result->success) && $result->success === true) {
+                        return true;
+                    }
+                }
+
+                return false;
             }
         }
     }
@@ -388,9 +405,6 @@ class ListTable extends \WP_List_Table
                 $this->getFilterUrlParams(), absint($item['ID'])
             ),
         ];
-        //var_dump(WP_CONTENT_DIR . '/plugins/coc/assets/images/reload.png');
-        //var_dump(file_exists(WP_CONTENT_DIR . '/plugins/coc/assets/images/reload.png'));
-        //die();
 
         $rotateActions = '<div class="row-actions">';
 
@@ -428,6 +442,29 @@ class ListTable extends \WP_List_Table
         }
 
         return $title . $this->row_actions($actions) . $rotateActions;
+    }
+
+    /**
+     * Method for status column
+     *
+     * @param array $item an array of DB data
+     * @return string
+     */
+    function column_message($item)
+    {
+        $actions = sprintf(
+            '?page=%s&action=%s&entry=%s&paged=%s&%s&filter-action=Filter#entry-%s',
+            esc_attr($_REQUEST['page']), 'cocupdatemessage', absint($item['ID']), $this->get_pagenum(),
+            $this->getFilterUrlParams(), absint($item['ID'])
+        );
+
+        $messageForm = '<form method="post" action="' . $actions . '">';
+        $messageForm .= '<textarea name="message" id="message" class="message-textarea">' . esc_attr($item['message']) . '</textarea>';
+        $messageForm .= wp_nonce_field('hc_toggle_coc_user', '_wpnonce', false, false);
+        $messageForm .= '<input type="submit" value="Update" onclick="return confirm(\'Really change message? This cannot be undone, so please backup current text first.\');">';
+        $messageForm .= '</form>';
+
+        return $messageForm;
     }
 
     /**
@@ -550,45 +587,48 @@ class ListTable extends \WP_List_Table
      */
     protected function bulk_actions($which = '')
     {
-        if (is_null($this->_actions)) {
-            $this->_actions = $this->get_bulk_actions();
-            /**
-             * Filters the list table Bulk Actions drop-down.
-             * The dynamic portion of the hook name, `$this->screen->id`, refers
-             * to the ID of the current screen, usually a string.
-             * This filter can currently only be used to remove bulk actions.
-             *
-             * @param string[] $actions An array of the available bulk actions.
-             * @since 3.5.0
-             */
-            $this->_actions = apply_filters(
-                "bulk_actions-{$this->screen->id}", $this->_actions
-            );  // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
-            $two            = '';
-        } else {
-            $two = '2';
+        if ($which === 'top') {
+            if (is_null($this->_actions)) {
+                $this->_actions = $this->get_bulk_actions();
+                /**
+                 * Filters the list table Bulk Actions drop-down.
+                 * The dynamic portion of the hook name, `$this->screen->id`, refers
+                 * to the ID of the current screen, usually a string.
+                 * This filter can currently only be used to remove bulk actions.
+                 *
+                 * @param string[] $actions An array of the available bulk actions.
+                 * @since 3.5.0
+                 */
+                $this->_actions = apply_filters(
+                    "bulk_actions-{$this->screen->id}", $this->_actions
+                );  // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
+                $two            = '';
+            } else {
+                $two = '2';
+            }
+
+            if (empty($this->_actions)) {
+                return;
+            }
+
+            echo '<label for="bulk-action-selector-' . esc_attr($which) . '" class="screen-reader-text">' . __(
+                    'Select bulk action'
+                ) . '</label>';
+            echo '<select name="action' . $two . '" id="bulk-action-selector-' . esc_attr($which) . "\">\n";
+            echo '<option value="-1">' . __('Bulk Actions') . "</option>\n";
+
+            foreach ($this->_actions as $name => $title) {
+                $class = 'edit' === $name ? ' class="hide-if-no-js"' : '';
+
+                echo "\t" . '<option value="' . $name . '"' . $class . ' ' . ($name === 'bulk-delete' ? 'onclick="return confirm(\'Info: Deleting entries is permanent and cannot be undone! \');"' : ($name === 'bulk-delete-image' ? 'onclick="return confirm(\'Info: Deleting image of entries is permanent and cannot be undone! \');"' : '')) . '>' . $title . "</option>\n";
+            }
+
+            echo "</select>\n";
+
+            submit_button(__('Apply'), 'action', '', false, ['id' => "doaction$two"]);
+            echo '</form>';
+            echo "\n";
         }
-
-        if (empty($this->_actions)) {
-            return;
-        }
-
-        echo '<label for="bulk-action-selector-' . esc_attr($which) . '" class="screen-reader-text">' . __(
-                'Select bulk action'
-            ) . '</label>';
-        echo '<select name="action' . $two . '" id="bulk-action-selector-' . esc_attr($which) . "\">\n";
-        echo '<option value="-1">' . __('Bulk Actions') . "</option>\n";
-
-        foreach ($this->_actions as $name => $title) {
-            $class = 'edit' === $name ? ' class="hide-if-no-js"' : '';
-
-            echo "\t" . '<option value="' . $name . '"' . $class . ' ' . ($name === 'bulk-delete' ? 'onclick="return confirm(\'Info: Deleting entries is permanent and cannot be undone! \');"' : ($name === 'bulk-delete-image' ? 'onclick="return confirm(\'Info: Deleting image of entries is permanent and cannot be undone! \');"' : '')) . '>' . $title . "</option>\n";
-        }
-
-        echo "</select>\n";
-
-        submit_button(__('Apply'), 'action', '', false, ['id' => "doaction$two"]);
-        echo "\n";
     }
 
     /**
@@ -603,5 +643,15 @@ class ListTable extends \WP_List_Table
         ];
 
         return http_build_query($urlParams);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    function admin_header() {
+        echo '<style type="text/css">';
+        echo '.wp-list-table .column-message { width: 20%; }';
+        echo '.message-textarea { width: 100%; }';
+        echo '</style>';
     }
 }
