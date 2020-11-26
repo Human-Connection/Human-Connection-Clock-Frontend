@@ -587,45 +587,48 @@ class ListTable extends \WP_List_Table
      */
     protected function bulk_actions($which = '')
     {
-        if (is_null($this->_actions)) {
-            $this->_actions = $this->get_bulk_actions();
-            /**
-             * Filters the list table Bulk Actions drop-down.
-             * The dynamic portion of the hook name, `$this->screen->id`, refers
-             * to the ID of the current screen, usually a string.
-             * This filter can currently only be used to remove bulk actions.
-             *
-             * @param string[] $actions An array of the available bulk actions.
-             * @since 3.5.0
-             */
-            $this->_actions = apply_filters(
-                "bulk_actions-{$this->screen->id}", $this->_actions
-            );  // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
-            $two            = '';
-        } else {
-            $two = '2';
+        if ($which === 'top') {
+            if (is_null($this->_actions)) {
+                $this->_actions = $this->get_bulk_actions();
+                /**
+                 * Filters the list table Bulk Actions drop-down.
+                 * The dynamic portion of the hook name, `$this->screen->id`, refers
+                 * to the ID of the current screen, usually a string.
+                 * This filter can currently only be used to remove bulk actions.
+                 *
+                 * @param string[] $actions An array of the available bulk actions.
+                 * @since 3.5.0
+                 */
+                $this->_actions = apply_filters(
+                    "bulk_actions-{$this->screen->id}", $this->_actions
+                );  // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
+                $two            = '';
+            } else {
+                $two = '2';
+            }
+
+            if (empty($this->_actions)) {
+                return;
+            }
+
+            echo '<label for="bulk-action-selector-' . esc_attr($which) . '" class="screen-reader-text">' . __(
+                    'Select bulk action'
+                ) . '</label>';
+            echo '<select name="action' . $two . '" id="bulk-action-selector-' . esc_attr($which) . "\">\n";
+            echo '<option value="-1">' . __('Bulk Actions') . "</option>\n";
+
+            foreach ($this->_actions as $name => $title) {
+                $class = 'edit' === $name ? ' class="hide-if-no-js"' : '';
+
+                echo "\t" . '<option value="' . $name . '"' . $class . ' ' . ($name === 'bulk-delete' ? 'onclick="return confirm(\'Info: Deleting entries is permanent and cannot be undone! \');"' : ($name === 'bulk-delete-image' ? 'onclick="return confirm(\'Info: Deleting image of entries is permanent and cannot be undone! \');"' : '')) . '>' . $title . "</option>\n";
+            }
+
+            echo "</select>\n";
+
+            submit_button(__('Apply'), 'action', '', false, ['id' => "doaction$two"]);
+            echo '</form>';
+            echo "\n";
         }
-
-        if (empty($this->_actions)) {
-            return;
-        }
-
-        echo '<label for="bulk-action-selector-' . esc_attr($which) . '" class="screen-reader-text">' . __(
-                'Select bulk action'
-            ) . '</label>';
-        echo '<select name="action' . $two . '" id="bulk-action-selector-' . esc_attr($which) . "\">\n";
-        echo '<option value="-1">' . __('Bulk Actions') . "</option>\n";
-
-        foreach ($this->_actions as $name => $title) {
-            $class = 'edit' === $name ? ' class="hide-if-no-js"' : '';
-
-            echo "\t" . '<option value="' . $name . '"' . $class . ' ' . ($name === 'bulk-delete' ? 'onclick="return confirm(\'Info: Deleting entries is permanent and cannot be undone! \');"' : ($name === 'bulk-delete-image' ? 'onclick="return confirm(\'Info: Deleting image of entries is permanent and cannot be undone! \');"' : '')) . '>' . $title . "</option>\n";
-        }
-
-        echo "</select>\n";
-
-        submit_button(__('Apply'), 'action', '', false, ['id' => "doaction$two"]);
-        echo "\n";
     }
 
     /**
