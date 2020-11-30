@@ -56,10 +56,15 @@ class ShUserwall
             }
         }
 
-
         $html = '';
 
-        $users = ClockOfChange::app()->cocAPI()->getUsers();
+        $users = ClockOfChange::app()->cocAPI()->getUsers(
+            0,
+            [
+                'profileImage' => 1,
+            ]
+        );
+
         if (!empty($users) && isset($users->results)) {
             $html .= '<div id="user-message">';
             $html .= '<div class="close-wrapper">';
@@ -94,7 +99,7 @@ class ShUserwall
                 ) . '</option></select></div>';
             $html .= '<div class="user-filter-element"><strong>' . $this->translation->t(
                     'filter', 'Filter'
-                ) . ': </strong><input type="checkbox" name="profileImage" id="profileImage"><label for="profileImage">' . $this->translation->t(
+                ) . ': </strong><input type="checkbox" name="profileImage" id="profileImage" checked="checked"><label for="profileImage">' . $this->translation->t(
                     'filterByProfileImage', 'nur Einträge mit Profilbild'
                 ) . '</label></div>';
 
