@@ -53,7 +53,7 @@ class ListTable extends \WP_List_Table
     public static function getEntries($per_page = 5, $page_number = 1)
     {
         $result    = null;
-        $offset    = $page_number === 1 ? 0 : $page_number * $per_page;
+        $offset    = ($page_number - 1) * $per_page;
         $orderBy   = isset($_GET['orderby']) ? $_GET['orderby'] : null;
         $order     = isset($_GET['order']) ? $_GET['order'] : null;
         $confirmed = isset($_REQUEST['confirmed']) ? $_REQUEST['confirmed'] : null;
