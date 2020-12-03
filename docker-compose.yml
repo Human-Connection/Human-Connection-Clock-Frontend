@@ -19,6 +19,7 @@ services:
     depends_on:
       - db_frontend
     image: wordpress:latest
+    restart: always
     ports:
       - 8000:80
     networks:
@@ -27,6 +28,7 @@ services:
       WORDPRESS_DB_HOST: db_frontend:3306
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: 123456
+      WORDPRESS_DEBUG: 1
     volumes:
       - wpdata:/var/www/html
       - ./coc:/var/www/html/wp-content/plugins/coc

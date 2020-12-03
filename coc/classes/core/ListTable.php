@@ -271,10 +271,10 @@ class ListTable extends \WP_List_Table
 
             // check for update message action action && correct page
             if ($this->current_action() === 'cocupdatemessage' && $_REQUEST['page'] === 'coc_entries') {
-                $message = strip_tags(trim($_POST['message']));
+                $message = trim($_POST['message']);
 
-                if ($_REQUEST['entry'] && (int) $_REQUEST['entry'] > 0 && $message) {
-                    $attributes['message'] = (string) $_REQUEST['message'];
+                if ($_REQUEST['entry'] && (int) $_REQUEST['entry'] > 0) {
+                    $attributes['message'] = $message;
                     $result = ClockOfChange::app()->cocAPI()->updateEntry($_REQUEST['entry'], $attributes);
                     if (isset($result->success) && $result->success === true) {
                         return true;
