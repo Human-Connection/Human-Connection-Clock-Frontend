@@ -4,7 +4,6 @@ namespace coc\core;
 
 use coc\ClockOfChange;
 use coc\shortcodes\ShUserwall;
-use DateTime;
 
 class ListTable extends \WP_List_Table
 {
@@ -79,9 +78,9 @@ class ListTable extends \WP_List_Table
                 $userArr['email_confirmed'] = $user->email_confirmed === 1 ? 'Yes' : 'No';
                 $userArr['status']          = $user->status === 1 ? 'Active' : 'Inactive';
                 $userArr['anon']            = $user->anon === 1 ? 'Yes' : 'No';
-                $userArr['created_at']      = date('d-m-Y', $user->created_at / 1000);
-                $userArr['updated_at']      = date('d-m-Y', $user->updated_at / 1000);
-                $userArr['confirmed_at']    = date('d-m-Y', $user->confirmed_at / 1000);
+                $userArr['created_at']      = self::formateDate($user->created_at);
+                $userArr['updated_at']      = self::formateDate($user->updated_at);
+                $userArr['confirmed_at']    = self::formateDate($user->confirmed_at);
                 $userArr['image']           = $user->image !== '' ? '<img style="width:75px;height:75px;" src="' . $user->image . '"/>' : '<img style="width:75px;height:75px;" src="' . ClockOfChange::$pluginAssetsUri . '/images/coc-placeholder.jpg"/>';
                 $result[]                   = $userArr;
             }
@@ -299,12 +298,6 @@ class ListTable extends \WP_List_Table
             case 'created_at':
             case 'updated_at':
             case 'confirmed_at':
-                if ($item[$column_name]) {
-                    $dateTime = DateTime::createFromFormat('d-m-Y', $item[$column_name]);
-
-                    return $dateTime->format('d.m.Y');
-                }
-                break;
             case 'ID':
             case 'email':
             case 'firstname':
@@ -643,6 +636,24 @@ class ListTable extends \WP_List_Table
         ];
 
         return http_build_query($urlParams);
+    }
+
+    private static function formateDate($timestamp)
+    {
+        $formattedDate= '-';
+        if ($timestamp) {
+            if (strlen($timestamp) <= 10) {
+                $formattedDate = date('d.m.Y', $timestamp);
+            } else {
+                $formattedDate = date('d.m.Y', $timestamp / 1000);
+            }
+        }
+
+        if (!$formattedDate) {
+            $formattedDate= '-';
+        }
+
+        return $formattedDate;
     }
 
     /**
