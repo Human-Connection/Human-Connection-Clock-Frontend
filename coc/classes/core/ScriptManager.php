@@ -19,6 +19,7 @@ class ScriptManager
         $this->translation = $translation;
 
         if (!is_admin()) {
+            add_filter('script_loader_tag', [$this, 'add_async_defer_attribute_to_recaptcha'], 10, 2);
             add_action('wp_enqueue_scripts', [$this, 'initCoCOldScripts']);
             add_action('wp_enqueue_scripts', [$this, 'initCoCNewScripts']);
         }
@@ -76,6 +77,14 @@ class ScriptManager
                 'language'    => $this->translation->getCurrentLanguage(),
                 'translation' => $this->translation->getTranslationData(),
             ]
+        );
+
+        wp_enqueue_script(
+            'recaptcha',
+            'https://www.google.com/recaptcha/api.js',
+            [],
+            null,
+            true
         );
     }
 
@@ -146,5 +155,14 @@ class ScriptManager
             false,
             true
         );
+    }
+
+    public function add_async_defer_attribute_to_recaptcha ($tag, $handle)
+    {
+        if ( 'recaptcha' !== $handle ) {
+            return $tag;
+        }
+
+        return str_replace( ' src', ' async defer src', $tag );
     }
 }
