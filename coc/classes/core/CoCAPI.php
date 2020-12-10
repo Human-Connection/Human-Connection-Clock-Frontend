@@ -34,6 +34,11 @@ class CoCAPI
     private $translation;
 
     /**
+     * @var string
+     */
+    private $recaptchaSecretKey;
+
+    /**
      * CoCAPI constructor.
      *
      * @param Translation $translation
@@ -41,6 +46,7 @@ class CoCAPI
     public function __construct($translation)
     {
         $this->translation = $translation;
+        $this->recaptchaSecretKey = ClockOfChange::app()->optionsManager()->getOption(OptionsManager::OPT_RECAPTCHA_SECRET_KEY);;
 
         if ($this->_apiKey === null) {
             $apiKey = ClockOfChange::app()->optionsManager()->getOption(OptionsManager::OPT_API_KEY);
@@ -497,10 +503,8 @@ class CoCAPI
      */
     private function validateRecaptcha($value)
     {
-        $secret         = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe';
-
         $verifyResponse = file_get_contents(
-            'https://www.google.com/recaptcha/api/siteverify?secret=' . urlencode($secret) . '&response=' . urlencode($value)
+            'https://www.google.com/recaptcha/api/siteverify?secret=' . urlencode($this->recaptchaSecretKey) . '&response=' . urlencode($value)
         );
 
         $responseData   = json_decode($verifyResponse);
