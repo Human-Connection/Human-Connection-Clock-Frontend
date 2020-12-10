@@ -202,6 +202,10 @@ class CoCAPI
             $response['slogan'] = $this->translation->t('errorMissingRequiredField', 'Missing required field');
         }
 
+        if (!isset($params['captcha']) || empty($params['captcha']) || !$this->validateRecaptcha($params['captcha'])) {
+            $response['captcha'] = $this->translation->t('errorMissingRequiredField', 'Missing required field');
+        }
+
         // ensure required fields
         // form can only be send when pr is set while we assume that any record showing up on node has accepted privacy
         if (!empty($response)) {
@@ -485,5 +489,25 @@ class CoCAPI
         } else {
             return false;
         }
+    }
+
+    /**
+     * @param $value
+     * @returns bool
+     */
+    private function validateRecaptcha($value)
+    {
+        $secret         = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe';
+
+        $verifyResponse = file_get_contents(
+            'https://www.google.com/recaptcha/api/siteverify?secret=' . urlencode($secret) . '&response=' . urlencode($value)
+        );
+
+        $responseData   = json_decode($verifyResponse);
+        if ($responseData && isset($responseData->success) && $responseData->success == true) {
+            return true;
+        }
+
+        return false;
     }
 }
