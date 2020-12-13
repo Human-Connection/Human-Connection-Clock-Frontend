@@ -21,7 +21,7 @@
   "signupNewsletter": "Sign up for the Human Connection Newsletter",
   "acceptDataPrivacyPolicy": "I have read the <a class=\"inline-link\" href=\"https://human-connection.org/datenschutz/#_privacycoc\" title=\"to the privacy policy\" target=\"_blank\">privacy policy</a> and accept it.",
   "verifyOverEighteen": "I am 18 years old or above",
-  "noticeEntryIsFree": "Signing up for the clock of change is completely free, but we happily welcome your donation as a nonprofit organization. THANK YOU in advance!",
+  "noticeEntryIsFree": "Signing up for the Human Connection Clock is completely free, but we happily welcome your donation as a nonprofit organization. THANK YOU in advance!",
   "noticeActivateAccount": "PLEASE NOTE: You have to verify your submission by clicking on the verification link in the email you will shortly receive. If you do not receive an email, make sure to look into your junk folder and put Human Connection on your safe recipients list.",
   "joinNow": "Sign up",
   "defaultEntryMessage": "I support change.",
@@ -32,5 +32,7 @@
   "successNotificationMessage": "THANK YOU for partaking! EVERY SINGLE ONE COUNTS! Please confirm your email address now.",
   "entryIsFrom": "Entry is from",
   "pleaseSelect": "Please select",
-  "slogan": "I believe that change begins in everyone and that when enough people change, the world will change. I want to build a bridge with my fellow human beings to a sustainable future for the children of the world"
+  "slogan": "We believe that change begins in everyone and that when enough people change, the world will change. I want to build a bridge with my fellow human beings to a sustainable future for the children of the world",
+  "allCountries": "all countries",
+  "filterByCountry": "only the following countries"
 }
