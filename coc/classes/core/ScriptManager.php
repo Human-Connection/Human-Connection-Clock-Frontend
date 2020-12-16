@@ -65,7 +65,7 @@ class ScriptManager
             'coc-plugin',
             ClockOfChange::$pluginRootUri . 'assets/js/coc.min.js',
             [],
-            null,//false,
+            2,//false,
             true
         );
         wp_enqueue_script('coc-plugin');
