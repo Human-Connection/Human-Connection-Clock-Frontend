@@ -54,6 +54,7 @@ window.coc = ((window, document, $) => {
     fieldMapToFormId['slogan'] = 'coc-slogan';
     fieldMapToFormId['file'] = 'coc-add-avatar';
     fieldMapToFormId['error'] = 'form-error';
+    fieldMapToFormId['captcha'] = 'coc-captcha';
 
     let findIndex = (elem, items) => {
         let i, len = items.length;
@@ -180,6 +181,8 @@ window.coc = ((window, document, $) => {
             data.append('age', $('#coc-register-age')[0].checked);
             data.append('slogan', $('#coc-slogan')[0].checked);
             data.append('pr', privacyChecked);
+            data.append('pr', privacyChecked);
+            data.append('captcha', grecaptcha.getResponse());
 
             // PAX
             $.urlParam = function (name) {

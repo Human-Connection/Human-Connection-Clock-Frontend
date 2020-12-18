@@ -8,6 +8,8 @@ class OptionsManager
 {
 	const OPT_API_KEY = 'coc_api_key';
 	const OPT_API_URL = 'coc_api_url';
+    const OPT_RECAPTCHA_SITE_KEY = 'coc_recaptcha_site_key';
+    const OPT_RECAPTCHA_SECRET_KEY = 'coc_recaptcha_secret_key';
 
     /**
      * Holds the values to be used in the fields callbacks
@@ -149,7 +151,7 @@ class OptionsManager
 
         add_settings_section(
             'setting_section_id', // ID
-            'My Custom Settings', // Title
+            'HC Clock Settings', // Title
             array( $this, 'print_section_info' ), // Callback
             'coc-setting-admin' // Page
         );
@@ -169,6 +171,22 @@ class OptionsManager
             'coc-setting-admin',
             'setting_section_id'
         );
+
+        add_settings_field(
+            self::OPT_RECAPTCHA_SITE_KEY,
+            'Recaptcha v2 Site Key',
+            array( $this, 'recaptchaSiteKeyTextField' ),
+            'coc-setting-admin',
+            'setting_section_id'
+        );
+
+        add_settings_field(
+            self::OPT_RECAPTCHA_SECRET_KEY,
+            'Recaptcha v2 Secret Key',
+            array( $this, 'recaptchaSecretKeyTextField' ),
+            'coc-setting-admin',
+            'setting_section_id'
+        );
     }
 
     /**
@@ -179,11 +197,23 @@ class OptionsManager
     public function sanitize( $input )
     {
         $new_input = array();
-        if( isset( $input[self::OPT_API_KEY] ) )
+        if( isset( $input[self::OPT_API_KEY] ) ) {
             $new_input[self::OPT_API_KEY] = sanitize_text_field( $input[self::OPT_API_KEY] );
+        }
 
-        if( isset( $input[self::OPT_API_URL] ) )
+
+        if( isset( $input[self::OPT_API_URL] ) ) {
             $new_input[self::OPT_API_URL] = sanitize_text_field( $input[self::OPT_API_URL] );
+        }
+
+        if( isset( $input[self::OPT_RECAPTCHA_SITE_KEY] ) ) {
+            $new_input[self::OPT_RECAPTCHA_SITE_KEY] = sanitize_text_field( $input[self::OPT_RECAPTCHA_SITE_KEY] );
+        }
+
+        if( isset( $input[self::OPT_RECAPTCHA_SECRET_KEY] ) ) {
+            $new_input[self::OPT_RECAPTCHA_SECRET_KEY] = sanitize_text_field( $input[self::OPT_RECAPTCHA_SECRET_KEY] );
+        }
+
 
         return $new_input;
     }
@@ -220,6 +250,32 @@ class OptionsManager
             self::OPT_API_URL,
             self::OPT_API_URL,
             isset( $this->options[self::OPT_API_URL] ) ? esc_attr( $this->options[self::OPT_API_URL]) : ''
+        );
+    }
+
+    /**
+     * Get the settings option array and print one of its values
+     */
+    public function recaptchaSiteKeyTextField()
+    {
+        printf(
+            '<input type="text" id="%s" name="coc_settings[%s]" value="%s" />',
+            self::OPT_RECAPTCHA_SITE_KEY,
+            self::OPT_RECAPTCHA_SITE_KEY,
+            isset( $this->options[self::OPT_RECAPTCHA_SITE_KEY] ) ? esc_attr( $this->options[self::OPT_RECAPTCHA_SITE_KEY]) : ''
+        );
+    }
+
+    /**
+     * Get the settings option array and print one of its values
+     */
+    public function recaptchaSecretKeyTextField()
+    {
+        printf(
+            '<input type="text" id="%s" name="coc_settings[%s]" value="%s" />',
+            self::OPT_RECAPTCHA_SECRET_KEY,
+            self::OPT_RECAPTCHA_SECRET_KEY,
+            isset( $this->options[self::OPT_RECAPTCHA_SECRET_KEY] ) ? esc_attr( $this->options[self::OPT_RECAPTCHA_SECRET_KEY]) : ''
         );
     }
 }

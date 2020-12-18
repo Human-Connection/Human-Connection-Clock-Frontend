@@ -34,6 +34,11 @@ class CoCAPI
     private $translation;
 
     /**
+     * @var string
+     */
+    private $recaptchaSecretKey;
+
+    /**
      * CoCAPI constructor.
      *
      * @param Translation $translation
@@ -41,6 +46,7 @@ class CoCAPI
     public function __construct($translation)
     {
         $this->translation = $translation;
+        $this->recaptchaSecretKey = ClockOfChange::app()->optionsManager()->getOption(OptionsManager::OPT_RECAPTCHA_SECRET_KEY);;
 
         if ($this->_apiKey === null) {
             $apiKey = ClockOfChange::app()->optionsManager()->getOption(OptionsManager::OPT_API_KEY);
@@ -200,6 +206,10 @@ class CoCAPI
 
         if (!isset($params['slogan']) || $params['slogan'] !== 'true') {
             $response['slogan'] = $this->translation->t('errorMissingRequiredField', 'Missing required field');
+        }
+
+        if (!isset($params['captcha']) || empty($params['captcha']) || !$this->validateRecaptcha($params['captcha'])) {
+            $response['captcha'] = $this->translation->t('errorMissingRequiredField', 'Missing required field');
         }
 
         // ensure required fields
@@ -485,5 +495,23 @@ class CoCAPI
         } else {
             return false;
         }
+    }
+
+    /**
+     * @param $value
+     * @returns bool
+     */
+    private function validateRecaptcha($value)
+    {
+        $verifyResponse = file_get_contents(
+            'https://www.google.com/recaptcha/api/siteverify?secret=' . urlencode($this->recaptchaSecretKey) . '&response=' . urlencode($value)
+        );
+
+        $responseData   = json_decode($verifyResponse);
+        if ($responseData && isset($responseData->success) && $responseData->success == true) {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -116,12 +116,15 @@ First you need to import the definitions of the advanced custom fields into your
 In the WP Admin backend under `Custom Fields -> Tools` you need to import the field definitions you will find in `coc\config\acf-export-2020-02-09.json`.
 
 To establish a connection, it is necessary to set the base url and a valid API key for the Human Connection Clock API server. 
-This needs to be done under `CoC Options` in the Wordpress admin backend in the respective fields.
+This needs to be done under `CoC Options` in the Wordpress admin backend in the respective fields. 
+You also should set the Recaptcha test values there, in order to successfully register entries.
 
 For example when running the API server locally, this could be the settings:
 ```
 Your API Key: secret
 API base url: http://coc-api:1337
+Recaptcha v2 Site Key: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
+Recaptcha v2 Secret Key: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
 ```
 
 Please mind that a trailing slash for the API base url is not allowed.
@@ -162,7 +165,8 @@ List of Human Connection Clock Frontend shortcodes for Wordpress:
 | `[coc\shortcodes\shsignup]`   | Display the signup button<br/>-Requires the coc\shortcodes\shsign shortcode                                                                |
 | `[coc\shortcodes\shsign]`     | Display the signup modal with the form, which opens when clicking on the signup button<br/>-Requires the coc\shortcodes\shsignup shortcode |
 | `[coc\shortcodes\shuserwall]` | Display the Human Connection Clock user wall with the entries                                                                                     |
-
+| `[coc\shortcodes\shcountries]` | Display the Human Connection Clock countries ranking         
+| `[coc\shortcodes\shlanguageselector]` | *Deprecated*: Display the language selector for the Human Connection Clock         
 
 **RUN WEBPACK BUILD PROCESS**
 In this project we use webpack to bundle and transpile JavaScript. This essentially means that we use a newer JavaScript syntax (ES6+),
