@@ -151,7 +151,7 @@ class CoCAPI
 
     public function toggleStatus($entryId, $action)
     {
-        $aMap = ['cocactivate' => 1, 'cocdisable' => 2];
+        $aMap = ['cocactivate' => 1, 'cocdisable' => 0];
         $ch   = curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['API-Key: ' . $this->_apiKey]);
         curl_setopt($ch, CURLOPT_URL, $this->_baseUrl . self::ENDPOINT_ENTRIES_TOGGLE);
