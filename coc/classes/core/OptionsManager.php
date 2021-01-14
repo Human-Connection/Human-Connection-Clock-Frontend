@@ -10,6 +10,10 @@ class OptionsManager
 	const OPT_API_URL = 'coc_api_url';
     const OPT_RECAPTCHA_SITE_KEY = 'coc_recaptcha_site_key';
     const OPT_RECAPTCHA_SECRET_KEY = 'coc_recaptcha_secret_key';
+    const OPT_CLEVERREACH_CLIENT_ID = 'coc_cleverreach_client_id';
+    const OPT_CLEVERREACH_CLIENT_SECRET = 'coc_cleverreach_client_secret';
+    const OPT_CLEVERREACH_ACCESS_TOKEN = 'coc_cleverreach_access_token';
+    const OPT_CLEVERREACH_GROUP_ID = 'coc_cleverreach_group_id';
 
     /**
      * Holds the values to be used in the fields callbacks
@@ -172,12 +176,20 @@ class OptionsManager
             'setting_section_id'
         );
 
+        add_settings_section(
+            'setting_recaptcha_section_id', // ID
+            'Google Recaptcha v2 Settings', // Title
+            array( $this, 'print_section_info' ), // Callback
+            'coc-setting-admin' // Page
+        );
+
+
         add_settings_field(
             self::OPT_RECAPTCHA_SITE_KEY,
             'Recaptcha v2 Site Key',
             array( $this, 'recaptchaSiteKeyTextField' ),
             'coc-setting-admin',
-            'setting_section_id'
+            'setting_recaptcha_section_id'
         );
 
         add_settings_field(
@@ -185,7 +197,47 @@ class OptionsManager
             'Recaptcha v2 Secret Key',
             array( $this, 'recaptchaSecretKeyTextField' ),
             'coc-setting-admin',
-            'setting_section_id'
+            'setting_recaptcha_section_id'
+        );
+
+        add_settings_section(
+            'setting_cleverreach_section_id', // ID
+            'CleverReach Newsletter API Settings', // Title
+            array( $this, 'print_section_info' ), // Callback
+            'coc-setting-admin' // Page
+        );
+
+        add_settings_field(
+            self::OPT_CLEVERREACH_CLIENT_ID,
+            'CleverReach API ClientId',
+            array( $this, 'cleverReachClientId' ),
+            'coc-setting-admin',
+            'setting_cleverreach_section_id'
+        );
+
+        add_settings_field(
+            self::OPT_CLEVERREACH_CLIENT_SECRET,
+            'CleverReach API Client Secret',
+            array( $this, 'cleverReachClientSecret' ),
+            'coc-setting-admin',
+            'setting_cleverreach_section_id'
+        );
+
+        add_settings_field(
+            self::OPT_CLEVERREACH_ACCESS_TOKEN,
+            'CleverReach Access Token',
+            array( $this, 'cleverReachAccessToken' ),
+            'coc-setting-admin',
+            'setting_cleverreach_section_id'
+        );
+
+
+        add_settings_field(
+            self::OPT_CLEVERREACH_GROUP_ID,
+            'CleverReach Group Id',
+            array( $this, 'cleverReachGroupId' ),
+            'coc-setting-admin',
+            'setting_cleverreach_section_id'
         );
     }
 
@@ -201,7 +253,6 @@ class OptionsManager
             $new_input[self::OPT_API_KEY] = sanitize_text_field( $input[self::OPT_API_KEY] );
         }
 
-
         if( isset( $input[self::OPT_API_URL] ) ) {
             $new_input[self::OPT_API_URL] = sanitize_text_field( $input[self::OPT_API_URL] );
         }
@@ -214,6 +265,21 @@ class OptionsManager
             $new_input[self::OPT_RECAPTCHA_SECRET_KEY] = sanitize_text_field( $input[self::OPT_RECAPTCHA_SECRET_KEY] );
         }
 
+        if( isset( $input[self::OPT_CLEVERREACH_CLIENT_ID] ) ) {
+            $new_input[self::OPT_CLEVERREACH_CLIENT_ID] = sanitize_text_field( $input[self::OPT_CLEVERREACH_CLIENT_ID] );
+        }
+
+        if( isset( $input[self::OPT_CLEVERREACH_CLIENT_SECRET] ) ) {
+            $new_input[self::OPT_CLEVERREACH_CLIENT_SECRET] = sanitize_text_field( $input[self::OPT_CLEVERREACH_CLIENT_SECRET] );
+        }
+
+        if( isset( $input[self::OPT_CLEVERREACH_ACCESS_TOKEN] ) ) {
+            $new_input[self::OPT_CLEVERREACH_ACCESS_TOKEN] = sanitize_text_field( $input[self::OPT_CLEVERREACH_ACCESS_TOKEN] );
+        }
+
+        if( isset( $input[self::OPT_CLEVERREACH_GROUP_ID] ) ) {
+            $new_input[self::OPT_CLEVERREACH_GROUP_ID] = sanitize_text_field( $input[self::OPT_CLEVERREACH_GROUP_ID] );
+        }
 
         return $new_input;
     }
@@ -223,12 +289,10 @@ class OptionsManager
      */
     public function print_section_info()
     {
-        print 'Enter your settings below:';
+        // print 'Enter your settings below:';
     }
 
-    /**
-     * Get the settings option array and print one of its values
-     */
+
     public function apiKeyTextField()
     {
 
@@ -240,9 +304,6 @@ class OptionsManager
         );
     }
 
-    /**
-     * Get the settings option array and print one of its values
-     */
     public function apiUrlTextField()
     {
         printf(
@@ -253,9 +314,6 @@ class OptionsManager
         );
     }
 
-    /**
-     * Get the settings option array and print one of its values
-     */
     public function recaptchaSiteKeyTextField()
     {
         printf(
@@ -266,9 +324,6 @@ class OptionsManager
         );
     }
 
-    /**
-     * Get the settings option array and print one of its values
-     */
     public function recaptchaSecretKeyTextField()
     {
         printf(
@@ -276,6 +331,46 @@ class OptionsManager
             self::OPT_RECAPTCHA_SECRET_KEY,
             self::OPT_RECAPTCHA_SECRET_KEY,
             isset( $this->options[self::OPT_RECAPTCHA_SECRET_KEY] ) ? esc_attr( $this->options[self::OPT_RECAPTCHA_SECRET_KEY]) : ''
+        );
+    }
+
+    public function cleverReachClientId()
+    {
+        printf(
+            '<input type="text" id="%s" name="coc_settings[%s]" value="%s" />',
+            self::OPT_CLEVERREACH_CLIENT_ID,
+            self::OPT_CLEVERREACH_CLIENT_ID,
+            isset( $this->options[self::OPT_CLEVERREACH_CLIENT_ID] ) ? esc_attr( $this->options[self::OPT_CLEVERREACH_CLIENT_ID]) : ''
+        );
+    }
+
+    public function cleverReachClientSecret()
+    {
+        printf(
+            '<input type="text" id="%s" name="coc_settings[%s]" value="%s" />',
+            self::OPT_CLEVERREACH_CLIENT_SECRET,
+            self::OPT_CLEVERREACH_CLIENT_SECRET,
+            isset( $this->options[self::OPT_CLEVERREACH_CLIENT_SECRET] ) ? esc_attr( $this->options[self::OPT_CLEVERREACH_CLIENT_SECRET]) : ''
+        );
+    }
+
+    public function cleverReachAccessToken()
+    {
+        printf(
+            '<input type="text" id="%s" name="coc_settings[%s]" value="%s" />',
+            self::OPT_CLEVERREACH_ACCESS_TOKEN,
+            self::OPT_CLEVERREACH_ACCESS_TOKEN,
+            isset( $this->options[self::OPT_CLEVERREACH_ACCESS_TOKEN] ) ? esc_attr( $this->options[self::OPT_CLEVERREACH_ACCESS_TOKEN]) : ''
+        );
+    }
+
+    public function cleverReachGroupId()
+    {
+        printf(
+            '<input type="text" id="%s" name="coc_settings[%s]" value="%s" />',
+            self::OPT_CLEVERREACH_GROUP_ID,
+            self::OPT_CLEVERREACH_GROUP_ID,
+            isset( $this->options[self::OPT_CLEVERREACH_GROUP_ID] ) ? esc_attr( $this->options[self::OPT_CLEVERREACH_GROUP_ID]) : ''
         );
     }
 }
