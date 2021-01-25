@@ -6,6 +6,7 @@ namespace coc;
 //ini_set('display_startup_errors', 1);
 //error_reporting(E_ALL);
 
+use coc\core\CleverReachAPI;
 use coc\core\CoCAPI;
 use coc\core\OptionsManager;
 use coc\core\ScriptManager;
@@ -30,6 +31,7 @@ class ClockOfChange
     public static $scriptManager = 'scriptManager';
     public static $cocAPIManager = 'cocapiManager';
     public static $translation = 'translation';
+    public static $cleverReachAPI = 'cleverReachAPI';
 
     /**
      * ClockOfChange constructor.
@@ -72,6 +74,7 @@ class ClockOfChange
         self::$pluginClasses[self::$translation]    = new Translation();
         self::$pluginClasses[self::$scriptManager]  = new ScriptManager($this->translation());
         self::$pluginClasses[self::$cocAPIManager]  = new CoCAPI($this->translation());
+        self::$pluginClasses[self::$cleverReachAPI]  = new CleverReachAPI();
         self::$pluginClasses[self::$cocAPIManager]->init();
     }
 
@@ -121,5 +124,13 @@ class ClockOfChange
     public function translation()
     {
         return self::$pluginClasses[self::$translation];
+    }
+
+    /**
+     * @return CleverReachAPI
+     */
+    public function cleverReachAPI()
+    {
+        return self::$pluginClasses[self::$cleverReachAPI];
     }
 }

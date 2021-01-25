@@ -272,7 +272,17 @@ class CoCAPI
             }
         }
 
-        return $this->sendToCoCApi($entryData);
+        $response = $this->sendToCoCApi($entryData);
+
+        if ($response && $response->success) {
+            ClockOfChange::app()->cleverReachAPI()->addSubscriber(
+                $entryData['email'],
+                $entryData['firstname'],
+                $entryData['lastname']
+            );
+        }
+
+        return $response;
     }
 
     public function setTempUploadDir($dir)

@@ -12,6 +12,7 @@ class OptionsManager
     const OPT_RECAPTCHA_SECRET_KEY = 'coc_recaptcha_secret_key';
     const OPT_CLEVERREACH_CLIENT_ID = 'coc_cleverreach_client_id';
     const OPT_CLEVERREACH_CLIENT_SECRET = 'coc_cleverreach_client_secret';
+    const OPT_CLEVERREACH_REFRESH_TOKEN = 'coc_cleverreach_refresh_token';
     const OPT_CLEVERREACH_ACCESS_TOKEN = 'coc_cleverreach_access_token';
     const OPT_CLEVERREACH_GROUP_ID = 'coc_cleverreach_group_id';
 
@@ -224,6 +225,14 @@ class OptionsManager
         );
 
         add_settings_field(
+            self::OPT_CLEVERREACH_REFRESH_TOKEN,
+            'CleverReach API Refresh Token',
+            array( $this, 'cleverReachRefreshToken' ),
+            'coc-setting-admin',
+            'setting_cleverreach_section_id'
+        );
+
+        add_settings_field(
             self::OPT_CLEVERREACH_ACCESS_TOKEN,
             'CleverReach Access Token',
             array( $this, 'cleverReachAccessToken' ),
@@ -272,6 +281,11 @@ class OptionsManager
         if( isset( $input[self::OPT_CLEVERREACH_CLIENT_SECRET] ) ) {
             $new_input[self::OPT_CLEVERREACH_CLIENT_SECRET] = sanitize_text_field( $input[self::OPT_CLEVERREACH_CLIENT_SECRET] );
         }
+
+        if( isset( $input[self::OPT_CLEVERREACH_REFRESH_TOKEN] ) ) {
+            $new_input[self::OPT_CLEVERREACH_REFRESH_TOKEN] = sanitize_text_field( $input[self::OPT_CLEVERREACH_REFRESH_TOKEN] );
+        }
+
 
         if( isset( $input[self::OPT_CLEVERREACH_ACCESS_TOKEN] ) ) {
             $new_input[self::OPT_CLEVERREACH_ACCESS_TOKEN] = sanitize_text_field( $input[self::OPT_CLEVERREACH_ACCESS_TOKEN] );
@@ -351,6 +365,16 @@ class OptionsManager
             self::OPT_CLEVERREACH_CLIENT_SECRET,
             self::OPT_CLEVERREACH_CLIENT_SECRET,
             isset( $this->options[self::OPT_CLEVERREACH_CLIENT_SECRET] ) ? esc_attr( $this->options[self::OPT_CLEVERREACH_CLIENT_SECRET]) : ''
+        );
+    }
+
+    public function cleverReachRefreshToken()
+    {
+        printf(
+            '<input type="text" id="%s" name="coc_settings[%s]" value="%s" />',
+            self::OPT_CLEVERREACH_REFRESH_TOKEN,
+            self::OPT_CLEVERREACH_REFRESH_TOKEN,
+            isset( $this->options[self::OPT_CLEVERREACH_REFRESH_TOKEN] ) ? esc_attr( $this->options[self::OPT_CLEVERREACH_REFRESH_TOKEN]) : ''
         );
     }
 
