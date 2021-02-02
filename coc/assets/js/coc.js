@@ -130,7 +130,6 @@ window.coc = ((window, document, $) => {
             refreshCounterMiliseconds = 1;
         }
 
-
         window.setTimeout(app.updateCounter, refreshCounterMiliseconds);
 
         $('#joinCoC').click((e) => {
@@ -294,6 +293,7 @@ window.coc = ((window, document, $) => {
                         }
 
                         $('.user-image').on('click', userImageClickHandler);
+                        userImages    = $('.user-image');
                     } else {
                         // no more data - ensure load more is hidden
                         $('#loadMore').hide();
@@ -345,6 +345,8 @@ window.coc = ((window, document, $) => {
                         }
 
                         $('.user-image').on('click', userImageClickHandler);
+                        userImages    = $('.user-image');
+
                     } else {
                         // no more data - ensure load more is hidden
                         $('#loadMore').hide();
