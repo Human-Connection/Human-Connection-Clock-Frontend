@@ -1,7 +1,4 @@
 jQuery(document).ready(function ($) {
-
-    var joining;
-    var people;
     var clock;
     var numbers;
     var amount;
@@ -11,7 +8,6 @@ jQuery(document).ready(function ($) {
     var mobile;
     var tablet;
     var tl;
-    var tlAddPerson;
     var tlRotation;
     var tlClock;
     var highlightRandomIntervall;
@@ -21,16 +17,8 @@ jQuery(document).ready(function ($) {
     var timeout;
     var delta;
 
-//    function init() {
-//        $.get("COC.html", function (data) {
-//            $('#worldAnimationContainer').html(data);
-//        }).complete(createAnimation);
-//    }
     createAnimation();
     function createAnimation() {
-
-        joining = $('#person_1');
-        people = $('.figurchen').not('#person_1');
         clock = $('#clock');
         numbers = $('#clock .number');
         amount = 35;
@@ -42,7 +30,6 @@ jQuery(document).ready(function ($) {
         tl = new TimelineMax({paused: true});
         tlRotation = new TimelineMax({paused: true, repeat: -1});
         tlClock = new TimelineMax({paused: true});
-        tlAddPerson = new TimelineMax({paused: true});
         cocSmall = $('.hc-coc.coc-small').length !== 0;
         cocMedium = $('.hc-coc.coc-medium').length !== 0;
         //resize timeout vars
@@ -59,9 +46,6 @@ jQuery(document).ready(function ($) {
         enquire.register("screen and (min-width:767px)", {
 //Three rows
             match: function () {
-
-//                TweenMax.to($('.number'), .5 , {scale: 1});
-
                 tl.pause();
                 tlRotation.pause();
                 tlClock.pause();
@@ -70,56 +54,36 @@ jQuery(document).ready(function ($) {
                 radius = 212;
                 createInitTL();
                 createRotationTL();
-                createAddPersonTL();
-                locked = true;
-                setTimeout(function () {
-                    locked = false;
-                    tlClock.play();
-                }, 4000);
+                locked = false;
+                tlClock.play();
 
                 tl.play('start');
-                setTimeout(function () {
-
-                    createClockTL();
-                    tlRotation.play();
-                }, 3000);
+                createClockTL();
+                tlRotation.play();
 
             },
         });
         enquire.register("screen and (min-width:430px) and (max-width:767px)", {
             //Three rows
             match: function () {
-//                TweenMax.to($('.number'), .5 , {scale: 0.5});
-
                 tl.pause();
                 tlRotation.pause();
                 tlClock.pause();
                 mobile = false;
-
                 tablet = true;
                 radius = 147;
                 createInitTL();
                 createRotationTL();
-                createAddPersonTL();
-                locked = true;
-                setTimeout(function () {
-                    locked = false;
-                    tlClock.play();
-                }, 3000)
-
+                locked = false;
+                tlClock.play();
                 tl.play('start');
-                setTimeout(function () {
-
-                    createClockTL();
-                    tlRotation.play();
-                }, 4000);
+                createClockTL();
+                tlRotation.play();
             },
         });
         enquire.register("screen and (max-width:430px)", {
             //Three rows
             match: function () {
-//                TweenMax.to($('.number'), .5 , {scale: 0.5});
-
                 tl.pause();
                 tlRotation.pause();
                 tlClock.pause();
@@ -129,13 +93,8 @@ jQuery(document).ready(function ($) {
                 createInitTL();
                 createClockTL();
                 createRotationTL();
-                createAddPersonTL();
-                locked = true;
-                setTimeout(function () {
-                    locked = false;
-                    tlClock.play();
-                }, 3000)
-
+                locked = false;
+                tlClock.play();
                 tl.play('start');
                 tlRotation.play();
             },
@@ -148,12 +107,6 @@ jQuery(document).ready(function ($) {
         });
         $('body').on('click', '.controls .pause', function () {
             pauseAnimation();
-        });
-        $('body').on('click', '.controls .addPerson', function () {
-            addPerson();
-        });
-        $('body').on('click', '.controls .removePerson', function () {
-            removePerson();
         });
         $('body').on('click', '.controls .rotateTop', function () {
             rotatePause();
@@ -173,18 +126,11 @@ jQuery(document).ready(function ($) {
         });
         $('body').on('click', '#cocJoin', function () {
             setTimeout(function () {
-
-                removePerson();
                 rotatePause();
                 rotateTop();
             }, 1000)
 
         });
-        $('body').on('click', '.fusion-modal.declaration .modal-footer .fusion-button,  .fusion-modal.declaration .modal-header button', function () {
-//            rotateStart();
-            addPerson();
-        });
-
     }
 
     function createRotationTL() {
@@ -196,23 +142,7 @@ jQuery(document).ready(function ($) {
             }
         });
     }
-    function removePerson() {
-        tlAddPerson.reverse();
-    }
-    function addPerson() {
-        $(window).scrollTop(100);
-        setTimeout(function () {
 
-//                addPerson();
-
-
-            if (!$('body').hasClass('state-animating'))
-                tlAddPerson.play();
-            setTimeout(function () {
-                rotateStart();
-            }, 3000)
-        }, 1500)
-    }
     function playAnimation() {
         tl.play();
     }
@@ -220,17 +150,7 @@ jQuery(document).ready(function ($) {
         tl.pause();
     }
     function reverseAnimation() {
-
-        if ($('body').hasClass('cocPersonAdded')) {
-            removePerson();
-
-            setTimeout(function () {
-                tl.reverse();
-            }, tlAddPerson.duration() * 1000);
-        } else {
-            tl.reverse();
-        }
-
+        tl.reverse();
     }
     function rotateStart() {
         tlRotation.play();
@@ -258,45 +178,8 @@ jQuery(document).ready(function ($) {
         tl.set($('#person_1'), {x: 0, y: 0, opacity: 0}, 'start+=0');
         tl.set($('body'), {className: '+=state-animating'}, 'start+=0');
 
-        tl.set($(people), {opacity: 0}, 'start+=0');
         tl.fromTo($('#world'), 2, {scale: 0.1}, {scale: 1, z:0.01, ease: Power0.easeNone}, 'start+=0.05');
         //INIT Timeline
-
-//        tl.add('startPeople+=start+5');
-        var cnt = 0;
-        people.each(function () {
-            var rot = 360 / amount * cnt - 80;
-            if (mobile) {
-                x = Math.cos(toRadians(rot)) * radius - 15;
-                y = Math.sin(toRadians(rot)) * radius - 15;
-            } else {
-
-                if (tablet) {
-                    x = Math.cos(toRadians(rot)) * radius - 25;
-                    y = Math.sin(toRadians(rot)) * radius - 25;
-                } else {
-                    x = Math.cos(toRadians(rot)) * radius - 38;
-                    y = Math.sin(toRadians(rot)) * radius - 38;
-                }
-            }
-            if (cocSmall) {
-                x = Math.cos(toRadians(rot)) * radius - 18;
-                y = Math.sin(toRadians(rot)) * radius - 18;
-            } else if (cocMedium) {
-                x = Math.cos(toRadians(rot)) * radius - 35.2;
-                y = Math.sin(toRadians(rot)) * radius - 35.2;
-            }
-
-
-            tl.set($(this), {opacity: 1, rotation: 85 + rot}, 'start+=' + (0.05 * cnt + 3.3));
-            tl.fromTo($(this), 1, {x: 0, y: 0}, {x: x, y: y, ease: Power1.easeOut}, 'start+=' + (0.08 * cnt + 3.3));
-
-//            tl.set($(this), {zIndex: cnt}, 'startPeople+=' + (0.08 * cnt + 1));
-            $(this).data('index', cnt);
-            $(this).data('PersonX', x);
-            $(this).data('PersonY', y);
-            cnt++;
-        });
         tl.set($('body'), {className: '-=state-animating'});
     }
 
@@ -308,82 +191,6 @@ jQuery(document).ready(function ($) {
             tlClock.to($(this), 1, {opacity: 1}, 'start+=' + cnt * 0.2);
             cnt++;
         });
-    }
-
-    //AddPerson Timeline
-    function createAddPersonTL() {
-        var joiningX, joiningY, rot;
-
-        locked = true;
-        setTimeout(function () {
-            locked = false;
-        }, 1000)
-        tlAddPerson = new TimelineMax({paused: true});
-
-        $(this).css('cursor', 'auto');
-        var peopleBefore = $('.figurchen').not('#person_1');
-        var peopleAfter = $('.figurchen');
-        var amountAfter = 36;
-        var cnt = 0;
-        tlAddPerson.add('startAdding');
-        currentAmount = amount;
-        tlAddPerson.set($('body'), {className: '-=cocPersonAdded'});
-        peopleBefore.each(function () {
-
-            rot = 360 / amountAfter * cnt - 80;
-            if (mobile) {
-                x = Math.cos(toRadians(rot)) * radius - 15;
-                y = Math.sin(toRadians(rot)) * radius - 15;
-                joiningX = Math.cos(toRadians(-90)) * radius - 15;
-                joiningY = Math.sin(toRadians(-90)) * radius - 15;
-            } else {
-                if (tablet) {
-                    x = Math.cos(toRadians(rot)) * radius - 25;
-                    y = Math.sin(toRadians(rot)) * radius - 25;
-                    joiningX = Math.cos(toRadians(-90)) * radius - 25;
-                    joiningY = Math.sin(toRadians(-90)) * radius - 25;
-                } else {
-                    x = Math.cos(toRadians(rot)) * radius - 38;
-                    y = Math.sin(toRadians(rot)) * radius - 38;
-                    joiningX = Math.cos(toRadians(-90)) * radius - 38;
-                    joiningY = Math.sin(toRadians(-90)) * radius - 38;
-                }
-            }
-
-            tlAddPerson.to($(this), 1, {x: x, y: y, rotation: 90 + rot}, 'startAdding+=' + 0);
-            $(this).data('index', cnt);
-            $(this).data('PersonX', x);
-            $(this).data('PersonY', y);
-            cnt++;
-        });
-        rot = 360 / amountAfter * cnt - 80;
-        if (mobile) {
-            joiningX = Math.cos(toRadians(-90)) * radius - 15;
-            joiningY = Math.sin(toRadians(-90)) * radius - 15;
-        } else {
-            if (tablet) {
-
-                joiningX = Math.cos(toRadians(-90)) * radius - 25;
-                joiningY = Math.sin(toRadians(-90)) * radius - 25;
-            } else {
-
-                joiningX = Math.cos(toRadians(-90)) * radius - 38;
-                joiningY = Math.sin(toRadians(-90)) * radius - 38;
-            }
-        }
-        tlAddPerson.set(joining, {rotation: 0}, 'startAdding+=' + 0);
-        tlAddPerson.to(joining, 1, {x: joiningX, y: joiningY, opacity: 1}, 'startAdding+=' + 1);
-
-        joining.data('index', 0);
-        joining.data('x', joiningX);
-        joining.data('y', joiningY);
-
-        tlAddPerson.add(function () {
-
-            currentAmount = amount + 1;
-        });
-        tlAddPerson.set($('body'), {className: '+=cocPersonAdded'});
-
     }
 
     function highlightPerson() {
@@ -429,67 +236,12 @@ jQuery(document).ready(function ($) {
         }
     }
 
-    function increaseCOC() {
-        var amount = $('.digits').data('amount');
-        var digits = getlength(amount);
-
-//        $('').
-        $($(".number").get().reverse()).each(function () {
-
-//            $(this).children().removeAttr('class');
-//            $(this).children().removeAttr('class');
-
-            var className;
-
-//for(var cnt; digits)
-//            switch (zahl)
-//
-//            {
-//            case 0:
-//                    className = "zero";
-//                    break;
-//                    case 1:
-//                    className = "one";
-//                    break;
-//                    case 2:
-//                    className = "two";
-//                    break;
-//                    case 3:
-//                    className = "three";
-//                    break;
-//                    case 4:
-//                    className = "four";
-//                    break;
-//                    case 5:
-//                    className = "five";
-//                    break;
-//                    case 6:
-//                    className = "six";
-//                    break;
-//                    case 7:
-//                    className = "seven";
-//                    break;
-//                    case 8:
-//                    className = "eight";
-//                    break;
-//                    case 9:
-//                    className = "nine";
-//                    break;
-//        }
-
-        });
-    }
-//    increaseCOC();
-
     // add class if dom loaded
 
     $('#clock').addClass('coc-ready');
 
     function toRadians(angle) {
         return angle * (Math.PI / 180);
-    }
-    function getlength(number) {
-//        return number.toString().length;
     }
 
     function shuffleArray(array) {
@@ -502,7 +254,6 @@ jQuery(document).ready(function ($) {
         return array;
     }
 
-//    init();
     $.fn.random = function () {
         return this.eq(Math.floor(Math.random() * this.length));
     }
