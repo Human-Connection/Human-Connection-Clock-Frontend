@@ -371,7 +371,6 @@ EOT;
         $html .= '</div>';
         $html .= '<div class="form-group">';
         $html .= '<p class="hint">' . $this->translation->t('noticeEntryIsFree', 'Die Teilnahme ist 100% kostenlos, als gemeinnützige Organisation freuen wir uns jedoch über eine Spende. DANKE im Voraus!') . '</p>';
-        $html .= '<p class="hint">' . $this->translation->t('noticeActivateAccount', 'BITTE BEACHTEN: Der Eintrag muss noch einmal von Euch bestätigt werden. Dazu bitte den Bestätigungslink in der Email klicken, welche Ihr von uns bekommt. Falls keine Email eingeht, bitte im SPAM nachschauen und am besten Human Connection als sicheren Absender kennzeichnen. Die Teilnahme an der Uhr des Wandels ist keine automatische Teilnahme im Human Connection Netzwerk.<br>Falls Du Dich im Netzwerk registrieren möchtest, folge bitte diesem Link: <a href="https://human-connection.social/" style="display: inline-block; width: auto;">https://human-connection.social/</a>. Die Teilnahme ist 100% kostenlos, Human Connection ist als gemeinnützig anerkannt.') . '</p>';
         $html .= '<div class="form-group">';
         $html .= '<div id="coc-captcha" class="g-recaptcha" data-sitekey="' . $this->recaptchaSiteKey . '"></div>';
         $html .= '</div>';
