@@ -272,6 +272,8 @@ window.coc = ((window, document, $) => {
                     // TODO: pass param instead of hard 81
                     if (data.length < 81) {
                         $('#loadMore').hide();
+                    } else {
+                        $('#loadMore').show();
                     }
 
                     if (data.length > 0) {
@@ -323,6 +325,8 @@ window.coc = ((window, document, $) => {
                     // TODO: pass param instead of hard 81
                     if (data.length < 81) {
                         $('#loadMore').hide();
+                    } else {
+                        $('#loadMore').show();
                     }
 
                     if (data.length > 0) {
