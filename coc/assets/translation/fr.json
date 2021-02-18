@@ -6,9 +6,7 @@
   "ascending": "ascendant",
   "descending": "descendant",
   "errorMissingRequiredField": "Veuillez remplir le champ obligatoire",
-  Einstellungen
   "filter": "filter",
-  Einstellungen
   "filterByProfileImage": "uniquement les entrées avec photo de profil",
   "avatar": "ta photo",
   "minSizeAvatar": "min. 200*200px",
