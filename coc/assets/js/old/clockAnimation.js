@@ -1,6 +1,5 @@
 jQuery(document).ready(function ($) {
     var clock;
-    var numbers;
     var amount;
     var currentAmount;
     var radius;
@@ -9,7 +8,6 @@ jQuery(document).ready(function ($) {
     var tablet;
     var tl;
     var tlRotation;
-    var tlClock;
     var highlightRandomIntervall;
 
     //resize timeout vars
@@ -20,7 +18,6 @@ jQuery(document).ready(function ($) {
     createAnimation();
     function createAnimation() {
         clock = $('#clock');
-        numbers = $('#clock .number');
         amount = 35;
         currentAmount = amount;
         radius = null;
@@ -29,7 +26,6 @@ jQuery(document).ready(function ($) {
         mobile = null;
         tl = new TimelineMax({paused: true});
         tlRotation = new TimelineMax({paused: true, repeat: -1});
-        tlClock = new TimelineMax({paused: true});
         cocSmall = $('.hc-coc.coc-small').length !== 0;
         cocMedium = $('.hc-coc.coc-medium').length !== 0;
         //resize timeout vars
@@ -48,17 +44,14 @@ jQuery(document).ready(function ($) {
             match: function () {
                 tl.pause();
                 tlRotation.pause();
-                tlClock.pause();
 
                 tablet = false;
                 radius = 212;
                 createInitTL();
                 createRotationTL();
                 locked = false;
-                tlClock.play();
 
                 tl.play('start');
-                createClockTL();
                 tlRotation.play();
 
             },
@@ -68,16 +61,13 @@ jQuery(document).ready(function ($) {
             match: function () {
                 tl.pause();
                 tlRotation.pause();
-                tlClock.pause();
                 mobile = false;
                 tablet = true;
                 radius = 147;
                 createInitTL();
                 createRotationTL();
                 locked = false;
-                tlClock.play();
                 tl.play('start');
-                createClockTL();
                 tlRotation.play();
             },
         });
@@ -86,15 +76,12 @@ jQuery(document).ready(function ($) {
             match: function () {
                 tl.pause();
                 tlRotation.pause();
-                tlClock.pause();
                 mobile = true;
                 tablet = false;
                 radius = 104;
                 createInitTL();
-                createClockTL();
                 createRotationTL();
                 locked = false;
-                tlClock.play();
                 tl.play('start');
                 tlRotation.play();
             },
@@ -181,16 +168,6 @@ jQuery(document).ready(function ($) {
         tl.fromTo($('#world'), 2, {scale: 0.1}, {scale: 1, z:0.01, ease: Power0.easeNone}, 'start+=0.05');
         //INIT Timeline
         tl.set($('body'), {className: '-=state-animating'});
-    }
-
-
-    function createClockTL() {
-        tlClock.add('start');
-        var cnt = 0;
-        $(numbers.get().reverse()).each(function () {
-            tlClock.to($(this), 1, {opacity: 1}, 'start+=' + cnt * 0.2);
-            cnt++;
-        });
     }
 
     function highlightPerson() {
