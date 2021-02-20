@@ -30,7 +30,8 @@ class ScriptManager
         wp_enqueue_style(
             'coc',
             ClockOfChange::$pluginRootUri . 'assets/css/coc.css',
-            []
+            [],
+            filemtime(ClockOfChange::$pluginRootPath . 'assets/css/coc.css')
         );
 
         wp_enqueue_style(
@@ -97,7 +98,8 @@ class ScriptManager
         wp_enqueue_style(
             'coc-old',
             ClockOfChange::$pluginRootUri . 'assets/css/cocold.css',
-            []
+            [],
+            filemtime(ClockOfChange::$pluginRootPath . 'assets/css/cocold.css')
         );
 
         wp_enqueue_script(
@@ -136,7 +138,7 @@ class ScriptManager
             'coc-clock-animation',
             ClockOfChange::$pluginRootUri . 'assets/js/old/clockAnimation.js',
             ['jquery', 'coc-greensock-timelinemax', 'coc-greensock-tweenmax', 'coc-enquire'],
-            bin2hex(random_bytes(16)),
+            filemtime(ClockOfChange::$pluginRootPath . 'assets/js/old/clockAnimation.js'),
             true
         );
 
