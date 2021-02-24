@@ -361,7 +361,7 @@
     padding: 6px;
     background-color: #303030;
     margin: 0 1px;
-    opacity: 0;
+    opacity: 1;
 
 
 }
@@ -378,7 +378,7 @@
 
         background-color: #303030;
         margin: 0 3px;
-        opacity: 0;
+        opacity: 1;
         padding: 12px;
 
     }
@@ -875,6 +875,7 @@ div {
 
     opacity: 1;
     /* opacity was 0!!!!!!!!!!! */
+    transition: 0.2s;
 }
 
 #clock-xs .number {
