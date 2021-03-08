@@ -378,12 +378,6 @@ window.coc = ((window, document, $) => {
             if ($('.country-ranking-item.hidden').length === 0) {
                 $('#country-rankings-load-more').hide();
             }
-
-            setTimeout(function(){
-                $([document.documentElement, document.body]).animate({
-                    scrollTop: $('#country-rankings-load-more').offset().top
-                }, 1000);
-            }, 150);
         });
 
         defaultName   = app.t('defaultEntryName', 'Mensch');
