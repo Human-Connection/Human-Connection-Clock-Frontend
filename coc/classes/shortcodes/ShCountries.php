@@ -89,11 +89,13 @@ class ShCountries
             $i++;
         }
 
-        $html .= '<div id="country-rankings-load-more"><a  href="#" class="load-more-link">' . $this->translation->t(
-                'loadMore', 'mehr laden'
-            ) . ' <i class="fa fa-chevron-down" aria-hidden="true"></i></a></div>';
+        if (count($countries) > self::MAX_COUNTRIES) {
+            $html .= '<div id="country-rankings-load-more"><a  href="#" class="load-more-link">' . $this->translation->t(
+                    'loadMore', 'mehr laden'
+                ) . ' <i class="fa fa-chevron-down" aria-hidden="true"></i></a></div>';
 
-        $html .= '</div>';
+            $html .= '</div>';
+        }
 
         return html_entity_decode($html);
     }
