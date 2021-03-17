@@ -77,6 +77,7 @@ class ListTable extends \WP_List_Table
                 $userArr['country']         = $user->country;
                 $userArr['email_confirmed'] = $user->email_confirmed === 1 ? 'Yes' : 'No';
                 $userArr['status']          = $user->status === 1 ? 'Active' : 'Inactive';
+                $userArr['not_approved']    = $user->not_approved === 1 ? true : false;
                 $userArr['anon']            = $user->anon === 1 ? 'Yes' : 'No';
                 $userArr['created_at']      = self::formateDate($user->created_at);
                 $userArr['updated_at']      = self::formateDate($user->updated_at);
@@ -200,7 +201,9 @@ class ListTable extends \WP_List_Table
             'cocemaildisable',
             'cocdeleteimage',
             'cocrotateimage',
-            'cocupdatemessage'
+            'cocupdatemessage',
+            'cocunapprove',
+            'cocapprove'
         ];
 
         if (current_user_can('manage_options') && $this->current_action() !== false && in_array(
@@ -282,6 +285,17 @@ class ListTable extends \WP_List_Table
 
                 return false;
             }
+
+            // toggle not_approved status for entry (affects status attribute as well)
+            if (($this->current_action() === 'cocunapprove' || $this->current_action(
+                    ) === 'cocapprove') && $_GET['page'] === 'coc_entries') {
+                // toggle entry status
+                // object(stdClass)#7800 (2) { ["success"]=> bool(true) ["message"]=> string(14) "toggled email status" }
+                $result = ClockOfChange::app()->cocAPI()->toggleNotApproved($_GET['entry'], $this->current_action());
+                if (isset($result->success) && $result->success === true) {
+                    return true;
+                }
+            }
         }
     }
 
@@ -325,7 +339,8 @@ class ListTable extends \WP_List_Table
         // create a nonce
         $nonce = wp_create_nonce('hc_toggle_coc_user');
 
-        $title = '<strong>' . $item['status'] . '</strong>';
+        $status = $item['not_approved'] === true ? 'Not Approved' : $item['status'];
+        $title  = '<strong>' . $status . '</strong>';
 
         $actions = [
             'cocactivate' => sprintf(
@@ -345,6 +360,18 @@ class ListTable extends \WP_List_Table
                 esc_attr($_REQUEST['page']), 'cocdelete', absint($item['ID']), $nonce, $this->get_pagenum(), $this->getFilterUrlParams(), absint($item['ID'])
             ),
         ];
+
+        if ($item['not_approved'] === true) {
+            $actions['cocapprove'] = sprintf(
+                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s&%s&filter-action=Filter#entry-%s" >Approved</a>',
+                esc_attr($_REQUEST['page']), 'cocapprove', absint($item['ID']), $nonce, $this->get_pagenum(), $this->getFilterUrlParams(), absint($item['ID'])
+            );
+        } else {
+            $actions['cocunapprove'] = sprintf(
+                '<a href="?page=%s&action=%s&entry=%s&_wpnonce=%s&paged=%s&%s&filter-action=Filter#entry-%s" >Not Approved</a>',
+                esc_attr($_REQUEST['page']), 'cocunapprove', absint($item['ID']), $nonce, $this->get_pagenum(), $this->getFilterUrlParams(), absint($item['ID'])
+            );
+        }
 
         return $title . $this->row_actions($actions);
     }
@@ -537,7 +564,12 @@ class ListTable extends \WP_List_Table
      */
     public function single_row($item)
     {
-        echo '<tr id="entry-' . $item['ID'] . '">';
+        $notApprovedClass = '';
+        if ($item['not_approved'] === true) {
+            $notApprovedClass = ' class="not-approved"';
+        }
+
+        echo '<tr id="entry-' . $item['ID'] . '"' . $notApprovedClass . '>';
         $this->single_row_columns($item);
         echo '</tr>';
     }
@@ -663,6 +695,9 @@ class ListTable extends \WP_List_Table
         echo '<style type="text/css">';
         echo '.wp-list-table .column-message { width: 20%; }';
         echo '.message-textarea { width: 100%; }';
+        echo '#coc-users-list tr:hover { background-color: #f1f1f1; }';
+        echo '#coc-users-list tr.not-approved { background-color: rgba(255, 67, 75, 0.2); }';
+        echo '#coc-users-list tr.not-approved:hover { background-color: rgba(255, 67, 75, 0.25); }';
         echo '</style>';
     }
 }
