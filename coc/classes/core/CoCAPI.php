@@ -13,6 +13,7 @@ class CoCAPI
     const ENDPOINT_ENTRIES                        = '/entries';
     const ENDPOINT_ENTRIES_TOGGLE                 = '/entries/toggle';
     const ENDPOINT_ENTRIES_TOGGLE_EMAIL_CONFIRMED = '/entries/toggle-email-confirmed';
+    const ENDPOINT_ENTRIES_TOGGLE_NOT_APPROVED    = '/entries/toggle-not-approved';
     const ENDPOINT_COUNTRIES                      = '/countries';
     const ENDPOINT_DELETE_ENTRY                   = '/delete';
     const ENDPOINT_DELETE_IMAGE                   = '/deleteImage';
@@ -172,6 +173,21 @@ class CoCAPI
         curl_setopt($ch, CURLOPT_URL, $this->_baseUrl . self::ENDPOINT_ENTRIES_TOGGLE_EMAIL_CONFIRMED);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, ['id' => $entryId, 'state' => $aMap[$action]]);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $resp = curl_exec($ch);
+        curl_close($ch);
+
+        return json_decode($resp);
+    }
+
+    public function toggleNotApproved($entryId, $action)
+    {
+        $aMap = ['cocunapprove' => 1, 'cocapprove' => 0];
+        $ch   = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['API-Key: ' . $this->_apiKey]);
+        curl_setopt($ch, CURLOPT_URL, $this->_baseUrl . self::ENDPOINT_ENTRIES_TOGGLE_NOT_APPROVED);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, ['id' => $entryId, 'notApproved' => $aMap[$action]]);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $resp = curl_exec($ch);
         curl_close($ch);
