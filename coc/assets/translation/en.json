@@ -33,5 +33,7 @@
   "pleaseSelect": "Please select",
   "slogan": "We believe that change begins in everyone and that when enough people change, the world will change. I want to build a bridge with my fellow human beings to a sustainable future for the children of the world",
   "allCountries": "all countries",
-  "filterByCountry": "only the following countries"
+  "filterByCountry": "only the following countries",
+  "inviteFriends": "Invite friends",
+  "inviteFriendsText": "Invite friends to join the Human Connection Clock (email addresses comma separated)"
 }

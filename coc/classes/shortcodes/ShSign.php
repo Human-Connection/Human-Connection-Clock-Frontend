@@ -350,6 +350,12 @@ EOT;
         $html .= '</div>';
 
         $html .= '<div class="form-group">';
+        $html .= '<label class="label" for="coc-invitations">' . $this->translation->t('inviteFriends', 'Freunde einladen') . '</label>';
+        $html .= '<input type="text" id="coc-invitations" name="coc-invitations" autocomplete="off" />';
+        $html .= '<p class="hint">' . $this->translation->t('inviteFriendsText', 'Freunde zur Teilnahme bei der Human Connection Clock einladen (Email-Adressen per Komma trennen)') . '</p>';
+        $html .= '</div>';
+
+        $html .= '<div class="form-group">';
         $html .= '<input type="checkbox" id="coc-slogan" name="coc-slogan" autocomplete="off"/>';
         $html .= '<label class="label" for="coc-slogan">' . $this->translation->t('slogan', 'Ich glaube daran, dass Veränderung in jedem Einzelnen beginnt und dass, wenn genügend Menschen sich ändern, die Welt sich verändern wird. Ich möchte mit meinen Mitmenschen eine Brücke zu einer nachhaltigen Zukunft für die Kinder der Welt bauen') . '</label>';
         $html .= '</div>';
